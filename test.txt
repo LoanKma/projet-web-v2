@@ -1,3 +1,8 @@
 ok salut je test 😁
 hello cloudflare
+<<<<<<< HEAD
 ok test qqqqqqq
+=======
+ok test
+second test 
+>>>>>>> 126c27575d5334e387424f1ca79f9161184b90df
