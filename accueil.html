@@ -13,7 +13,7 @@
   <body>
     <header class="header">
       <div class="logo">
-        <div class="logo-icon"><a href="accueil.html"></a>L</div>
+        <div class="logo-icon"><a href="accueil.html">L</a></div>
         <span>Letterix</span>
       </div>
       <nav class="nav">
@@ -26,8 +26,8 @@
           <span><a href="#">Calendrier</a></span>
         </div>
         <div class="user-section">
-            <div class="user-avatar">L</div>
-            <span><a href="profil.html">LesBGduLobby</a></span>
+          <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
+          <span><a href="profil.html">LesBGduLobby</a></span>
         </div>
       </nav>
     </header>
@@ -38,7 +38,8 @@
       </div>
       <h1>Jeux de Lettres</h1>
       <p class="subtitle">
-        Entraînez votre esprit avec nos jeux de mots quotidiens. Relevez de nouveaux défis chaque jour et grimpez dans le classement !
+        Entraînez votre esprit avec nos jeux de mots quotidiens. Relevez de
+        nouveaux défis chaque jour et grimpez dans le classement !
       </p>
       <p class="date" id="currentDate"></p>
       <button id="toggle-dark"><i class="fa-solid fa-sun big-icon"></i></button>
@@ -59,9 +60,8 @@
         <a href="motus.html" class="play-button" style="text-decoration: none;">
           <span>T</span>
           <span>Jouer à Motus</span>
-        </a>
+        </button>
       </div>
-
       <div class="game-card">
         <div class="game-icon">⊞</div>
         <h2 class="game-title">Mots Fléchés</h2>
@@ -81,81 +81,89 @@
     </div>
 
     <div class="stats-container">
-        <h1><i class="fa-solid fa-chart-simple"></i>Vos statistiques</h1>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="gamesPlayed">127</div>
-                <div class="stat-label">Parties jouées</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="winRate">89%</div>
-                <div class="stat-label">Taux de réussite</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="currentStreak">15</div>
-                <div class="stat-label">Série actuelle</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="bestStreak">42</div>
-                <div class="stat-label">Meilleure série</div>
-            </div>
+      <h1><i class="fa-solid fa-chart-simple"></i>Vos statistiques</h1>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="gamesPlayed">127</div>
+          <div class="stat-label">Parties jouées</div>
         </div>
-    </div>
-    <section class="contact-section">
-    <h1>Contactez-nous</h1>
-    
-    <div class="contact-container">
-      <!-- PARTIE GAUCHE - INFORMATIONS -->
-      <div class="contact-info">
-        <h2>Parlons de votre projet</h2>
-        <p>
-          Une idée de niveau ? Une mécanique à ajouter ? Un bug à signaler ? Partagez vos retours : c'est grâce à vous que le jeu devient meilleur ! 
-          Notre équipe est là pour vous écouter 
-          
-        </p>
-        <p>
-          Remplissez le formulaire ci-contre et nous vous répondrons dans les plus brefs délais.
-        </p>
-        
-        <div class="contact-details">
-          <div class="detail-item">
-            <div class="detail-icon"><i class="fa-solid fa-envelope"></i></div>
-            <div class="detail-text">contact@votresite.fr</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-icon"><i class="fa-solid fa-phone"></i></div>
-            <div class="detail-text">+33 1 23 45 67 89</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
-            <div class="detail-text">Paris, France</div>
-          </div>
+        <div class="stat-card">
+          <div class="stat-number" id="winRate">89%</div>
+          <div class="stat-label">Taux de réussite</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="currentStreak">15</div>
+          <div class="stat-label">Série actuelle</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="bestStreak">42</div>
+          <div class="stat-label">Meilleure série</div>
         </div>
       </div>
-<!-- PARTIE DROITE - FORMULAIRE -->
-      <form class="contact-form">
-        <div class="form-group">
-          <label>Nom</label>
-          <input type="text" placeholder="Votre nom" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="votre@email.fr" required>
-        </div>
-        <div class="form-group">
-          <label>Sujet</label>
-          <input type="text" placeholder="Sujet de votre message">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea rows="5" placeholder="Écrivez votre message ici..."></textarea>
-        </div>
-        <button type="submit" class="contact-btn">Envoyer</button>
-      </form>
     </div>
-  </section>
-    
+    <section class="contact-section">
+      <h1>Contactez-nous</h1>
+
+      <div class="contact-container">
+        <!-- PARTIE GAUCHE - INFORMATIONS -->
+        <div class="contact-info">
+          <h2>Améliorez le jeu avec nous !</h2>
+          <p>
+            Une idée de niveau ? Une mécanique à ajouter ? Un bug à signaler ?
+            Partagez vos retours : c'est grâce à vous que le jeu devient
+            meilleur ! Notre équipe est là pour vous écouter
+          </p>
+          <p>
+            Remplissez le formulaire ci-contre et nous vous répondrons dans les
+            plus brefs délais.
+          </p>
+
+          <div class="contact-details">
+            <div class="detail-item">
+              <div class="detail-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div class="detail-text">contact@Letterix.fr</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="detail-text">+33 1 23 45 67 89</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div class="detail-text">Paris, France</div>
+            </div>
+          </div>
+        </div>
+        <!-- PARTIE DROITE - FORMULAIRE -->
+        <form class="contact-form">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="votre@email.fr" required />
+          </div>
+          <div class="form-group">
+            <label>Sujet</label>
+            <input type="text" placeholder="Sujet de votre message" />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea
+              rows="5"
+              placeholder="Écrivez votre message ici..."
+            ></textarea>
+          </div>
+          <button type="submit" class="contact-btn">Envoyer</button>
+        </form>
+      </div>
+    </section>
+
     <script>
       // Afficher la date actuelle
       function updateDate() {
@@ -194,11 +202,14 @@
       }
 
       // Fonctions de navigation
+      function playMotus() {
+        alert("Lancement du jeu Motus...");
+        // Ici vous pourriez rediriger vers la page du jeu
+        // window.location.href = '/motus';
+      }
 
       function playMotsFleches() {
-        alert("Lancement des Mots Fléchés...");
-        // Ici vous pourriez rediriger vers la page du jeu
-        // window.location.href = '/mots-fleches';
+        window.location.href = "mots-fleches.html";
       }
 
       // Initialisation
@@ -206,7 +217,6 @@
         updateDate();
         animateStats();
       });
-     
     </script>
   </body>
   <footer>

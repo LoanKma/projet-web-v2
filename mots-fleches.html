@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeu de Lettres</title>
+    <link rel="stylesheet" href="assets/css/mots-fleches.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon"><a href="accueil.html">L</a></div>
+        <span>Letterix</span>
+      </div>
+      <nav class="nav">
+        <div class="nav-item">
+          <span><i class="fa-solid fa-ranking-star"></i></span>
+          <span><a href="classement.html">Classements</a></span>
+        </div>
+        <div class="nav-item">
+          <span><i class="fa-solid fa-calendar-days"></i></span>
+          <span><a href="#">Calendrier</a></span>
+        </div>
+        <div class="user-section">
+          <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
+          <span><a href="profil.html">LesBGduLobby</a></span>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h1 class="title">Niveaux de Mots Fléchés</h1>
+      <p class="subtitle">Choisissez votre niveau et votre difficulté</p>
+
+      <div class="difficulty-selector">
+        <div
+          class="difficulty-card facile active"
+          onclick="selectDifficulty('facile')"
+        >
+          <div class="difficulty-icon"><i class="fa-solid fa-star"></i></div>
+          <div class="difficulty-name">Facile</div>
+          <div class="difficulty-desc">Noob</div>
+        </div>
+        <div class="difficulty-card moyen" onclick="selectDifficulty('moyen')">
+          <div class="difficulty-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="difficulty-name">Moyen</div>
+          <div class="difficulty-desc">Confirmé</div>
+        </div>
+        <div
+          class="difficulty-card difficile"
+          onclick="selectDifficulty('difficile')"
+        >
+          <div class="difficulty-icon"><i class="fa-solid fa-brain"></i></div>
+          <div class="difficulty-name">Difficile</div>
+          <div class="difficulty-desc">Expert</div>
+        </div>
+      </div>
+
+      <div id="levels-container"></div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon facile">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div class="stat-value">3/4</div>
+          <div class="stat-label">Niveaux faciles complétés</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon moyen"><i class="fa-solid fa-bolt"></i></div>
+          <div class="stat-value">1/4</div>
+          <div class="stat-label">Niveaux moyens complétés</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon difficile">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div class="stat-value">0/4</div>
+          <div class="stat-label">Niveaux difficiles complétés</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const levelsData = {
+        facile: [
+          {
+            id: 1,
+            title: "Première grille",
+            desc: "Mots simples et courts",
+            time: "5m 30s",
+            stars: 3,
+            locked: false,
+          },
+          {
+            id: 2,
+            title: "En douceur",
+            desc: "Vocabulaire quotidien",
+            time: "6m 15s",
+            stars: 2,
+            locked: false,
+          },
+          {
+            id: 3,
+            title: "Prise en main",
+            desc: "Mots courants",
+            time: "5m 55s",
+            stars: 2,
+            locked: false,
+          },
+          {
+            id: 4,
+            title: "Progression",
+            desc: "Vocabulaire familier",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+        ],
+        moyen: [
+          {
+            id: 1,
+            title: "Nouveau défi",
+            desc: "Vocabulaire élargi",
+            time: "8m 45s",
+            stars: 3,
+            locked: false,
+          },
+          {
+            id: 2,
+            title: "Montée en puissance",
+            desc: "Mots moins courants",
+            time: null,
+            stars: 0,
+            locked: false,
+          },
+          {
+            id: 3,
+            title: "Culture générale",
+            desc: "Connaissances variées",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+          {
+            id: 4,
+            title: "Enrichissement",
+            desc: "Vocabulaire soutenu",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+        ],
+        difficile: [
+          {
+            id: 1,
+            title: "Grand défi",
+            desc: "Vocabulaire rare",
+            time: null,
+            stars: 0,
+            locked: false,
+          },
+          {
+            id: 2,
+            title: "Pour experts",
+            desc: "Mots techniques",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+          {
+            id: 3,
+            title: "Maître des mots",
+            desc: "Vocabulaire spécialisé",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+          {
+            id: 4,
+            title: "Érudition",
+            desc: "Connaissances approfondies",
+            time: null,
+            stars: 0,
+            locked: true,
+          },
+        ],
+      };
+
+      let currentDifficulty = "facile";
+
+      function selectDifficulty(difficulty) {
+        currentDifficulty = difficulty;
+
+        document.querySelectorAll(".difficulty-card").forEach((card) => {
+          card.classList.remove("active");
+        });
+
+        document
+          .querySelector(`.difficulty-card.${difficulty}`)
+          .classList.add("active");
+
+        displayLevels(difficulty);
+      }
+
+      function displayLevels(difficulty) {
+        const container = document.getElementById("levels-container");
+        const levels = levelsData[difficulty];
+
+        let html = '<div class="levels-grid">';
+
+        levels.forEach((level) => {
+          const starsHtml = level.stars > 0 ? "★".repeat(level.stars) : "";
+
+          const lockedClass = level.locked ? "locked" : "";
+
+          html += `
+                    <div class="level-card ${lockedClass} ${difficulty}" onclick="playLevel('${difficulty}', ${
+            level.id
+          })">
+                        <div class="level-header">
+                            <div class="level-badge ${difficulty}">
+                                ${
+                                  level.locked
+                                    ? '<i class="fa-solid fa-lock"></i>'
+                                    : `${level.id}`
+                                }
+                            </div>
+                            ${
+                              level.stars > 0
+                                ? `<div class="level-stars">${starsHtml}</div>`
+                                : ""
+                            }
+                        </div>
+                        <div class="level-title">${level.title}</div>
+                        <div class="level-desc">${level.desc}</div>
+                        ${
+                          level.time
+                            ? `<div class="level-time">Meilleur temps: ${level.time}</div>`
+                            : ""
+                        }
+                        ${
+                          level.locked
+                            ? '<div class="lock-message"><i class="fa-solid fa-lock"></i> Complétez le niveau précédent</div>'
+                            : ""
+                        }
+                    </div>
+                `;
+        });
+
+        html += "</div>";
+        container.innerHTML = html;
+      }
+
+      function playLevel(difficulty, levelId) {
+        const level = levelsData[difficulty].find((l) => l.id === levelId);
+        if (level && !level.locked) {
+          alert(
+            `Démarrage du niveau ${levelId} (${difficulty})\n\n${level.title}\n${level.desc}\n\nBonne chance !`
+          );
+        }
+      }
+
+      function goBack() {
+        alert("Retour à l'accueil");
+      }
+
+      // Initialiser avec la difficulté facile
+      displayLevels("facile");
+    </script>
+  </body>
+</html>
