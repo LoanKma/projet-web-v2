@@ -57,9 +57,9 @@
           <li>Les lettres bien placées apparaissent en rouge</li>
           <li>Les lettres mal placées apparaissent en jaune</li>
         </ul>
-        <a href="motus.html" class="play-button" style="text-decoration: none;">
+       <button class="play-button" onclick="playMotus()">
           <span>T</span>
-          <span>Jouer à Motus</span>
+          <span>Jouer à Motus</a></span>
         </button>
       </div>
       <div class="game-card">
@@ -203,9 +203,7 @@
 
       // Fonctions de navigation
       function playMotus() {
-        alert("Lancement du jeu Motus...");
-        // Ici vous pourriez rediriger vers la page du jeu
-        // window.location.href = '/motus';
+        window.location.href = 'motus.html';
       }
 
       function playMotsFleches() {
