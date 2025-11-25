@@ -25,7 +25,6 @@ function filterLevels(difficulty) {
     });
 }
 
-// Fonction pour jouer à un niveau
 function playLevel(levelId, difficulty) {
     // Vérifier si le niveau est verrouillé
     const levelCard = document.querySelector(`.level-card[data-level-id="${levelId}"]`);
@@ -41,9 +40,16 @@ function playLevel(levelId, difficulty) {
     }));
     
     // Redirection vers la page de jeu
-    alert(`Lancement du niveau ${levelId} - Difficulté: ${difficulty}`);
-    // window.location.href = `jeu-motus.html?level=${levelId}&difficulty=${difficulty}`;
+    window.location.href = 'jeu-motus.html';
 }
+    
+    // Stockage du niveau sélectionné
+    localStorage.setItem('currentLevel', JSON.stringify({
+        levelId: levelId,
+        difficulty: difficulty
+    }));
+    
+   
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
