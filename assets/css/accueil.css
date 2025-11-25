@@ -50,7 +50,11 @@ body {
 .logo-span {
   color: black;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 30px;
+}
+.logo-icon a {
+  color: white;
+  text-decoration: none;
 }
 
 .nav {
@@ -92,18 +96,11 @@ body {
   background: rgba(14, 165, 233, 0.2);
   border-color: rgba(14, 165, 233, 0.5);
 }
-
 .user-avatar {
-  width: 32px;
-  height: 32px;
-  background: #2563eb;
-  border-radius: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
+  font-size: 30px;
+  color: #2563eb;
 }
+
 /* HERO */
 .hero {
   text-align: center;
