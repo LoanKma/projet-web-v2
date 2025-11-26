@@ -12,31 +12,31 @@ body {
   padding: 20px;
 }
 
-/* HEADER */
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  background: rgba(30, 41, 59, 0.5);
-  border-radius: 15px;
-  margin-bottom: 30px;
-  border: 1px solid rgba(37, 99, 235, 0.3);
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  background: transparent;
-  border: 2px solid #2563eb;
-  border-radius: 12px;
-  color: #2563eb;
+.back-button button {
+  background-color: #2563eb; /* bleu demandé */
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* espace entre icône et texte */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet hover */
+.back-button button:hover {
+  background-color: #1e4fd3; /* un bleu un peu plus foncé */
+  transform: translateY(-2px);
+}
+
+/* Effet clic */
+.back-button button:active {
+  transform: translateY(0);
+  background-color: #1943b8;
 }
 
 .back-button:hover {

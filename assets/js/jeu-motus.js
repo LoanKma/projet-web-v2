@@ -2,6 +2,10 @@
 const WORD_LENGTH = 5;
 const MAX_ATTEMPTS = 6;
 const TARGET_WORD = "CHATS"; // Mot à deviner (viendra de la BDD plus tard)
+// bouton retour
+function goBack() {
+  window.history.back();
+}
 
 // État du jeu
 let currentRow = 0;
