@@ -12,26 +12,7 @@
   </head>
 
   <body>
-    <header class="header">
-      <div class="logo">
-        <div class="logo-icon"><a href="accueil.html">L</a></div>
-        <span>Letterix</span>
-      </div>
-      <nav class="nav">
-        <div class="nav-item">
-          <span><i class="fa-solid fa-ranking-star"></i></span>
-          <span><a href="classement.html">Classements</a></span>
-        </div>
-        <div class="nav-item">
-          <span><i class="fa-solid fa-calendar-days"></i></span>
-          <span><a href="#">Calendrier</a></span>
-        </div>
-        <div class="user-section">
-          <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
-          <span><a href="profil.html">LesBGduLobby</a></span>
-        </div>
-      </nav>
-    </header>
+    <div id="header-placeholder"></div>
     <!-- SECTION TITRE + ONGLETS -->
     <section class="ranking-header">
       <div class="ranking-badge">
@@ -114,6 +95,12 @@
       </div>
     </section>
     <script>
+      // header load
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+        });
       const tabs = document.querySelectorAll(".tab");
 
       tabs.forEach((tab) => {
