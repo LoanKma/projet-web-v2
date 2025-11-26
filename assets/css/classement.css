@@ -110,6 +110,7 @@ body {
 /*     PAGE CONTENT     */
 /* -------------------- */
 
+
 .page-content {
   max-width: 900px;
   margin: 0 auto;
@@ -120,6 +121,55 @@ body {
 /* -------------------- */
 /*     TITRES CLASSEMENT */
 /* -------------------- */
+
+h1 {
+  font-size: 64px;
+  font-weight: 700;
+  background: linear-gradient(#60a5fa, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #94a3b8;
+  max-width: 600px;
+  margin: 0 auto 10px;
+}
+
+.date {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 42px;
+  }
+
+  .games-container {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    padding: 20px;
+  }
+}
+
+#toggle-dark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #38bdf8;
+  padding-top: 10px;
+}
+
+/*CLASSEMENT HEADER*/
+
 
 .ranking-header {
   text-align: center;
@@ -230,6 +280,7 @@ body {
 }
 
 
+
 /* -------------------- */
 /*      MODE CLAIR      */
 /* -------------------- */
@@ -310,6 +361,8 @@ body.dark .rank-points {
   transition: 0.25s;
   animation: fadeSlideIn 0.5s ease;
 }
+
+
 /* Footer */
 .footer {
   background: #0d1117; /* sombre premium */
@@ -346,6 +399,7 @@ body.dark .rank-points {
   color: #58a6ff;
   text-shadow: 0 0 6px #58a6ff;
 }
+
 
 /* Responsive */
 @media (max-width: 700px) {
