@@ -291,6 +291,12 @@
 
         return streak;
       }
+      // footer load
+      fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
 
       // Initialisation
       renderCalendar();
@@ -299,5 +305,7 @@
       const currentStreak = calculateStreak();
       document.getElementById("streakNumber").textContent = currentStreak;
     </script>
+    <!-- FOOTER LOAD -->
+    <div id="footer-placeholder"></div>
   </body>
 </html>

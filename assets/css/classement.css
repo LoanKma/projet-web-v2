@@ -270,43 +270,6 @@ body.dark .rank-points {
   animation: fadeSlideIn 0.5s ease;
 }
 
-/* Footer */
-.footer {
-  background: #0d1117; /* sombre premium */
-  padding: 25px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: 40px;
-  font-family: "Inter", sans-serif;
-}
-
-.footer-content {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  color: #c9d1d9;
-  font-size: 0.95rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: #c9d1d9;
-  text-decoration: none;
-  transition: 0.2s ease-in-out;
-}
-
-.footer-links a:hover {
-  color: #58a6ff;
-  text-shadow: 0 0 6px #58a6ff;
-}
-
 /* Responsive */
 @media (max-width: 700px) {
   .footer-content {

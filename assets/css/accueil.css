@@ -501,57 +501,16 @@ h1 {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
 }
-/*Footer*/
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding-top: 50px;
-  border-top: 1px solid #101926;
-}
-
-footer p {
-  color: #94a3b8;
-  font-size: 15px;
-  font-weight: 500;
-  margin: 0;
-}
-
-.footer-links {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-}
-
-.footer-links a {
-  color: #cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
+#toggle-dark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
   color: #2563eb;
+  padding-top: 10px;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 20px;
-  }
-
-  .footer-links {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
 
 @media (max-width: 768px) {
   h1 {
@@ -569,14 +528,7 @@ footer p {
     grid-template-columns: auto;
   }
 }
-#toggle-dark {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #2563eb;
-  padding-top: 10px;
-}
+
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: 1fr;
@@ -607,50 +559,5 @@ footer p {
 
   .contact-info {
     padding: 20px;
-  }
-}
-/* Footer */
-.footer {
-  background: #0d1117; /* sombre premium */
-  padding: 25px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: 40px;
-  font-family: "Inter", sans-serif;
-}
-
-.footer-content {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  color: #c9d1d9;
-  font-size: 0.95rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: #c9d1d9;
-  text-decoration: none;
-  transition: 0.2s ease-in-out;
-}
-
-.footer-links a:hover {
-  color: #58a6ff;
-  text-shadow: 0 0 6px #58a6ff;
-}
-
-/* Responsive */
-@media (max-width: 700px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
   }
 }
