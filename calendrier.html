@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendrier - Jeu de Lettres</title>
+    <link rel="stylesheet" href="assets/css/calendrier.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+   <div id="header-placeholder"></div>
+
+    <div class="container">
+      <h1 class="title">Ton Calendrier</h1>
+      <p class="subtitle">Continue ta série pour débloquer des récompenses !</p>
+
+      <div class="streak-banner">
+        <div class="streak-content">
+          <div class="streak-flame">🔥</div>
+          <div class="streak-number" id="streakNumber">7</div>
+          <div class="streak-label">jours de série !</div>
+
+          <div class="streak-info">
+            <div class="streak-stat">
+              <div class="streak-stat-value" id="totalDays">45</div>
+              <div class="streak-stat-label">Jours totaux</div>
+            </div>
+            <div class="streak-stat">
+              <div class="streak-stat-value" id="longestStreak">12</div>
+              <div class="streak-stat-label">Meilleure série</div>
+            </div>
+            <div class="streak-stat">
+              <div class="streak-stat-value" id="thisMonth">18</div>
+              <div class="streak-stat-label">Ce mois-ci</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <div class="stat-value" id="completedLevels">24</div>
+          <div class="stat-label">Niveaux complétés</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+          <div class="stat-value" id="totalStars">67</div>
+          <div class="stat-label">Étoiles gagnées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-stopwatch"></i></div>
+          <div class="stat-value" id="totalTime">2h 34m</div>
+          <div class="stat-label">Temps de jeu total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fa-solid fa-medal"></i></div>
+          <div class="stat-value" id="achievements">5/10</div>
+          <div class="stat-label">Succès débloqués</div>
+        </div>
+      </div>
+
+      <div class="calendar-header">
+        <div class="calendar-nav">
+          <button onclick="previousMonth()">‹</button>
+          <div class="calendar-month" id="currentMonth">Novembre 2025</div>
+          <button onclick="nextMonth()">›</button>
+        </div>
+        <div style="color: #aaa">
+          <span style="color: #4caf50; font-weight: bold">●</span> Jour complété
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="calendar-weekdays">
+          <div class="weekday">Lun</div>
+          <div class="weekday">Mar</div>
+          <div class="weekday">Mer</div>
+          <div class="weekday">Jeu</div>
+          <div class="weekday">Ven</div>
+          <div class="weekday">Sam</div>
+          <div class="weekday">Dim</div>
+        </div>
+        <div class="calendar-days" id="calendarDays"></div>
+      </div>
+
+      
+    <script>
+ // header load
+ fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            });
+            
+      // Variables globales
+      let currentDate = new Date();
+
+      // Données simulées - À remplacer par ton backend
+      const completedDays = [
+        "2024-11-19",
+        "2024-11-20",
+        "2024-11-21",
+        "2024-11-22",
+        "2024-11-23",
+        "2024-11-24",
+        "2024-11-25",
+        "2024-11-15",
+        "2024-11-14",
+        "2024-11-10",
+        "2024-11-08",
+        "2024-11-05",
+        "2024-11-03",
+        "2024-11-01",
+      ];
+
+      function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        // Mise à jour du titre du mois
+        const monthNames = [
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre",
+        ];
+        document.getElementById(
+          "currentMonth"
+        ).textContent = `${monthNames[month]} ${year}`;
+
+        // Premier jour du mois et nombre de jours
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Lundi = 0
+
+        // Jours du mois précédent
+        const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+        const calendarDays = document.getElementById("calendarDays");
+        calendarDays.innerHTML = "";
+
+        // Ajouter les jours du mois précédent
+        for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+          const day = prevMonthLastDay - i;
+          const dayElement = createDayElement(day, true, year, month - 1);
+          calendarDays.appendChild(dayElement);
+        }
+
+        // Ajouter les jours du mois actuel
+        const today = new Date();
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateStr = `${year}-${String(month + 1).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
+          const isToday =
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear();
+          const isCompleted = completedDays.includes(dateStr);
+
+          const dayElement = createDayElement(
+            day,
+            false,
+            year,
+            month,
+            isToday,
+            isCompleted
+          );
+          calendarDays.appendChild(dayElement);
+        }
+
+        // Compléter avec les jours du mois suivant
+        const remainingDays = 42 - (startingDayOfWeek + daysInMonth);
+        for (let day = 1; day <= remainingDays; day++) {
+          const dayElement = createDayElement(day, true, year, month + 1);
+          calendarDays.appendChild(dayElement);
+        }
+      }
+
+      function createDayElement(
+        day,
+        isOtherMonth,
+        year,
+        month,
+        isToday = false,
+        isCompleted = false
+      ) {
+        const dayElement = document.createElement("div");
+        dayElement.className = "calendar-day";
+
+        if (isOtherMonth) {
+          dayElement.classList.add("other-month");
+        }
+        if (isToday) {
+          dayElement.classList.add("today");
+        }
+        if (isCompleted) {
+          dayElement.classList.add("completed");
+        }
+
+        dayElement.innerHTML = `
+                <span class="day-number">${day}</span>
+                <span class="day-flame">🔥</span>
+            `;
+
+        dayElement.onclick = () => {
+          if (!isOtherMonth) {
+            showDayDetails(day, month, year, isCompleted);
+          }
+        };
+
+        return dayElement;
+      }
+
+      function showDayDetails(day, month, year, isCompleted) {
+        const monthNames = [
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre",
+        ];
+
+        if (isCompleted) {
+          alert(
+            `${day} ${monthNames[month]} ${year}\n\n✅ Jour complété !\n🎯 3 niveaux terminés\n⭐ 9 étoiles gagnées\n⏱️ 18 minutes de jeu`
+          );
+        } else {
+          alert(
+            `${day} ${monthNames[month]} ${year}\n\n❌ Pas encore complété\n\nJoue aujourd'hui pour continuer ta série ! 🔥`
+          );
+        }
+      }
+
+      function previousMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+      }
+
+      function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+      }
+
+      function goBack() {
+        alert("Retour à l'accueil");
+      }
+
+      // Calcul du streak actuel
+      function calculateStreak() {
+        const today = new Date();
+        const sortedDays = completedDays
+          .map((d) => new Date(d))
+          .sort((a, b) => b - a);
+
+        let streak = 0;
+        let checkDate = new Date(today);
+        checkDate.setHours(0, 0, 0, 0);
+
+        for (let day of sortedDays) {
+          day.setHours(0, 0, 0, 0);
+          const diff = Math.floor((checkDate - day) / (1000 * 60 * 60 * 24));
+
+          if (diff === streak) {
+            streak++;
+          } else if (diff > streak) {
+            break;
+          }
+        }
+
+        return streak;
+      }
+
+      // Initialisation
+      renderCalendar();
+
+      // Mettre à jour le streak affiché
+      const currentStreak = calculateStreak();
+      document.getElementById("streakNumber").textContent = currentStreak;
+    </script>
+  </body>
+</html>

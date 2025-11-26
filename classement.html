@@ -1,146 +1,138 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Classements - Letterix</title>
-  <link rel="stylesheet" href="assets/css/classement.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Classements - Letterix</title>
+    <link rel="stylesheet" href="assets/css/classement.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
 
-<body>
-    <header class="header">
-      <div class="logo">
-        <div class="logo-icon"><a href="accueil.html">L</a></div>
-        <span>Letterix</span>
-      </div>
-      <nav class="nav">
-        <div class="nav-item">
-          <span><i class="fa-solid fa-ranking-star"></i></span>
-          <span><a href="classement.html">Classements</a></span>
-        </div>
-        <div class="nav-item">
-          <span><i class="fa-solid fa-calendar-days"></i></span>
-          <span><a href="#">Calendrier</a></span>
-        </div>
-        <div class="user-section">
-          <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
-          <span><a href="profil.html">LesBGduLobby</a></span>
-        </div>
-      </nav>
-    </header>
- <!-- SECTION TITRE + ONGLETS -->
-<section class="ranking-header">
-    <div class="ranking-badge">
+  <body>
+    <div id="header-placeholder"></div>
+    <!-- SECTION TITRE + ONGLETS -->
+    <section class="ranking-header">
+      <div class="ranking-badge">
         <i class="fa-solid fa-ranking-star"></i>
         Classements
-    </div>
+      </div>
 
-    <h1>Classement du Jour</h1>
-    <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p>
+      <h1>Classement du Jour</h1>
+      <p class="ranking-subtitle">
+        Comparez vos performances avec les autres joueurs
+      </p>
 
-    <div class="ranking-tabs">
+      <div class="ranking-tabs">
         <button class="tab">Quotidien</button>
         <button class="tab">Hebdomadaire</button>
         <button class="tab">Mensuel</button>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- LISTE DES JOUEURS -->
-<section class="ranking-list">
-
-    <!-- 1ER -->
-    <div class="rank-card gold">
+    <!-- LISTE DES JOUEURS -->
+    <section class="ranking-list">
+      <!-- 1ER -->
+      <div class="rank-card gold">
         <div class="rank-left">
-            <span class="rank-pos">🥇</span>
-            <span class="rank-name">Marie L.</span>
+          <span class="rank-pos">🥇</span>
+          <span class="rank-name">Marie L.</span>
         </div>
         <div class="rank-right">
-            <span class="rank-points">6 pts</span>
-            <span class="rank-details">3 tentatives • 1m 23s</span>
+          <span class="rank-points">6 pts</span>
+          <span class="rank-details">3 tentatives • 1m 23s</span>
         </div>
-    </div>
+      </div>
 
-    <!-- 2E -->
-    <div class="rank-card silver">
+      <!-- 2E -->
+      <div class="rank-card silver">
         <div class="rank-left">
-            <span class="rank-pos">🥈</span>
-            <span class="rank-name">Pierre D.</span>
+          <span class="rank-pos">🥈</span>
+          <span class="rank-name">Pierre D.</span>
         </div>
         <div class="rank-right">
-            <span class="rank-points">5 pts</span>
-            <span class="rank-details">4 tentatives • 2m 15s</span>
+          <span class="rank-points">5 pts</span>
+          <span class="rank-details">4 tentatives • 2m 15s</span>
         </div>
-    </div>
+      </div>
 
-    <!-- 3E -->
-    <div class="rank-card bronze">
+      <!-- 3E -->
+      <div class="rank-card bronze">
         <div class="rank-left">
-            <span class="rank-pos">🥉</span>
-            <span class="rank-name">Sophie M.</span>
+          <span class="rank-pos">🥉</span>
+          <span class="rank-name">Sophie M.</span>
         </div>
         <div class="rank-right">
-            <span class="rank-points">5 pts</span>
-            <span class="rank-details">4 tentatives • 2m 45s</span>
+          <span class="rank-points">5 pts</span>
+          <span class="rank-details">4 tentatives • 2m 45s</span>
         </div>
-    </div>
+      </div>
 
-    <!-- 4E -->
-    <div class="rank-card">
+      <!-- 4E -->
+      <div class="rank-card">
         <div class="rank-left">
-            <span class="rank-pos">4</span>
-            <span class="rank-name">Jean-Luc B.</span>
+          <span class="rank-pos">4</span>
+          <span class="rank-name">Jean-Luc B.</span>
         </div>
         <div class="rank-right">
-            <span class="rank-points">4 pts</span>
-            <span class="rank-details">5 tentatives • 3m 12s</span>
+          <span class="rank-points">4 pts</span>
+          <span class="rank-details">5 tentatives • 3m 12s</span>
         </div>
-    </div>
+      </div>
 
-    <!-- VOUS -->
-    <div class="rank-card me">
+      <!-- VOUS -->
+      <div class="rank-card me">
         <div class="rank-left">
-            <span class="rank-pos">5</span>
-            <span class="rank-name">Vous</span>
+          <span class="rank-pos">5</span>
+          <span class="rank-name">Vous</span>
         </div>
         <div class="rank-right">
-            <span class="rank-points">4 pts</span>
-            <span class="rank-details">5 tentatives • 3m 30s</span>
+          <span class="rank-points">4 pts</span>
+          <span class="rank-details">5 tentatives • 3m 30s</span>
         </div>
-    </div>
-
-</section>
-<script>
-    const tabs = document.querySelectorAll(".tab");
-
-    tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-
-            // Retirer l'état actif des autres
-            tabs.forEach(t => t.classList.remove("active"));
-
-            // Ajouter l'état actif à celui cliqué
-            tab.classList.add("active");
-
-            // Récupérer la valeur (quotidien, hebdo, mensuel)
-            const value = tab.textContent.trim().toLowerCase();
-
-            // Mettre à jour le titre automatiquement
-            document.querySelector(".ranking-header h1").textContent =
-                "Classement " + (value === "quotidien" ? "du Jour"
-                    : value === "hebdomadaire" ? "de la Semaine"
-                    : "du Mois");
-
-            // Exemple : changer les données affichées (tu peux adapter)
-            updateRanking(value);
+      </div>
+    </section>
+    <script>
+      // header load
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
         });
-    });
+      const tabs = document.querySelectorAll(".tab");
 
-    function updateRanking(type) {
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // Retirer l'état actif des autres
+          tabs.forEach((t) => t.classList.remove("active"));
+
+          // Ajouter l'état actif à celui cliqué
+          tab.classList.add("active");
+
+          // Récupérer la valeur (quotidien, hebdo, mensuel)
+          const value = tab.textContent.trim().toLowerCase();
+
+          // Mettre à jour le titre automatiquement
+          document.querySelector(".ranking-header h1").textContent =
+            "Classement " +
+            (value === "quotidien"
+              ? "du Jour"
+              : value === "hebdomadaire"
+              ? "de la Semaine"
+              : "du Mois");
+
+          // Exemple : changer les données affichées (tu peux adapter)
+          updateRanking(value);
+        });
+      });
+
+      function updateRanking(type) {
         const list = document.querySelector(".ranking-list");
 
         if (type === "quotidien") {
-            list.innerHTML = `
+          list.innerHTML = `
                 <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Marie L.</span></div><div class="rank-right"><span class="rank-points">6 pts</span><span class="rank-details">3 tentatives • 1m 23s</span></div></div>
                 <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Pierre D.</span></div><div class="rank-right"><span class="rank-points">5 pts</span><span class="rank-details">4 tentatives • 2m 15s</span></div></div>
                 <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Sophie M.</span></div><div class="rank-right"><span class="rank-points">5 pts</span><span class="rank-details">4 tentatives • 2m 45s</span></div></div>
@@ -150,7 +142,7 @@
         }
 
         if (type === "hebdomadaire") {
-            list.innerHTML = `
+          list.innerHTML = `
                 <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Julien K.</span></div><div class="rank-right"><span class="rank-points">42 pts</span><span class="rank-details">12 parties • 18m 54s</span></div></div>
                 <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Elise R.</span></div><div class="rank-right"><span class="rank-points">35 pts</span><span class="rank-details">15 parties • 26m 10s</span></div></div>
                 <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Hugo M.</span></div><div class="rank-right"><span class="rank-points">33 pts</span><span class="rank-details">14 parties • 22m 40s</span></div></div>
@@ -158,20 +150,19 @@
         }
 
         if (type === "mensuel") {
-            list.innerHTML = `
+          list.innerHTML = `
                 <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Anna P.</span></div><div class="rank-right"><span class="rank-points">120 pts</span><span class="rank-details">48 parties • 1h 10m</span></div></div>
                 <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Théo L.</span></div><div class="rank-right"><span class="rank-points">110 pts</span><span class="rank-details">50 parties • 1h 22m</span></div></div>
                 <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Sarah B.</span></div><div class="rank-right"><span class="rank-points">103 pts</span><span class="rank-details">46 parties • 1h 15m</span></div></div>
             `;
         }
-    }
+      }
 
-    // Activer par défaut le premier onglet
-    document.querySelector(".tab").classList.add("active");
-</script>
-
-</body>
- <footer>
+      // Activer par défaut le premier onglet
+      document.querySelector(".tab").classList.add("active");
+    </script>
+  </body>
+  <footer>
     <div class="footer-content">
       <p>&copy; 2025 Letterix. Tous droits réservés.</p>
       <div class="footer-links">
@@ -180,3 +171,4 @@
       </div>
     </div>
   </footer>
+</html>
