@@ -1,3 +1,4 @@
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -12,40 +13,19 @@ body {
   padding: 20px;
 }
 
-/* HERO */
-.hero {
-  text-align: center;
-  margin-bottom: 80px;
-  padding: 150px 20px 60px;
-  position: relative;
+/* -------------------- */
+/*     PAGE CONTENT     */
+/* -------------------- */
+
+.page-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 160px 20px 40px; /* évite le chevauchement */
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(14, 165, 233, 0.4);
-  color: #38bdf8;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 40px;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+/* -------------------- */
+/*     TITRES CLASSEMENT */
+/* -------------------- */
 
 h1 {
   font-size: 64px;
@@ -97,89 +77,58 @@ h1 {
 
 .ranking-header {
   text-align: center;
-  margin: 50px 0;
+  margin-bottom: 40px;
 }
 
 .ranking-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(14, 165, 233, 0.4);
-  color: #38bdf8;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 15px;
+  gap: 8px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #60a5fa;
+  font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
-  animation: float 3s ease-in-out infinite;
-  margin-bottom: 30px;
 }
 
 .ranking-header h1 {
-  font-size: 48px;
+  margin-top: 18px;
+  font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(#60a5fa, #38bdf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .ranking-subtitle {
-  color: #94a3b8;
+  margin-top: 8px;
   font-size: 16px;
-  margin-top: 10px;
+  color: #94a3b8;
 }
 
-/* TABS*/
-
-.ranking-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 35px;
-}
-
-.tab {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 12px 24px;
-  border-radius: 12px;
-  color: #e2e8f0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.tab:hover {
-  background: rgba(59, 130, 246, 0.4);
-  transform: scale(1.05);
-}
-
-.tab.active {
-  background: #38bdf8;
-  color: #000814;
-  border-color: #38bdf8;
-}
-
-/* LISTE DES JOUEURS*/
+/* -------------------- */
+/*      LISTE JOUEURS   */
+/* -------------------- */
 
 .ranking-list {
-  max-width: 900px;
-  margin: 60px auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 15px;
 }
+
+/* -------------------- */
+/*       CARTE JOUEUR   */
+/* -------------------- */
 
 .rank-card {
   background: rgba(30, 41, 59, 0.5);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 18px 25px;
-  border-radius: 18px;
+  padding: 16px 20px;
+  border-radius: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.25s ease;
+  animation: fadeSlideIn 0.5s ease both;
+  transition: 0.25s;
 }
 
 .rank-card:hover {
@@ -187,7 +136,7 @@ h1 {
   transform: translateY(-3px);
 }
 
-/* Podium couleurs */
+/* Podium */
 .rank-card.gold {
   border-color: gold;
 }
@@ -198,28 +147,16 @@ h1 {
   border-color: #cd7f32;
 }
 
-/* Votre rang */
-.rank-card.me {
-  background: rgba(59, 130, 246, 0.15);
-  border-color: #38bdf8;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-}
-
-.rank-left,
-.rank-right {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
+/* gauche */
 .rank-left {
-  flex-direction: row;
+  display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .rank-pos {
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .rank-name {
@@ -227,17 +164,110 @@ h1 {
   font-weight: 600;
 }
 
-.rank-points {
-  font-size: 18px;
-  color: #38bdf8;
-  font-weight: 700;
+/* droite */
+.rank-right {
   text-align: right;
 }
 
-.rank-details {
+.rank-points {
+  font-size: 18px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* -------------------- */
+/*      ANIMATION       */
+/* -------------------- */
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------- */
+/*      MODE CLAIR      */
+/* -------------------- */
+
+body.dark {
+  background: #ffffff;
+  color: #000;
+}
+
+body.dark .rank-card {
+  background: #f0f0f0;
+  border-color: #d1d5db;
+}
+
+body.dark .rank-points {
+  color: #2563eb;
+}
+
+/* PAGE CLASSEMENT ALIGNÉE STYLE ACCUEIL */
+
+.ranking-page {
+  max-width: 900px;
+  margin: 160px auto 40px; /* espace pour ressembler à la page d’accueil */
+  text-align: center;
+}
+
+/* Badge du haut */
+.ranking-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(37, 99, 235, 0.15);
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: 1px solid rgba(37, 99, 235, 0.4);
+  color: #60a5fa;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+/* Gros titre */
+.ranking-main-title {
+  font-size: 52px;
+  font-weight: 800;
+  color: #3b82f6;
+  margin-bottom: 18px;
+}
+
+/* Sous-titre */
+.ranking-desc {
   color: #94a3b8;
-  font-size: 14px;
-  text-align: right;
+  font-size: 17px;
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+
+/* -------------------- */
+/*    LISTE JOUEURS     */
+/* -------------------- */
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* CARTE JOUEUR (inchangé sauf centré) */
+.rank-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  padding: 16px 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.25s;
+  animation: fadeSlideIn 0.5s ease;
 }
 
 /* Footer */
@@ -275,4 +305,13 @@ h1 {
 .footer-links a:hover {
   color: #58a6ff;
   text-shadow: 0 0 6px #58a6ff;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
 }

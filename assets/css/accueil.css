@@ -36,7 +36,6 @@ body {
   box-shadow: 0 0 20px rgba(14, 65, 233, 0.3);
   animation: float 3s ease-in-out infinite;
 }
-
 @keyframes float {
   0% {
     transform: translateY(0);
