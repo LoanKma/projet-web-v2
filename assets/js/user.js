@@ -1,1 +1,0 @@
-/*gère fausse connexion locale pour tester*/
