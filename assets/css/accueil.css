@@ -100,9 +100,10 @@ h1 {
 }
 
 .game-card:hover {
-  border: solid 2px;
+  border: solid 1px;
   border-color: #2563eb;
   filter: drop-shadow(0 0 15 px #2563eb);
+  transform: translateY(-8px);
 }
 
 .game-icon {

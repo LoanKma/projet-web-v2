@@ -1,65 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Classements - Letterix</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Classements - Letterix</title>
 
-  <link rel="stylesheet" href="assets/css/classement.css" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="assets/css/classement.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
 
-<body>
+  <body>
+    <div id="header-placeholder"></div>
 
-<div id="header-placeholder"></div>
+    <!-- 🟩 SECTION TITRE -->
+    <section class="ranking-header">
+      <div class="ranking-badge">
+        <i class="fa-solid fa-ranking-star"></i> Classement
+      </div>
 
-<!-- 🟩 SECTION TITRE -->
-<section class="ranking-header"> 
-  <div class="ranking-badge"> 
-    <i class="fa-solid fa-ranking-star"></i> Classement
-  </div> 
+      <h1>Classement Général</h1>
+      <p class="ranking-subtitle">
+        Comparez vos performances avec les autres joueurs
+      </p>
+    </section>
 
-  <h1>Classement Général</h1> 
-  <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p> 
-</section>
+    <!-- 🟦 LISTE -->
+    <div id="ranking-list" class="ranking-list"></div>
 
-<!-- 🟦 LISTE -->
-<div id="ranking-list" class="ranking-list"></div>
-
-<!-- 🟨 SCRIPT -->
-<script>
-  // header load
+    <!-- 🟨 SCRIPT -->
+    <script>
+      // header load
       fetch("header.html")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("header-placeholder").innerHTML = data;
         });
-  const users = [
-    { name: "Aline", points: 120 },
-    { name: "Jean", points: 95 },
-    { name: "Mamadou", points: 80 },
-    { name: "Sarah", points: 70 },
-    { name: "Kenny", points: 50 },
-    { name: "Luc", points: 45 },
-    { name: "Maxime", points: 40 },
-    { name: "Kalil", points: 35 },
-    { name: "Moussa", points: 30 },
-    { name: "Loan", points: 20 }
-  ];
+      const users = [
+        { name: "Moussa", points: 12000 },
+        { name: "Jean", points: 95 },
+        { name: "Mamadou", points: 80 },
+        { name: "Sarah", points: 70 },
+        { name: "Kenny", points: 50 },
+        { name: "Luc", points: 45 },
+        { name: "Maxime", points: 40 },
+        { name: "Kalil", points: 35 },
+        { name: "Alice", points: 30 },
+        { name: "Loan", points: 20 },
+      ];
 
-  function updateRanking() {
-    const sorted = users.sort((a, b) => b.points - a.points);
-    const list = document.getElementById("ranking-list");
-    list.innerHTML = "";
+      function updateRanking() {
+        const sorted = users.sort((a, b) => b.points - a.points);
+        const list = document.getElementById("ranking-list");
+        list.innerHTML = "";
 
-    sorted.forEach((user, index) => {
-      let cssClass = "";
-      if (index === 0) cssClass = "gold";
-      else if (index === 1) cssClass = "silver";
-      else if (index === 2) cssClass = "bronze";
+        sorted.forEach((user, index) => {
+          let cssClass = "";
+          if (index === 0) cssClass = "gold";
+          else if (index === 1) cssClass = "silver";
+          else if (index === 2) cssClass = "bronze";
 
-      const row = `
+          const row = `
         <div class="rank-card ${cssClass}">
           <div class="rank-left">
             <span class="rank-pos">${index + 1}</span>
@@ -71,11 +74,11 @@
         </div>
       `;
 
-      list.innerHTML += row;
-    });
-  }
+          list.innerHTML += row;
+        });
+      }
 
-  updateRanking();
+      updateRanking();
 
       // Activer par défaut le premier onglet
       document.querySelector(".tab").classList.add("active");
