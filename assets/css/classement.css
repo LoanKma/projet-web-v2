@@ -13,141 +13,93 @@ body {
   padding: 20px;
 }
 
-/* -------------------- */
-/*     PAGE CONTENT     */
-/* -------------------- */
-
-.page-content {
+/* PAGE CONTAINER */
+.page-content,
+.ranking-header,
+.ranking-list {
   max-width: 900px;
   margin: 0 auto;
-  padding: 160px 20px 40px; /* évite le chevauchement */
 }
 
-/* -------------------- */
-/*     TITRES CLASSEMENT */
-/* -------------------- */
+/* ------------------------- */
+/*        TITRE PAGE         */
+/* ------------------------- */
 
-h1 {
-  font-size: 64px;
-  font-weight: 700;
-  background: linear-gradient(#60a5fa, #38bdf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 20px;
-}
-
-.subtitle {
-  font-size: 18px;
-  color: #94a3b8;
-  max-width: 600px;
-  margin: 0 auto 10px;
-}
-
-.date {
-  color: #64748b;
-  font-size: 14px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 42px;
-  }
-
-  .games-container {
-    grid-template-columns: 1fr;
-  }
-
-  .header {
-    padding: 20px;
-  }
-}
-
-#toggle-dark {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #38bdf8;
-  padding-top: 10px;
-}
-
-/*CLASSEMENT HEADER*/
-
-.ranking-header {
+.ranking-header { 
+  
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+  padding: 180px 20px 60px;
+  position: relative;
+
 }
 
 .ranking-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  padding: 6px 14px;
-  border-radius: 8px;
-  color: #60a5fa;
-  font-size: 14px;
+  gap: 10px;
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 15px; 
   font-weight: 600;
+  color: #38bdf8;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  animation: float 3s ease-in-out infinite;
+  margin-bottom: 30px; 
 }
 
 .ranking-header h1 {
-  margin-top: 18px;
-  font-size: 32px;
+  background: linear-gradient(#60a5fa, #38bdf8);  
+  font-size: 48px;
   font-weight: 700;
+  background-clip: text; 
+  -webkit-text-fill-color: transparent;
 }
 
 .ranking-subtitle {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 16px;
   color: #94a3b8;
 }
 
-/* -------------------- */
-/*      LISTE JOUEURS   */
-/* -------------------- */
+/* ------------------------- */
+/*         LISTE             */
+/* ------------------------- */
 
 .ranking-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
-/* -------------------- */
-/*       CARTE JOUEUR   */
-/* -------------------- */
+/* ------------------------- */
+/*        CARTES JOUEURS     */
+/* ------------------------- */
 
 .rank-card {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 16px 20px;
-  border-radius: 15px;
+  background: rgba(30, 41, 59, 0.45);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 18px 22px;
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   animation: fadeSlideIn 0.5s ease both;
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
 
 .rank-card:hover {
   border-color: #38bdf8;
-  transform: translateY(-3px);
+  transform: translateY(-4px);
 }
 
 /* Podium */
-.rank-card.gold {
-  border-color: gold;
-}
-.rank-card.silver {
-  border-color: silver;
-}
-.rank-card.bronze {
-  border-color: #cd7f32;
-}
+.rank-card.gold { border-color: gold; }
+.rank-card.silver { border-color: silver; }
+.rank-card.bronze { border-color: #cd7f32; }
 
-/* gauche */
 .rank-left {
   display: flex;
   align-items: center;
@@ -164,7 +116,6 @@ h1 {
   font-weight: 600;
 }
 
-/* droite */
 .rank-right {
   text-align: right;
 }
@@ -175,99 +126,32 @@ h1 {
   color: #38bdf8;
 }
 
-/* -------------------- */
-/*      ANIMATION       */
-/* -------------------- */
+/* ------------------------- */
+/*       ANIMATION           */
+/* ------------------------- */
 
 @keyframes fadeSlideIn {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(14px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* -------------------- */
-/*      MODE CLAIR      */
-/* -------------------- */
-
-body.dark {
-  background: #ffffff;
-  color: #000;
-}
-
-body.dark .rank-card {
-  background: #f0f0f0;
-  border-color: #d1d5db;
-}
-
-body.dark .rank-points {
-  color: #2563eb;
-}
-
-/* PAGE CLASSEMENT ALIGNÉE STYLE ACCUEIL */
-
-.ranking-page {
-  max-width: 900px;
-  margin: 160px auto 40px; /* espace pour ressembler à la page d’accueil */
-  text-align: center;
-}
-
-/* Badge du haut */
-.ranking-badge-top {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(37, 99, 235, 0.15);
-  padding: 10px 22px;
-  border-radius: 30px;
-  border: 1px solid rgba(37, 99, 235, 0.4);
-  color: #60a5fa;
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 35px;
-}
-
-/* Gros titre */
-.ranking-main-title {
-  font-size: 52px;
-  font-weight: 800;
-  color: #3b82f6;
-  margin-bottom: 18px;
-}
-
-/* Sous-titre */
-.ranking-desc {
-  color: #94a3b8;
-  font-size: 17px;
-  max-width: 600px;
-  margin: 0 auto 50px;
-}
-
-/* -------------------- */
-/*    LISTE JOUEURS     */
-/* -------------------- */
-
-.ranking-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* CARTE JOUEUR (inchangé sauf centré) */
-.rank-card {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  padding: 16px 20px;
-  border-radius: 15px;
+/*Footer*/
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: 0.25s;
-  animation: fadeSlideIn 0.5s ease;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 50px;
+  border-top: 1px solid #101926;
 }
 
 /* Responsive */
@@ -278,3 +162,4 @@ body.dark .rank-points {
     gap: 12px;
   }
 }
+
