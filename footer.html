@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-top: 50px;
+      border-top: 1px solid #101926;
+    }
+
+    footer p {
+      color: #94a3b8;
+      font-size: 15px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #2563eb;
+    }
+    /* responsive */
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+  <body>
+    <div class="footer-content">
+      <p>&copy; 2025 Letterix. Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">À propos</a>
+        <a href="politique.html">Politique de confidentialité</a>
+      </div>
+    </div>
+  </body>
+</html>
