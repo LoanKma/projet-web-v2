@@ -1,174 +1,93 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Classements - Letterix</title>
-    <link rel="stylesheet" href="assets/css/classement.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classements - Letterix</title>
 
-  <body>
-    <div id="header-placeholder"></div>
-    <!-- SECTION TITRE + ONGLETS -->
-    <section class="ranking-header">
-      <div class="ranking-badge">
-        <i class="fa-solid fa-ranking-star"></i>
-        Classements
-      </div>
+  <link rel="stylesheet" href="assets/css/classement.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
 
-      <h1>Classement du Jour</h1>
-      <p class="ranking-subtitle">
-        Comparez vos performances avec les autres joueurs
-      </p>
+<body>
 
-      <div class="ranking-tabs">
-        <button class="tab">Quotidien</button>
-        <button class="tab">Hebdomadaire</button>
-        <button class="tab">Mensuel</button>
-      </div>
-    </section>
+<div id="header-placeholder"></div>
 
-    <!-- LISTE DES JOUEURS -->
-    <section class="ranking-list">
-      <!-- 1ER -->
-      <div class="rank-card gold">
-        <div class="rank-left">
-          <span class="rank-pos">🥇</span>
-          <span class="rank-name">Marie L.</span>
-        </div>
-        <div class="rank-right">
-          <span class="rank-points">6 pts</span>
-          <span class="rank-details">3 tentatives • 1m 23s</span>
-        </div>
-      </div>
+<!-- 🟩 SECTION TITRE -->
+<section class="ranking-header"> 
+  <div class="ranking-badge"> 
+    <i class="fa-solid fa-ranking-star"></i> Classement
+  </div> 
 
-      <!-- 2E -->
-      <div class="rank-card silver">
-        <div class="rank-left">
-          <span class="rank-pos">🥈</span>
-          <span class="rank-name">Pierre D.</span>
-        </div>
-        <div class="rank-right">
-          <span class="rank-points">5 pts</span>
-          <span class="rank-details">4 tentatives • 2m 15s</span>
-        </div>
-      </div>
+  <h1>Classement Général</h1> 
+  <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p> 
+</section>
 
-      <!-- 3E -->
-      <div class="rank-card bronze">
-        <div class="rank-left">
-          <span class="rank-pos">🥉</span>
-          <span class="rank-name">Sophie M.</span>
-        </div>
-        <div class="rank-right">
-          <span class="rank-points">5 pts</span>
-          <span class="rank-details">4 tentatives • 2m 45s</span>
-        </div>
-      </div>
+<!-- 🟦 LISTE -->
+<div id="ranking-list" class="ranking-list"></div>
 
-      <!-- 4E -->
-      <div class="rank-card">
-        <div class="rank-left">
-          <span class="rank-pos">4</span>
-          <span class="rank-name">Jean-Luc B.</span>
-        </div>
-        <div class="rank-right">
-          <span class="rank-points">4 pts</span>
-          <span class="rank-details">5 tentatives • 3m 12s</span>
-        </div>
-      </div>
-
-      <!-- VOUS -->
-      <div class="rank-card me">
-        <div class="rank-left">
-          <span class="rank-pos">5</span>
-          <span class="rank-name">Vous</span>
-        </div>
-        <div class="rank-right">
-          <span class="rank-points">4 pts</span>
-          <span class="rank-details">5 tentatives • 3m 30s</span>
-        </div>
-      </div>
-    </section>
-    <script>
-      // header load
+<!-- 🟨 SCRIPT -->
+<script>
+  // header load
       fetch("header.html")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("header-placeholder").innerHTML = data;
         });
-      const tabs = document.querySelectorAll(".tab");
+  const users = [
+    { name: "Aline", points: 120 },
+    { name: "Jean", points: 95 },
+    { name: "Mamadou", points: 80 },
+    { name: "Sarah", points: 70 },
+    { name: "Kenny", points: 50 },
+    { name: "Luc", points: 45 },
+    { name: "Maxime", points: 40 },
+    { name: "Kalil", points: 35 },
+    { name: "Moussa", points: 30 },
+    { name: "Loan", points: 20 }
+  ];
 
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          // Retirer l'état actif des autres
-          tabs.forEach((t) => t.classList.remove("active"));
+  function updateRanking() {
+    const sorted = users.sort((a, b) => b.points - a.points);
+    const list = document.getElementById("ranking-list");
+    list.innerHTML = "";
 
-          // Ajouter l'état actif à celui cliqué
-          tab.classList.add("active");
+    sorted.forEach((user, index) => {
+      let cssClass = "";
+      if (index === 0) cssClass = "gold";
+      else if (index === 1) cssClass = "silver";
+      else if (index === 2) cssClass = "bronze";
 
-          // Récupérer la valeur (quotidien, hebdo, mensuel)
-          const value = tab.textContent.trim().toLowerCase();
+      const row = `
+        <div class="rank-card ${cssClass}">
+          <div class="rank-left">
+            <span class="rank-pos">${index + 1}</span>
+            <span class="rank-name">${user.name}</span>
+          </div>
+          <div class="rank-right">
+            <span class="rank-points">${user.points} pts</span>
+          </div>
+        </div>
+      `;
 
-          // Mettre à jour le titre automatiquement
-          document.querySelector(".ranking-header h1").textContent =
-            "Classement " +
-            (value === "quotidien"
-              ? "du Jour"
-              : value === "hebdomadaire"
-              ? "de la Semaine"
-              : "du Mois");
+      list.innerHTML += row;
+    });
+  }
 
-          // Exemple : changer les données affichées (tu peux adapter)
-          updateRanking(value);
-        });
-      });
+  updateRanking();
+</script>
 
-      function updateRanking(type) {
-        const list = document.querySelector(".ranking-list");
-
-        if (type === "quotidien") {
-          list.innerHTML = `
-                <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Marie L.</span></div><div class="rank-right"><span class="rank-points">6 pts</span><span class="rank-details">3 tentatives • 1m 23s</span></div></div>
-                <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Pierre D.</span></div><div class="rank-right"><span class="rank-points">5 pts</span><span class="rank-details">4 tentatives • 2m 15s</span></div></div>
-                <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Sophie M.</span></div><div class="rank-right"><span class="rank-points">5 pts</span><span class="rank-details">4 tentatives • 2m 45s</span></div></div>
-                <div class="rank-card"><div class="rank-left"><span class="rank-pos">4</span><span class="rank-name">Jean-Luc B.</span></div><div class="rank-right"><span class="rank-points">4 pts</span><span class="rank-details">5 tentatives • 3m 12s</span></div></div>
-                <div class="rank-card me"><div class="rank-left"><span class="rank-pos">5</span><span class="rank-name">Vous</span></div><div class="rank-right"><span class="rank-points">4 pts</span><span class="rank-details">5 tentatives • 3m 30s</span></div></div>
-            `;
-        }
-
-        if (type === "hebdomadaire") {
-          list.innerHTML = `
-                <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Julien K.</span></div><div class="rank-right"><span class="rank-points">42 pts</span><span class="rank-details">12 parties • 18m 54s</span></div></div>
-                <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Elise R.</span></div><div class="rank-right"><span class="rank-points">35 pts</span><span class="rank-details">15 parties • 26m 10s</span></div></div>
-                <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Hugo M.</span></div><div class="rank-right"><span class="rank-points">33 pts</span><span class="rank-details">14 parties • 22m 40s</span></div></div>
-            `;
-        }
-
-        if (type === "mensuel") {
-          list.innerHTML = `
-                <div class="rank-card gold"><div class="rank-left"><span class="rank-pos">🥇</span><span class="rank-name">Anna P.</span></div><div class="rank-right"><span class="rank-points">120 pts</span><span class="rank-details">48 parties • 1h 10m</span></div></div>
-                <div class="rank-card silver"><div class="rank-left"><span class="rank-pos">🥈</span><span class="rank-name">Théo L.</span></div><div class="rank-right"><span class="rank-points">110 pts</span><span class="rank-details">50 parties • 1h 22m</span></div></div>
-                <div class="rank-card bronze"><div class="rank-left"><span class="rank-pos">🥉</span><span class="rank-name">Sarah B.</span></div><div class="rank-right"><span class="rank-points">103 pts</span><span class="rank-details">46 parties • 1h 15m</span></div></div>
-            `;
-        }
-      }
-
-      // Activer par défaut le premier onglet
-      document.querySelector(".tab").classList.add("active");
-    </script>
-  </body>
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 Letterix. Tous droits réservés.</p>
-      <div class="footer-links">
-        <a href="#">À propos</a>
-        <a href="politique.html">Politique de confidentialité</a>
-      </div>
+<!-- 🟥 FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Letterix. Tous droits réservés.</p>
+    <div class="footer-links">
+      <a href="#">À propos</a>
+      <a href="politique.html">Politique de confidentialité</a>
     </div>
-  </footer>
+  </div>
+</footer>
+
+</body>
 </html>
