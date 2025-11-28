@@ -1,0 +1,376 @@
+// Configuration de la grille
+const GRID_SIZE = 10;
+const WORDS = ['CHAT', 'CHIEN', 'LION', 'TIGRE', 'OURS', 'LOUP', 'RENARD', 'ZEBRE'];
+
+let grid = [];
+let foundWords = [];
+let isSelecting = false;
+let selectionStart = null;
+let selectionEnd = null;
+let selectedCells = [];
+let startTime = Date.now();
+let timerInterval;
+
+// Directions possibles (8 directions)
+const DIRECTIONS = [
+    [0, 1],   // Horizontal droite
+    [1, 0],   // Vertical bas
+    [1, 1],   // Diagonale bas-droite
+    [-1, 1],  // Diagonale haut-droite
+    [0, -1],  // Horizontal gauche
+    [-1, 0],  // Vertical haut
+    [-1, -1], // Diagonale haut-gauche
+    [1, -1]   // Diagonale bas-gauche
+];
+
+// Initialiser la grille
+function initGrid() {
+    // Créer une grille vide
+    grid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(''));
+    
+    // Placer les mots
+    WORDS.forEach(word => {
+        placeWord(word);
+    });
+    
+    // Remplir les cases vides avec des lettres aléatoires
+    for (let i = 0; i < GRID_SIZE; i++) {
+        for (let j = 0; j < GRID_SIZE; j++) {
+            if (!grid[i][j]) {
+                grid[i][j] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            }
+        }
+    }
+}
+
+// Placer un mot dans la grille
+function placeWord(word) {
+    let placed = false;
+    let attempts = 0;
+    const maxAttempts = 100;
+    
+    while (!placed && attempts < maxAttempts) {
+        const direction = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)];
+        const row = Math.floor(Math.random() * GRID_SIZE);
+        const col = Math.floor(Math.random() * GRID_SIZE);
+        
+        if (canPlaceWord(word, row, col, direction)) {
+            // Placer le mot
+            for (let i = 0; i < word.length; i++) {
+                const newRow = row + (direction[0] * i);
+                const newCol = col + (direction[1] * i);
+                grid[newRow][newCol] = word[i];
+            }
+            placed = true;
+        }
+        
+        attempts++;
+    }
+}
+
+// Vérifier si on peut placer un mot
+function canPlaceWord(word, row, col, direction) {
+    for (let i = 0; i < word.length; i++) {
+        const newRow = row + (direction[0] * i);
+        const newCol = col + (direction[1] * i);
+        
+        // Vérifier les limites
+        if (newRow < 0 || newRow >= GRID_SIZE || newCol < 0 || newCol >= GRID_SIZE) {
+            return false;
+        }
+        
+        // Vérifier si la case est vide ou contient la même lettre
+        if (grid[newRow][newCol] && grid[newRow][newCol] !== word[i]) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// Créer l'affichage de la grille
+function createGridDisplay() {
+    const gridContainer = document.getElementById('wordsearchGrid');
+    gridContainer.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 45px)`;
+    gridContainer.innerHTML = '';
+    
+    for (let i = 0; i < GRID_SIZE; i++) {
+        for (let j = 0; j < GRID_SIZE; j++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.textContent = grid[i][j];
+            cell.dataset.row = i;
+            cell.dataset.col = j;
+            
+            cell.addEventListener('mousedown', () => startSelection(i, j));
+            cell.addEventListener('mouseenter', () => updateSelection(i, j));
+            cell.addEventListener('mouseup', () => endSelection());
+            
+            gridContainer.appendChild(cell);
+        }
+    }
+}
+
+// Créer la liste des mots
+function createWordsList() {
+    const wordsList = document.getElementById('wordsList');
+    wordsList.innerHTML = '';
+    
+    WORDS.forEach(word => {
+        const wordItem = document.createElement('div');
+        wordItem.className = 'word-item';
+        wordItem.textContent = word;
+        wordItem.dataset.word = word;
+        wordsList.appendChild(wordItem);
+    });
+}
+
+// Démarrer la sélection
+function startSelection(row, col) {
+    isSelecting = true;
+    selectionStart = { row, col };
+    selectionEnd = { row, col };
+    selectedCells = [[row, col]];
+    
+    highlightSelection();
+}
+
+// Mettre à jour la sélection
+function updateSelection(row, col) {
+    if (!isSelecting) return;
+    
+    selectionEnd = { row, col };
+    
+    // Calculer les cellules sélectionnées
+    selectedCells = getCellsBetween(selectionStart, selectionEnd);
+    highlightSelection();
+}
+
+// Fin de la sélection
+function endSelection() {
+    if (!isSelecting) return;
+    
+    isSelecting = false;
+    
+    // Vérifier si un mot est trouvé
+    checkSelectedWord();
+    
+    // Retirer la surbrillance
+    document.querySelectorAll('.grid-cell').forEach(cell => {
+        cell.classList.remove('selecting');
+    });
+    
+    selectedCells = [];
+}
+
+// Obtenir les cellules entre deux points
+function getCellsBetween(start, end) {
+    const cells = [];
+    const rowDiff = end.row - start.row;
+    const colDiff = end.col - start.col;
+    
+    // Vérifier si c'est une ligne droite (horizontal, vertical ou diagonal)
+    const steps = Math.max(Math.abs(rowDiff), Math.abs(colDiff));
+    
+    if (steps === 0) {
+        return [[start.row, start.col]];
+    }
+    
+    const rowStep = rowDiff === 0 ? 0 : rowDiff / Math.abs(rowDiff);
+    const colStep = colDiff === 0 ? 0 : colDiff / Math.abs(colDiff);
+    
+    // Vérifier si c'est bien une ligne droite
+    if (Math.abs(rowDiff) !== 0 && Math.abs(colDiff) !== 0 && Math.abs(rowDiff) !== Math.abs(colDiff)) {
+        return [[start.row, start.col]];
+    }
+    
+    for (let i = 0; i <= steps; i++) {
+        cells.push([
+            start.row + (rowStep * i),
+            start.col + (colStep * i)
+        ]);
+    }
+    
+    return cells;
+}
+
+// Surligner la sélection
+function highlightSelection() {
+    document.querySelectorAll('.grid-cell').forEach(cell => {
+        cell.classList.remove('selecting');
+    });
+    
+    selectedCells.forEach(([row, col]) => {
+        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        if (cell && !cell.classList.contains('found')) {
+            cell.classList.add('selecting');
+        }
+    });
+}
+
+// Vérifier le mot sélectionné
+function checkSelectedWord() {
+    if (selectedCells.length < 2) return;
+    
+    // Construire le mot
+    let word = '';
+    selectedCells.forEach(([row, col]) => {
+        word += grid[row][col];
+    });
+    
+    // Vérifier aussi le mot inversé
+    const reversedWord = word.split('').reverse().join('');
+    
+    // Vérifier si c'est un des mots à trouver
+    if (WORDS.includes(word) && !foundWords.includes(word)) {
+        markWordAsFound(word, selectedCells);
+    } else if (WORDS.includes(reversedWord) && !foundWords.includes(reversedWord)) {
+        markWordAsFound(reversedWord, selectedCells);
+    }
+}
+
+// Marquer un mot comme trouvé
+function markWordAsFound(word, cells) {
+    foundWords.push(word);
+    
+    // Marquer les cellules
+    cells.forEach(([row, col]) => {
+        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        if (cell) {
+            cell.classList.add('found');
+        }
+    });
+    
+    // Marquer le mot dans la liste
+    const wordItem = document.querySelector(`[data-word="${word}"]`);
+    if (wordItem) {
+        wordItem.classList.add('found');
+    }
+    
+    updateProgress();
+    
+    // Vérifier si tous les mots sont trouvés
+    if (foundWords.length === WORDS.length) {
+        clearInterval(timerInterval);
+        setTimeout(() => {
+            alert('🎉 Félicitations ! Vous avez trouvé tous les mots !');
+        }, 500);
+    }
+}
+
+// Mettre à jour la progression
+function updateProgress() {
+    document.getElementById('progress').textContent = `${foundWords.length}/${WORDS.length} mots`;
+    document.getElementById('foundCount').textContent = foundWords.length;
+}
+
+// Timer
+function startTimer() {
+    timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+// Bouton indice
+document.getElementById('hintBtn').addEventListener('click', () => {
+    // Trouver un mot non trouvé
+    const unfoundWords = WORDS.filter(word => !foundWords.includes(word));
+    
+    if (unfoundWords.length === 0) {
+        alert('Tous les mots ont été trouvés !');
+        return;
+    }
+    
+    // Prendre un mot au hasard
+    const word = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
+    
+    // Trouver la position du mot dans la grille
+    for (let i = 0; i < GRID_SIZE; i++) {
+        for (let j = 0; j < GRID_SIZE; j++) {
+            for (const direction of DIRECTIONS) {
+                const cells = [];
+                let match = true;
+                
+                for (let k = 0; k < word.length; k++) {
+                    const row = i + (direction[0] * k);
+                    const col = j + (direction[1] * k);
+                    
+                    if (row < 0 || row >= GRID_SIZE || col < 0 || col >= GRID_SIZE || grid[row][col] !== word[k]) {
+                        match = false;
+                        break;
+                    }
+                    
+                    cells.push([row, col]);
+                }
+                
+                if (match) {
+                    // Surligner temporairement
+                    cells.forEach(([row, col]) => {
+                        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                        if (cell) {
+                            cell.style.background = 'rgba(251, 191, 36, 0.5)';
+                            setTimeout(() => {
+                                cell.style.background = '';
+                            }, 2000);
+                        }
+                    });
+                    
+                    alert(`Indice : Cherchez le mot "${word}"`);
+                    return;
+                }
+            }
+        }
+    }
+});
+
+// Bouton recommencer
+document.getElementById('restartBtn').addEventListener('click', () => {
+    if (confirm('Voulez-vous vraiment recommencer ?')) {
+        foundWords = [];
+        startTime = Date.now();
+        initGrid();
+        createGridDisplay();
+        createWordsList();
+        updateProgress();
+    }
+});
+
+// Empêcher la sélection de texte
+document.addEventListener('selectstart', (e) => {
+    if (e.target.classList.contains('grid-cell')) {
+        e.preventDefault();
+    }
+});
+
+// Charger les infos du niveau
+function loadLevelInfo() {
+    const levelData = localStorage.getItem('currentWordSearchLevel');
+    if (levelData) {
+        const level = JSON.parse(levelData);
+        const difficultyText = level.difficulty === 'easy' ? 'Facile' : 
+                               level.difficulty === 'medium' ? 'Moyen' : 'Difficile';
+        document.getElementById('levelTitle').textContent = `${difficultyText} - Niveau ${level.levelId}`;
+        
+        const badge = document.querySelector('.level-badge');
+        badge.style.background = level.difficulty === 'easy' ? 'rgba(34, 197, 94, 0.2)' :
+                                 level.difficulty === 'medium' ? 'rgba(251, 191, 36, 0.2)' :
+                                 'rgba(239, 68, 68, 0.2)';
+        badge.style.borderColor = level.difficulty === 'easy' ? '#22c55e' :
+                                  level.difficulty === 'medium' ? '#fbbf24' : '#ef4444';
+        badge.style.color = level.difficulty === 'easy' ? '#22c55e' :
+                            level.difficulty === 'medium' ? '#fbbf24' : '#ef4444';
+    }
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', () => {
+    initGrid();
+    createGridDisplay();
+    createWordsList();
+    startTimer();
+    loadLevelInfo();
+    updateProgress();
+});
