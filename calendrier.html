@@ -242,15 +242,7 @@
           "Décembre",
         ];
 
-        if (isCompleted) {
-          alert(
-            `${day} ${monthNames[month]} ${year}\n\n✅ Jour complété !\n🎯 3 niveaux terminés\n⭐ 9 étoiles gagnées\n⏱️ 18 minutes de jeu MOUSSAAAAAAAAAAA! 🔥`
-          );
-        } else {
-          alert(
-            `${day} ${monthNames[month]} ${year}\n\n❌ Pas encore complété\n\nJoue aujourd'hui pour continuer ta série MOUSSAAAAAAAAAAA! 🔥`
-          );
-        }
+       
       }
 
       function previousMonth() {
@@ -291,6 +283,12 @@
 
         return streak;
       }
+      // footer load
+      fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
 
       // Initialisation
       renderCalendar();
@@ -299,5 +297,7 @@
       const currentStreak = calculateStreak();
       document.getElementById("streakNumber").textContent = currentStreak;
     </script>
+    <!-- FOOTER LOAD -->
+    <div id="footer-placeholder"></div>
   </body>
 </html>

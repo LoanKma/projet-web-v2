@@ -11,6 +11,7 @@
     />
   </head>
   <body>
+<!--HEADER-->
     <div id="header-placeholder"></div>
 <!-- HERO SECTION -->
     <section class="hero">
@@ -25,7 +26,7 @@
       <p class="date" id="currentDate"></p>
       <button id="toggle-dark"><i class="fa-solid fa-sun big-icon"></i></button>
     </section>
-
+<!--GAME CONTAINER -->
     <div class="games-container">
       <div class="game-card">
         <div class="game-icon">T</div>
@@ -60,7 +61,7 @@
         </button>
       </div>
     </div>
-
+<!--STAT SECTION-->
     <div class="stats-container">
       <h1><i class="fa-solid fa-chart-simple"></i>Vos statistiques</h1>
 
@@ -172,6 +173,15 @@
                 </button>
             </form>
         </div>
+         <!-- POPUP DE CONFIRMATION -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="popup-icon">✓</div>
+            <h2>Message envoyé !</h2>
+            <p>Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais en attendant profiter du jeu . ( man u second best team ever )</p>
+            <button class="popup-btn" onclick="closePopup()">Fermer</button>
+        </div>
+    </div>
     </section>
 
     <script>
@@ -180,6 +190,12 @@
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("header-placeholder").innerHTML = data;
+        });
+      // footer load
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("footer-placeholder").innerHTML = data;
         });
       // Afficher la date actuelle
       function updateDate() {
@@ -231,15 +247,51 @@
         updateDate();
         animateStats();
       });
+      // confirmation contact
+       const form = document.querySelector('.contact-form');
+        const popup = document.getElementById('popupOverlay');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Empêcher le rechargement de page
+            
+            // Envoyer les données à Formspree
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Afficher le popup
+                    popup.classList.add('show');
+                    
+                    // Réinitialiser le formulaire
+                    form.reset();
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            })
+            .catch(error => {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            });
+        });
+
+        function closePopup() {
+            popup.classList.remove('show');
+        }
+
+        // Fermer le popup en cliquant sur l'overlay
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
+      
+
+    
     </script>
   </body>
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2025 Letterix. Tous droits réservés.</p>
-      <div class="footer-links">
-        <a href="#">À propos</a>
-        <a href="politique.html">Politique de confidentialité</a>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div>
 </html>
