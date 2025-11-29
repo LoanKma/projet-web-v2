@@ -1,3 +1,17 @@
+//header load
+fetch("header.html")
+  .then((response) => response.text())
+  .then((data) => {
+    document.getElementById("header-placeholder").innerHTML = data;
+  });
+
+//footer load
+fetch("footer.html")
+  .then((response) => response.text())
+  .then((data) => {
+    document.getElementById("footer-placeholder").innerHTML = data;
+  });
+
 // Gestion du filtre de difficulté
 function filterLevels(difficulty) {
   // Retirer la classe active de tous les badges
@@ -369,17 +383,3 @@ function resetProgress() {
 
 // Charger les niveaux au démarrage
 document.addEventListener("DOMContentLoaded", loadLevels);
-
-//header load
-fetch("header.html")
-  .then((response) => response.text())
-  .then((data) => {
-    document.getElementById("header-placeholder").innerHTML = data;
-  });
-
-//footer load
-fetch("footer.html")
-  .then((response) => response.text())
-  .then((data) => {
-    document.getElementById("footer-placeholder").innerHTML = data;
-  });
