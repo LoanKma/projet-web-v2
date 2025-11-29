@@ -180,6 +180,7 @@ body {
   background: rgba(30, 41, 59, 0.5);
   border: 2px solid;
   border-radius: 20px;
+  border-color: rgba(148, 163, 184, 0.2);
   padding: 35px;
   transition: all 0.3s;
   position: relative;
