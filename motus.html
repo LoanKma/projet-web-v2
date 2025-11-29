@@ -1,501 +1,82 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Niveaux de Motus - Letterix</title>
-    <link rel="stylesheet" href="assets/css/motus.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <div id="header-placeholder"></div>
-
+    <link rel="stylesheet" href="assets/css/motus-selection.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/motus.css">
+</head>
+<body>
+  <div id="header-placeholder"></div>
     <!-- HERO -->
     <section class="hero-section">
-      <h1>Niveaux de Motus</h1>
-      <p>Devinez le mot en 6 essais maximum</p>
+        <h1>Niveaux de Motus</h1>
+        <p>Devinez le mot en 6 tentatives maximum</p>
     </section>
 
     <!-- DIFFICULTY BADGES -->
     <div class="difficulty-section">
-      <div
-        class="difficulty-badge easy active"
-        data-difficulty="easy"
-        onclick="filterLevels('easy')"
-      >
-        <div class="difficulty-icon">
-          <i class="fa-solid fa-circle-check"></i>
+        <div class="difficulty-badge easy active" data-difficulty="easy" onclick="filterLevels('easy')">
+            <div class="difficulty-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="difficulty-title">Facile</div>
+            <div class="difficulty-subtitle">Mots de 5 lettres</div>
         </div>
-        <div class="difficulty-title">Facile</div>
-        <div class="difficulty-subtitle">5 lettres</div>
-      </div>
-      <div
-        class="difficulty-badge medium"
-        data-difficulty="medium"
-        onclick="filterLevels('medium')"
-      >
-        <div class="difficulty-icon">
-          <i class="fa-solid fa-bolt"></i>
+        <div class="difficulty-badge medium" data-difficulty="medium" onclick="filterLevels('medium')">
+            <div class="difficulty-icon">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="difficulty-title">Moyen</div>
+            <div class="difficulty-subtitle">Mots de 6-7 lettres</div>
         </div>
-        <div class="difficulty-title">Moyen</div>
-        <div class="difficulty-subtitle">6 lettres</div>
-      </div>
-      <div
-        class="difficulty-badge hard"
-        data-difficulty="hard"
-        onclick="filterLevels('hard')"
-      >
-        <div class="difficulty-icon">
-          <i class="fa-solid fa-trophy"></i>
+        <div class="difficulty-badge hard" data-difficulty="hard" onclick="filterLevels('hard')">
+            <div class="difficulty-icon">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="difficulty-title">Difficile</div>
+            <div class="difficulty-subtitle">Mots de 8+ lettres</div>
         </div>
-        <div class="difficulty-title">Difficile</div>
-        <div class="difficulty-subtitle">7-8 lettres</div>
-      </div>
     </div>
 
     <!-- LEVELS -->
     <div class="levels-container">
-      <div class="levels-grid">
-        <!-- Niveau 1 - Facile -->
-        <div
-          class="level-card"
-          data-difficulty="easy"
-          data-level-id="1"
-          onclick="playLevel(1, 'easy')"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <div class="level-info">
-              <h3>Premiers pas</h3>
-              <div class="level-number">Niveau 1</div>
-            </div>
-          </div>
-          <div class="stars">
-            <i class="fa-solid fa-star star"></i>
-            <i class="fa-solid fa-star star"></i>
-            <i class="fa-solid fa-star star"></i>
-          </div>
-          <div class="level-title">Premiers pas</div>
-          <div class="level-description">Mots de 5 lettres</div>
-          <div class="level-stats">Meilleur score: 4/6</div>
+        <div class="levels-grid" id="levelsGrid">
+            <!-- Les niveaux seront générés dynamiquement -->
         </div>
 
-        <!-- Niveau 2 - Facile -->
-        <div
-          class="level-card"
-          data-difficulty="easy"
-          data-level-id="2"
-          onclick="playLevel(2, 'easy')"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-circle-check"></i>
+        <!-- PROGRESS STATS -->
+        <div class="progress-section">
+            <div class="progress-card easy">
+                <div class="progress-icon">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <div class="progress-number" id="easyProgress">0/6</div>
+                <div class="progress-label">Niveaux faciles complétés</div>
             </div>
-            <div class="level-info">
-              <h3>Apprentissage</h3>
-              <div class="level-number">Niveau 2</div>
-            </div>
-          </div>
-          <div class="stars">
-            <i class="fa-solid fa-star star"></i>
-            <i class="fa-solid fa-star star"></i>
-            <i class="fa-solid fa-star star"></i>
-          </div>
-          <div class="level-title">Apprentissage</div>
-          <div class="level-description">Mots courants</div>
-          <div class="level-stats">Meilleur score: 3/6</div>
-        </div>
 
-        <!-- Niveau 3 - Facile -->
-        <div
-          class="level-card"
-          data-difficulty="easy"
-          data-level-id="3"
-          onclick="playLevel(3, 'easy')"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-circle-check"></i>
+            <div class="progress-card medium">
+                <div class="progress-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="progress-number" id="mediumProgress">0/6</div>
+                <div class="progress-label">Niveaux moyens complétés</div>
             </div>
-            <div class="level-info">
-              <h3>Découverte</h3>
-              <div class="level-number">Niveau 3</div>
-            </div>
-          </div>
-          <div class="level-title">Découverte</div>
-          <div class="level-description">Vocabulaire simple</div>
-        </div>
 
-        <!-- Niveau 4 - Facile - Locked -->
-        <div class="level-card locked" data-difficulty="easy" data-level-id="4">
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
+            <div class="progress-card hard">
+                <div class="progress-icon">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div class="progress-number" id="hardProgress">0/6</div>
+                <div class="progress-label">Niveaux difficiles complétés</div>
             </div>
-            <div class="level-info">
-              <h3>Progression</h3>
-              <div class="level-number">Niveau 4</div>
-            </div>
-          </div>
-          <div class="level-title">Progression</div>
-          <div class="level-description">Mots familiers</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
         </div>
-
-        <!-- Niveau 5 - Facile - Locked -->
-        <div class="level-card locked" data-difficulty="easy" data-level-id="5">
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Amélioration</h3>
-              <div class="level-number">Niveau 5</div>
-            </div>
-          </div>
-          <div class="level-title">Amélioration</div>
-          <div class="level-description">Vocabulaire quotidien</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <!-- Niveau 6 - Facile - Locked -->
-        <div class="level-card locked" data-difficulty="easy" data-level-id="6">
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Maîtrise facile</h3>
-              <div class="level-number">Niveau 6</div>
-            </div>
-          </div>
-          <div class="level-title">Maîtrise facile</div>
-          <div class="level-description">Dernière étape facile</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <!-- Niveaux Moyens -->
-        <div
-          class="level-card"
-          data-difficulty="medium"
-          data-level-id="7"
-          onclick="playLevel(7, 'medium')"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-bolt"></i>
-            </div>
-            <div class="level-info">
-              <h3>Défi moyen</h3>
-              <div class="level-number">Niveau 1</div>
-            </div>
-          </div>
-          <div class="level-title">Défi moyen</div>
-          <div class="level-description">Mots de 6 lettres</div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="medium"
-          data-level-id="8"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Persévérance</h3>
-              <div class="level-number">Niveau 2</div>
-            </div>
-          </div>
-          <div class="level-title">Persévérance</div>
-          <div class="level-description">Vocabulaire étendu</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="medium"
-          data-level-id="9"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Concentration</h3>
-              <div class="level-number">Niveau 3</div>
-            </div>
-          </div>
-          <div class="level-title">Concentration</div>
-          <div class="level-description">Mots complexes</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="medium"
-          data-level-id="10"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Expertise</h3>
-              <div class="level-number">Niveau 4</div>
-            </div>
-          </div>
-          <div class="level-title">Expertise</div>
-          <div class="level-description">Vocabulaire avancé</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="medium"
-          data-level-id="11"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Virtuosité</h3>
-              <div class="level-number">Niveau 5</div>
-            </div>
-          </div>
-          <div class="level-title">Virtuosité</div>
-          <div class="level-description">Mots raffinés</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="medium"
-          data-level-id="12"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Maîtrise moyenne</h3>
-              <div class="level-number">Niveau 6</div>
-            </div>
-          </div>
-          <div class="level-title">Maîtrise moyenne</div>
-          <div class="level-description">Dernière étape moyenne</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <!-- Niveaux Difficiles -->
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="13"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Expert</h3>
-              <div class="level-number">Niveau 1</div>
-            </div>
-          </div>
-          <div class="level-title">Expert</div>
-          <div class="level-description">Mots de 7-8 lettres</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez les niveaux précédents
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="14"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Champion</h3>
-              <div class="level-number">Niveau 2</div>
-            </div>
-          </div>
-          <div class="level-title">Champion</div>
-          <div class="level-description">Vocabulaire érudit</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="15"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Légende</h3>
-              <div class="level-number">Niveau 3</div>
-            </div>
-          </div>
-          <div class="level-title">Légende</div>
-          <div class="level-description">Mots rares</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="16"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Prodige</h3>
-              <div class="level-number">Niveau 4</div>
-            </div>
-          </div>
-          <div class="level-title">Prodige</div>
-          <div class="level-description">Vocabulaire sophistiqué</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="17"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Génie</h3>
-              <div class="level-number">Niveau 5</div>
-            </div>
-          </div>
-          <div class="level-title">Génie</div>
-          <div class="level-description">Mots extraordinaires</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-
-        <div
-          class="level-card locked"
-          data-difficulty="hard"
-          data-level-id="18"
-        >
-          <div class="level-header">
-            <div class="level-icon">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div class="level-info">
-              <h3>Maître ultime</h3>
-              <div class="level-number">Niveau 6</div>
-            </div>
-          </div>
-          <div class="level-title">Maître ultime</div>
-          <div class="level-description">Le défi final</div>
-          <div class="lock-message">
-            <i class="fa-solid fa-lock"></i>
-            Complétez le niveau précédent
-          </div>
-        </div>
-      </div>
-
-      <!-- PROGRESS STATS -->
-      <div class="progress-section">
-        <div class="progress-card easy">
-          <div class="progress-icon">
-            <i class="fa-solid fa-circle-check"></i>
-          </div>
-          <div class="progress-number">2/6</div>
-          <div class="progress-label">Niveaux faciles complétés</div>
-        </div>
-
-        <div class="progress-card medium">
-          <div class="progress-icon">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <div class="progress-number">1/6</div>
-          <div class="progress-label">Niveaux moyens complétés</div>
-        </div>
-
-        <div class="progress-card hard">
-          <div class="progress-icon">
-            <i class="fa-solid fa-trophy"></i>
-          </div>
-          <div class="progress-number">0/6</div>
-          <div class="progress-label">Niveaux difficiles complétés</div>
-        </div>
-      </div>
     </div>
-
     <script src="assets/js/motus.js"></script>
-    <script>
-      // header load
-      fetch("header.html")
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("header-placeholder").innerHTML = data;
-        });
-      // Footer load
-      fetch("footer.html")
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("footer-placeholder").innerHTML = data;
-        });
-    </script>
-  </body>
+
+
   <!-- FOOTER PLACEHOLDER -->
   <div id="footer-placeholder"></div>
 </html>
