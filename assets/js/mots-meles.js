@@ -203,9 +203,9 @@ const LEVELS = {
     words: [
       "PHILOSOPHIE",
       "PSYCHOLOGIE",
-      "SOCIOLOGIE",
+      "AUTORITARISME",
       "ANTHROPOLOGIE",
-      "ECONOMIE",
+      "HEGEMONIE",
       "PEDAGOGIE",
     ],
     difficulty: "hard",

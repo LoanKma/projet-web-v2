@@ -147,9 +147,9 @@ const LEVELS = {
     words: [
       "PHILOSOPHIE",
       "PSYCHOLOGIE",
-      "SOCIOLOGIE",
+      "AUTORITARISME",
       "ANTHROPOLOGIE",
-      "ECONOMIE",
+      "HEGEMONIE",
       "PEDAGOGIE",
     ],
     difficulty: "hard",
@@ -481,7 +481,7 @@ function markWordAsFound(word, cells) {
           // Créer la modale
           const modal = document.createElement("div");
           modal.style.cssText = `
-    background: #94a3b8;
+    background: rgba(30, 41, 59, 0.5);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
