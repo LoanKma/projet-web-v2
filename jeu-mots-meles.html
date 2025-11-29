@@ -1,82 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mots Mêlés - Letterix</title>
-    <link rel="stylesheet" href="assets/css/jeu-mots-meles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="assets/css/jeu-mots-meles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- HEADER -->
     <div class="game-header">
-        <button class="back-button" onclick="window.location.href='mots-meles.html'">
-            <i class="fa-solid fa-arrow-left"></i>
-            Retour aux niveaux
+      <button
+        class="back-button"
+        onclick="window.location.href='mots-meles.html'"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+        Retour aux niveaux
+      </button>
+
+      <div class="level-badge">
+        <span id="levelTitle">Facile - Animaux</span>
+      </div>
+
+      <div class="game-stats">
+        <div class="stat-item">
+          <i class="fa-solid fa-clock"></i>
+          <span id="timer">0:00</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa-solid fa-check-circle"></i>
+          <span id="progress">0/8 mots</span>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <button class="action-btn" id="hintBtn" title="Indice">
+          <i class="fa-solid fa-lightbulb"></i>
+          Indice
         </button>
-        
-        <div class="level-badge">
-            <span id="levelTitle">Facile - Animaux</span>
-        </div>
-
-        <div class="game-stats">
-            <div class="stat-item">
-                <i class="fa-solid fa-clock"></i>
-                <span id="timer">0:00</span>
-            </div>
-            <div class="stat-item">
-                <i class="fa-solid fa-check-circle"></i>
-                <span id="progress">0/8 mots</span>
-            </div>
-        </div>
-
-        <div class="game-actions">
-            <button class="action-btn" id="hintBtn" title="Indice">
-                <i class="fa-solid fa-lightbulb"></i>
-                Indice
-            </button>
-            <button class="action-btn" id="restartBtn" title="Recommencer">
-                <i class="fa-solid fa-rotate-right"></i>
-                Recommencer
-            </button>
-        </div>
+        <button class="action-btn" id="restartBtn" title="Recommencer">
+          <i class="fa-solid fa-rotate-right"></i>
+          Recommencer
+        </button>
+      </div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="game-content">
-        <!-- GRILLE -->
-        <div class="grid-section">
-            <h2 class="section-title">Trouvez les mots cachés</h2>
-            <div class="wordsearch-container">
-                <div id="wordsearchGrid" class="wordsearch-grid">
-                    <!-- La grille sera générée dynamiquement -->
-                </div>
-            </div>
-            <div class="instructions">
-                <p><i class="fa-solid fa-info-circle"></i> Glissez votre souris pour sélectionner un mot (horizontal, vertical ou diagonal)</p>
-            </div>
+      <!-- GRILLE -->
+      <div class="grid-section">
+        <h2 class="section-title">Trouvez les mots cachés</h2>
+        <div class="wordsearch-container">
+          <div id="wordsearchGrid" class="wordsearch-grid">
+            <!-- La grille sera générée dynamiquement -->
+          </div>
+        </div>
+        <div class="instructions">
+          <p>
+            <i class="fa-solid fa-info-circle"></i> Glissez votre souris pour
+            sélectionner un mot (horizontal, vertical ou diagonal)
+          </p>
+        </div>
+      </div>
+
+      <!-- LISTE DES MOTS -->
+      <div class="words-section">
+        <div class="words-header">
+          <h2>Mots à trouver</h2>
+          <div class="progress-indicator">
+            <span id="foundCount">0</span>/8 trouvés
+          </div>
         </div>
 
-        <!-- LISTE DES MOTS -->
-        <div class="words-section">
-            <div class="words-header">
-                <h2>Mots à trouver</h2>
-                <div class="progress-indicator">
-                    <span id="foundCount">0</span>/8 trouvés
-                </div>
-            </div>
-
-            <div class="words-list" id="wordsList">
-                <!-- Les mots seront ajoutés dynamiquement -->
-            </div>
-
-            <div class="info-box">
-                <i class="fa-solid fa-lightbulb"></i>
-                <p>Les mots peuvent être placés horizontalement, verticalement ou en diagonale, dans les deux sens !</p>
-            </div>
+        <div class="words-list" id="wordsList">
+          <!-- Les mots seront ajoutés dynamiquement -->
         </div>
+
+        <div class="info-box">
+          <i class="fa-solid fa-lightbulb"></i>
+          <p>
+            Les mots peuvent être placés horizontalement, verticalement ou en
+            diagonale, dans les deux sens !
+          </p>
+        </div>
+      </div>
     </div>
 
     <script src="assets/js/jeu-mots-meles.js"></script>
-</body>
+    <srcipt src="assets/js/level-mot_melés.js"></srcipt>
+  </body>
 </html>

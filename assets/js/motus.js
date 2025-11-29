@@ -1,16 +1,4 @@
-/*DEBUT de la partie JS pour la page accueil du MOTUS */
-// header load
-fetch("header.html")
-  .then((response) => response.text())
-  .then((data) => {
-    document.getElementById("header-placeholder").innerHTML = data;
-  });
-// footer load
-fetch("footer.html")
-  .then((response) => response.text())
-  .then((data) => {
-    document.getElementById("footer-placeholder").innerHTML = data;
-  });
+/*Début de la partie JS pour la page accueil du MOTUS */
 
 // Gestion du filtre de difficulté
 function filterLevels(difficulty) {
@@ -80,5 +68,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Par défaut, afficher les niveaux faciles
   filterLevels("easy");
 });
+
+//header load
+fetch("header.html")
+  .then((response) => response.text())
+  .then((data) => {
+    document.getElementById("header-placeholder").innerHTML = data;
+  });
+
+//footer load
+fetch("footer.html")
+  .then((response) => response.text())
+  .then((data) => {
+    document.getElementById("footer-placeholder").innerHTML = data;
+  });
 
 /*FIN de la partie JS pour la page accueil du MOTUS */
