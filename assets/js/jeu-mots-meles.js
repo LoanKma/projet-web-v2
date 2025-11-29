@@ -441,17 +441,171 @@ function markWordAsFound(word, cells) {
       const nextLevelId = currentLevelId + 1;
 
       if (LEVELS[nextLevelId]) {
-        if (
-          confirm("🎉 Félicitations ! Voulez-vous passer au niveau suivant ?")
-        ) {
-          localStorage.setItem(
-            "currentWordSearchLevel",
-            JSON.stringify({ levelId: nextLevelId })
+        if (LEVELS[nextLevelId]) {
+          showModal(
+            "🎉 Félicitations !",
+            "Voulez-vous passer au niveau suivant ?",
+            () => {
+              localStorage.setItem(
+                "currentWordSearchLevel",
+                JSON.stringify({ levelId: nextLevelId })
+              );
+              location.reload();
+            }
           );
-          location.reload();
+        } else {
+          showModal(
+            "🏆 Incroyable !",
+            "Vous avez terminé tous les niveaux !",
+            null
+          );
         }
-      } else {
-        alert("🏆 Incroyable ! Vous avez terminé tous les niveaux !");
+
+        // Fonction pour afficher une pop-up modale
+        function showModal(title, message, onConfirm) {
+          // Créer l'overlay
+          const overlay = document.createElement("div");
+          overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  `;
+
+          // Créer la modale
+          const modal = document.createElement("div");
+          modal.style.cssText = `
+    background: #94a3b8;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+  `;
+
+          // Ajouter le titre
+          const titleEl = document.createElement("h2");
+          titleEl.textContent = title;
+          titleEl.style.cssText = `
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    color: #ffffffff;
+  `;
+
+          // Ajouter le message
+          const messageEl = document.createElement("p");
+          messageEl.textContent = message;
+          messageEl.style.cssText = `
+    margin: 0 0 25px 0;
+    font-size: 16px;
+    color: #d5cfcfff;
+  `;
+
+          // Créer le conteneur de boutons
+          const buttonContainer = document.createElement("div");
+          buttonContainer.style.cssText = `
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  `;
+
+          if (onConfirm) {
+            // Bouton Oui
+            const yesButton = document.createElement("button");
+            yesButton.textContent = "Oui";
+            yesButton.style.cssText = `
+      padding: 10px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    `;
+            yesButton.onmouseover = () =>
+              (yesButton.style.background = "#45a049");
+            yesButton.onmouseout = () =>
+              (yesButton.style.background = "#4CAF50");
+            yesButton.onclick = () => {
+              document.body.removeChild(overlay);
+              onConfirm();
+            };
+
+            // Bouton Non
+            const noButton = document.createElement("button");
+            noButton.textContent = "Non";
+            noButton.style.cssText = `
+      padding: 10px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #f44336;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    `;
+            noButton.onmouseover = () =>
+              (noButton.style.background = "#da190b");
+            noButton.onmouseout = () => (noButton.style.background = "#f44336");
+            noButton.onclick = () => document.body.removeChild(overlay);
+
+            buttonContainer.appendChild(yesButton);
+            buttonContainer.appendChild(noButton);
+          } else {
+            // Bouton OK uniquement
+            const okButton = document.createElement("button");
+            okButton.textContent = "OK";
+            okButton.style.cssText = `
+      padding: 10px 40px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    `;
+            okButton.onmouseover = () =>
+              (okButton.style.background = "#2563eb");
+            okButton.onmouseout = () => (okButton.style.background = "#2563eb");
+            okButton.onclick = () => document.body.removeChild(overlay);
+
+            buttonContainer.appendChild(okButton);
+          }
+
+          // Assembler la modale
+          modal.appendChild(titleEl);
+          modal.appendChild(messageEl);
+          modal.appendChild(buttonContainer);
+          overlay.appendChild(modal);
+
+          // Ajouter l'animation
+          const style = document.createElement("style");
+          style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  `;
+          document.head.appendChild(style);
+
+          // Afficher la modale
+          document.body.appendChild(overlay);
+        }
       }
     }, 500);
   }
