@@ -257,7 +257,13 @@
         </p>
       </div>
 
-      <a href="accueil.html" class="back-link">← Retour à l'accueil</a>
+      <button class="back-link" onclick="goBack()">← Retour à l'accueil</button>
     </div>
+    <script>
+      // bouton retour
+      function goBack() {
+        window.history.back();
+      }
+    </script>
   </body>
 </html>

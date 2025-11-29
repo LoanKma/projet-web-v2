@@ -190,17 +190,14 @@ const DIRECTIONS = [
 
 // Initialiser la grille
 function initGrid() {
-  // Créer une grille vide
   grid = Array(GRID_SIZE)
     .fill()
     .map(() => Array(GRID_SIZE).fill(""));
 
-  // Placer les mots
   WORDS.forEach((word) => {
     placeWord(word);
   });
 
-  // Remplir les cases vides avec des lettres aléatoires
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
       if (!grid[i][j]) {
@@ -222,7 +219,6 @@ function placeWord(word) {
     const col = Math.floor(Math.random() * GRID_SIZE);
 
     if (canPlaceWord(word, row, col, direction)) {
-      // Placer le mot
       for (let i = 0; i < word.length; i++) {
         const newRow = row + direction[0] * i;
         const newCol = col + direction[1] * i;
@@ -241,7 +237,6 @@ function canPlaceWord(word, row, col, direction) {
     const newRow = row + direction[0] * i;
     const newCol = col + direction[1] * i;
 
-    // Vérifier les limites
     if (
       newRow < 0 ||
       newRow >= GRID_SIZE ||
@@ -251,7 +246,6 @@ function canPlaceWord(word, row, col, direction) {
       return false;
     }
 
-    // Vérifier si la case est vide ou contient la même lettre
     if (grid[newRow][newCol] && grid[newRow][newCol] !== word[i]) {
       return false;
     }
@@ -312,8 +306,6 @@ function updateSelection(row, col) {
   if (!isSelecting) return;
 
   selectionEnd = { row, col };
-
-  // Calculer les cellules sélectionnées
   selectedCells = getCellsBetween(selectionStart, selectionEnd);
   highlightSelection();
 }
@@ -323,11 +315,8 @@ function endSelection() {
   if (!isSelecting) return;
 
   isSelecting = false;
-
-  // Vérifier si un mot est trouvé
   checkSelectedWord();
 
-  // Retirer la surbrillance
   document.querySelectorAll(".grid-cell").forEach((cell) => {
     cell.classList.remove("selecting");
   });
@@ -341,7 +330,6 @@ function getCellsBetween(start, end) {
   const rowDiff = end.row - start.row;
   const colDiff = end.col - start.col;
 
-  // Vérifier si c'est une ligne droite (horizontal, vertical ou diagonal)
   const steps = Math.max(Math.abs(rowDiff), Math.abs(colDiff));
 
   if (steps === 0) {
@@ -351,7 +339,6 @@ function getCellsBetween(start, end) {
   const rowStep = rowDiff === 0 ? 0 : rowDiff / Math.abs(rowDiff);
   const colStep = colDiff === 0 ? 0 : colDiff / Math.abs(colDiff);
 
-  // Vérifier si c'est bien une ligne droite
   if (
     Math.abs(rowDiff) !== 0 &&
     Math.abs(colDiff) !== 0 &&
@@ -387,16 +374,13 @@ function highlightSelection() {
 function checkSelectedWord() {
   if (selectedCells.length < 2) return;
 
-  // Construire le mot
   let word = "";
   selectedCells.forEach(([row, col]) => {
     word += grid[row][col];
   });
 
-  // Vérifier aussi le mot inversé
   const reversedWord = word.split("").reverse().join("");
 
-  // Vérifier si c'est un des mots à trouver
   if (WORDS.includes(word) && !foundWords.includes(word)) {
     markWordAsFound(word, selectedCells);
   } else if (
@@ -411,7 +395,6 @@ function checkSelectedWord() {
 function markWordAsFound(word, cells) {
   foundWords.push(word);
 
-  // Marquer les cellules
   cells.forEach(([row, col]) => {
     const cell = document.querySelector(
       `[data-row="${row}"][data-col="${col}"]`
@@ -421,7 +404,6 @@ function markWordAsFound(word, cells) {
     }
   });
 
-  // Marquer le mot dans la liste
   const wordItem = document.querySelector(`[data-word="${word}"]`);
   if (wordItem) {
     wordItem.classList.add("found");
@@ -434,181 +416,100 @@ function markWordAsFound(word, cells) {
     clearInterval(timerInterval);
     const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
-    // Sauvegarder la progression
     saveProgress(currentLevelId, elapsedTime);
 
     setTimeout(() => {
       const nextLevelId = currentLevelId + 1;
 
       if (LEVELS[nextLevelId]) {
-        if (LEVELS[nextLevelId]) {
-          showModal(
-            "🎉 Félicitations !",
-            "Voulez-vous passer au niveau suivant ?",
-            () => {
-              localStorage.setItem(
-                "currentWordSearchLevel",
-                JSON.stringify({ levelId: nextLevelId })
-              );
-              location.reload();
-            }
-          );
-        } else {
-          showModal(
-            "🏆 Incroyable !",
-            "Vous avez terminé tous les niveaux !",
-            null
-          );
-        }
-
-        // Fonction pour afficher une pop-up modale
-        function showModal(title, message, onConfirm) {
-          // Créer l'overlay
-          const overlay = document.createElement("div");
-          overlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  `;
-
-          // Créer la modale
-          const modal = document.createElement("div");
-          modal.style.cssText = `
-    background: rgba(30, 41, 59, 0.5);
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 400px;
-    animation: slideIn 0.3s ease;
-  `;
-
-          // Ajouter le titre
-          const titleEl = document.createElement("h2");
-          titleEl.textContent = title;
-          titleEl.style.cssText = `
-    margin: 0 0 15px 0;
-    font-size: 24px;
-    color: #ffffffff;
-  `;
-
-          // Ajouter le message
-          const messageEl = document.createElement("p");
-          messageEl.textContent = message;
-          messageEl.style.cssText = `
-    margin: 0 0 25px 0;
-    font-size: 16px;
-    color: #d5cfcfff;
-  `;
-
-          // Créer le conteneur de boutons
-          const buttonContainer = document.createElement("div");
-          buttonContainer.style.cssText = `
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  `;
-
-          if (onConfirm) {
-            // Bouton Oui
-            const yesButton = document.createElement("button");
-            yesButton.textContent = "Oui";
-            yesButton.style.cssText = `
-      padding: 10px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    `;
-            yesButton.onmouseover = () =>
-              (yesButton.style.background = "#45a049");
-            yesButton.onmouseout = () =>
-              (yesButton.style.background = "#4CAF50");
-            yesButton.onclick = () => {
-              document.body.removeChild(overlay);
-              onConfirm();
-            };
-
-            // Bouton Non
-            const noButton = document.createElement("button");
-            noButton.textContent = "Non";
-            noButton.style.cssText = `
-      padding: 10px 30px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #f44336;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    `;
-            noButton.onmouseover = () =>
-              (noButton.style.background = "#da190b");
-            noButton.onmouseout = () => (noButton.style.background = "#f44336");
-            noButton.onclick = () => document.body.removeChild(overlay);
-
-            buttonContainer.appendChild(yesButton);
-            buttonContainer.appendChild(noButton);
-          } else {
-            // Bouton OK uniquement
-            const okButton = document.createElement("button");
-            okButton.textContent = "OK";
-            okButton.style.cssText = `
-      padding: 10px 40px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    `;
-            okButton.onmouseover = () =>
-              (okButton.style.background = "#2563eb");
-            okButton.onmouseout = () => (okButton.style.background = "#2563eb");
-            okButton.onclick = () => document.body.removeChild(overlay);
-
-            buttonContainer.appendChild(okButton);
-          }
-
-          // Assembler la modale
-          modal.appendChild(titleEl);
-          modal.appendChild(messageEl);
-          modal.appendChild(buttonContainer);
-          overlay.appendChild(modal);
-
-          // Ajouter l'animation
-          const style = document.createElement("style");
-          style.textContent = `
-    @keyframes slideIn {
-      from {
-        transform: translateY(-50px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-  `;
-          document.head.appendChild(style);
-
-          // Afficher la modale
-          document.body.appendChild(overlay);
-        }
+        showSuccessPopup(elapsedTime, nextLevelId);
+      } else {
+        showCompletionPopup();
       }
     }, 500);
   }
+}
+
+// Créer le popup de succès
+function showSuccessPopup(elapsedTime, nextLevelId) {
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
+        <div class="popup-content success">
+            <div class="popup-icon">🎉</div>
+            <h2>Félicitations !</h2>
+            <p>Vous avez trouvé tous les mots !</p>
+            <div class="popup-stats">
+                <div class="stat">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>${minutes}m ${seconds}s</span>
+                </div>
+                <div class="stat">
+                    <i class="fa-solid fa-font"></i>
+                    <span>${WORDS.length} mots trouvés</span>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-btn primary" onclick="goToNextLevelWordSearch(${nextLevelId})">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Niveau suivant
+                </button>
+                <button class="popup-btn secondary" onclick="closePopupWordSearch()">
+                    <i class="fa-solid fa-home"></i>
+                    Retour aux niveaux
+                </button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
+}
+
+// Créer le popup de completion totale
+function showCompletionPopup() {
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
+        <div class="popup-content completion">
+            <div class="popup-icon">🏆</div>
+            <h2>Incroyable !</h2>
+            <p>Vous avez terminé tous les niveaux de Mots Mêlés !</p>
+            <div class="popup-buttons">
+                <button class="popup-btn primary" onclick="closePopupWordSearch()">
+                    <i class="fa-solid fa-home"></i>
+                    Retour aux niveaux
+                </button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
+}
+
+// Fonction pour fermer le popup
+function closePopupWordSearch() {
+  const popup = document.querySelector(".popup-overlay");
+  if (popup) {
+    popup.classList.remove("show");
+    setTimeout(() => {
+      popup.remove();
+      window.location.href = "mots-meles.html";
+    }, 300);
+  }
+}
+
+// Fonction pour aller au niveau suivant
+function goToNextLevelWordSearch(nextLevelId) {
+  localStorage.setItem(
+    "currentWordSearchLevel",
+    JSON.stringify({ levelId: nextLevelId })
+  );
+  location.reload();
 }
 
 // Sauvegarder la progression
@@ -663,7 +564,6 @@ document.getElementById("hintBtn").addEventListener("click", () => {
 
   const word = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
 
-  // Trouver la position du mot dans la grille
   for (let i = 0; i < GRID_SIZE; i++) {
     for (let j = 0; j < GRID_SIZE; j++) {
       for (const direction of DIRECTIONS) {
