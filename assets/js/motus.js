@@ -160,15 +160,6 @@ function createLevelCard(levelId, level, progress) {
     levelId <= 6 ? levelId : levelId <= 12 ? levelId - 6 : levelId - 12;
 
   let starsHTML = "";
-  if (isCompleted) {
-    starsHTML = `
-                    <div class="stars">
-                        <i class="fa-solid fa-star star"></i>
-                        <i class="fa-solid fa-star star"></i>
-                        <i class="fa-solid fa-star star"></i>
-                    </div>
-                `;
-  }
 
   let statsHTML = "";
   if (isCompleted && progress[levelId].bestTime) {
@@ -275,3 +266,178 @@ function updateProgressStats() {
   document.getElementById("mediumProgress").textContent = `${mediumCount}/6`;
   document.getElementById("hardProgress").textContent = `${hardCount}/6`;
 }
+
+// Script pour afficher les scores sur les cartes de niveaux
+// À ajouter dans mots-meles.js et motus.js (pages de sélection)
+
+// Fonction pour récupérer le meilleur score d'un niveau
+function getLevelBestScore(gameType, difficulty, levelId) {
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+
+  if (!allScores[gameType] || !allScores[gameType].bestScores) {
+    return null;
+  }
+
+  const levelKey = `${difficulty}_${levelId}`;
+  return allScores[gameType].bestScores[levelKey] || null;
+}
+
+// Fonction pour formater le temps
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+}
+
+// Fonction pour ajouter le badge de score sur une carte
+function addScoreBadge(card, gameType, difficulty, levelId) {
+  const bestScore = getLevelBestScore(gameType, difficulty, levelId);
+
+  if (!bestScore) return;
+
+  // Vérifier si le badge existe déjà
+  let scoreBadge = card.querySelector(".score-badge");
+
+  if (!scoreBadge) {
+    // Créer le badge de score
+    scoreBadge = document.createElement("div");
+    scoreBadge.className = "score-badge";
+    card.appendChild(scoreBadge);
+  }
+
+  // Afficher le score et le temps
+  scoreBadge.innerHTML = `
+        <div class="score-badge-content">
+            <div class="score-points">
+                <i class="fa-solid fa-star"></i>
+                ${bestScore.score} pts
+            </div>
+            <div class="score-time">
+                <i class="fa-solid fa-clock"></i>
+                ${formatTime(bestScore.time)}
+            </div>
+        </div>
+    `;
+}
+
+// Fonction pour mettre à jour tous les scores sur la page
+function updateAllLevelScores(gameType) {
+  // Pour chaque carte de niveau
+  document.querySelectorAll(".level-card").forEach((card) => {
+    const levelId = parseInt(card.getAttribute("data-level-id"));
+    const difficulty = card.getAttribute("data-difficulty");
+
+    if (levelId && difficulty) {
+      addScoreBadge(card, gameType, difficulty, levelId);
+    }
+  });
+}
+
+// Fonction pour afficher les statistiques globales en haut de page
+function displayGlobalStats(gameType) {
+  const statsContainer = document.querySelector(".global-stats");
+
+  if (!statsContainer) return;
+
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  const gameStats = allScores[gameType] || {
+    totalPoints: 0,
+    gamesPlayed: 0,
+    gamesWon: 0,
+  };
+
+  const winRate =
+    gameStats.gamesPlayed > 0
+      ? Math.round((gameStats.gamesWon / gameStats.gamesPlayed) * 100)
+      : 0;
+
+  statsContainer.innerHTML = `
+        <div class="stat-item">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-value">${gameStats.totalPoints}</div>
+            <div class="stat-label">Points</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">${gameStats.gamesWon}</div>
+            <div class="stat-label">Victoires</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value">${winRate}%</div>
+            <div class="stat-label">Réussite</div>
+        </div>
+    `;
+}
+
+// Fonction pour obtenir le nombre d'étoiles selon le score
+function getStarsFromScore(score, difficulty) {
+  const thresholds = {
+    easy: { three: 250, two: 180, one: 100 },
+    medium: { three: 350, two: 280, one: 200 },
+    hard: { three: 450, two: 380, one: 300 },
+  };
+
+  const levels = thresholds[difficulty] || thresholds.easy;
+
+  if (score >= levels.three) return 3;
+  if (score >= levels.two) return 2;
+  if (score >= levels.one) return 1;
+  return 0;
+}
+
+// Fonction pour afficher les étoiles sur la carte
+function updateLevelStars(card, gameType, difficulty, levelId) {
+  const bestScore = getLevelBestScore(gameType, difficulty, levelId);
+
+  if (!bestScore) return;
+
+  const stars = getStarsFromScore(bestScore.score, difficulty);
+
+  // Chercher ou créer le conteneur d'étoiles
+  let starsContainer = card.querySelector(".stars");
+
+  if (!starsContainer) {
+    starsContainer = document.createElement("div");
+    starsContainer.className = "stars";
+
+    // Insérer après le level-header
+    const levelHeader = card.querySelector(".level-header");
+    if (levelHeader) {
+      levelHeader.after(starsContainer);
+    }
+  }
+
+  // Générer les étoiles
+  let starsHTML = "";
+  for (let i = 0; i < 3; i++) {
+    if (i < stars) {
+      starsHTML += '<i class="fa-solid fa-star star filled"></i>';
+    } else {
+      starsHTML += '<i class="fa-regular fa-star star empty"></i>';
+    }
+  }
+
+  starsContainer.innerHTML = starsHTML;
+}
+
+// POUR MOTUS - À ajouter dans motus.js (page de sélection)
+document.addEventListener("DOMContentLoaded", () => {
+  // Charger les scores après un court délai pour s'assurer que tout est chargé
+  setTimeout(() => {
+    updateAllLevelScores("motus");
+
+    // Mettre à jour les étoiles
+    document.querySelectorAll(".level-card").forEach((card) => {
+      const levelId = parseInt(card.getAttribute("data-level-id"));
+      const difficulty = card.getAttribute("data-difficulty");
+
+      if (levelId && difficulty) {
+        updateLevelStars(card, "motus", difficulty, levelId);
+      }
+    });
+
+    // Afficher les stats globales si le conteneur existe
+    displayGlobalStats("motus");
+  }, 100);
+});

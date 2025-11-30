@@ -622,3 +622,263 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Initialisation Motus terminée");
 });
+
+// Système de score simple - À ajouter dans jeu-motus.js et jeu-mots-meles.js
+
+// Fonction pour calculer le score
+function calculateScore(difficulty, timeSeconds, attempts, completed) {
+  if (!completed) return 0;
+
+  // Points de base selon difficulté
+  const basePoints = {
+    easy: 100,
+    medium: 200,
+    hard: 300,
+  };
+
+  let score = basePoints[difficulty] || 100;
+
+  // Bonus de temps (max 100 points si < 30 secondes)
+  const timeBonus = Math.max(0, 100 - Math.floor(timeSeconds / 3));
+  score += timeBonus;
+
+  // Bonus tentatives (pour Motus)
+  if (attempts > 0) {
+    const attemptsBonus = Math.max(0, (7 - attempts) * 20);
+    score += attemptsBonus;
+  }
+
+  return Math.round(score);
+}
+
+// Fonction pour sauvegarder le score
+function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
+  // Récupérer les scores existants
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+
+  // Initialiser le jeu s'il n'existe pas
+  if (!allScores[gameType]) {
+    allScores[gameType] = {
+      totalPoints: 0,
+      gamesPlayed: 0,
+      gamesWon: 0,
+      bestScores: {},
+    };
+  }
+
+  const gameScores = allScores[gameType];
+
+  // Mettre à jour les statistiques
+  gameScores.totalPoints += score;
+  gameScores.gamesPlayed++;
+  gameScores.gamesWon++;
+
+  // Sauvegarder le meilleur score pour ce niveau
+  const levelKey = `${difficulty}_${levelId}`;
+  if (
+    !gameScores.bestScores[levelKey] ||
+    score > gameScores.bestScores[levelKey].score
+  ) {
+    gameScores.bestScores[levelKey] = {
+      score: score,
+      time: timeSeconds,
+      date: new Date().toISOString(),
+    };
+  }
+
+  // Sauvegarder dans localStorage
+  localStorage.setItem("gameScores", JSON.stringify(allScores));
+
+  return {
+    currentScore: score,
+    totalPoints: gameScores.totalPoints,
+    gamesWon: gameScores.gamesWon,
+    isNewRecord:
+      !gameScores.bestScores[levelKey] ||
+      score === gameScores.bestScores[levelKey].score,
+  };
+}
+
+// Fonction pour afficher le score dans le popup
+function showScoreInPopup(score, totalPoints, isNewRecord) {
+  return `
+        <div class="score-display">
+            <div class="score-title">Score de la partie</div>
+            <div class="score-main">${score} points</div>
+            ${
+              isNewRecord
+                ? '<div class="new-record">🏆 Nouveau record !</div>'
+                : ""
+            }
+            <div class="score-total">Total : ${totalPoints} points</div>
+        </div>
+    `;
+}
+
+// MODIFICATION DES POPUPS EXISTANTS
+
+// Pour Motus - Modifier showSuccessPopup
+function showSuccessPopup(elapsedTime, nextLevelId) {
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  // Calculer le score
+  const difficulty = MOTUS_LEVELS[currentLevelId].difficulty;
+  const score = calculateScore(difficulty, elapsedTime, currentRow + 1, true);
+
+  // Sauvegarder le score
+  const scoreData = saveScore(
+    "motus",
+    currentLevelId,
+    difficulty,
+    score,
+    elapsedTime
+  );
+
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
+        <div class="popup-content success">
+            <div class="popup-icon">🎉</div>
+            <h2>Bravo !</h2>
+            <p>Vous avez trouvé le mot <strong>${TARGET_WORD}</strong></p>
+            
+            ${showScoreInPopup(
+              scoreData.currentScore,
+              scoreData.totalPoints,
+              scoreData.isNewRecord
+            )}
+            
+            <div class="popup-stats">
+                <div class="stat">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>${minutes}m ${seconds}s</span>
+                </div>
+                <div class="stat">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>${currentRow + 1}/6 tentatives</span>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-btn primary" onclick="goToNextLevel(${nextLevelId})">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Niveau suivant
+                </button>
+                <button class="popup-btn secondary" onclick="closePopup()">
+                    <i class="fa-solid fa-home"></i>
+                    Retour aux niveaux
+                </button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
+}
+
+// Pour Mots Mêlés - Modifier showSuccessPopup
+function showSuccessPopupWordSearch(elapsedTime, nextLevelId) {
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  // Calculer le score
+  const difficulty = LEVELS[currentLevelId].difficulty;
+  const score = calculateScore(difficulty, elapsedTime, 0, true);
+
+  // Sauvegarder le score
+  const scoreData = saveScore(
+    "mots_meles",
+    currentLevelId,
+    difficulty,
+    score,
+    elapsedTime
+  );
+
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
+        <div class="popup-content success">
+            <div class="popup-icon">🎉</div>
+            <h2>Félicitations !</h2>
+            <p>Vous avez trouvé tous les mots !</p>
+            
+            ${showScoreInPopup(
+              scoreData.currentScore,
+              scoreData.totalPoints,
+              scoreData.isNewRecord
+            )}
+            
+            <div class="popup-stats">
+                <div class="stat">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>${minutes}m ${seconds}s</span>
+                </div>
+                <div class="stat">
+                    <i class="fa-solid fa-font"></i>
+                    <span>${WORDS.length} mots trouvés</span>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-btn primary" onclick="goToNextLevelWordSearch(${nextLevelId})">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Niveau suivant
+                </button>
+                <button class="popup-btn secondary" onclick="closePopupWordSearch()">
+                    <i class="fa-solid fa-home"></i>
+                    Retour aux niveaux
+                </button>
+            </div>
+        </div>
+    `;
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
+}
+
+// Fonction pour récupérer les statistiques
+function getGameStats(gameType) {
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  return (
+    allScores[gameType] || {
+      totalPoints: 0,
+      gamesPlayed: 0,
+      gamesWon: 0,
+      bestScores: {},
+    }
+  );
+}
+
+// Fonction pour afficher les stats sur la page profil
+function displayUserStats() {
+  const motusStats = getGameStats("motus");
+  const motsmelesStats = getGameStats("mots_meles");
+
+  return `
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Motus</h3>
+                <p class="stat-big">${motusStats.totalPoints}</p>
+                <p class="stat-label">Points totaux</p>
+                <p class="stat-small">${motusStats.gamesWon} victoires</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Mots Mêlés</h3>
+                <p class="stat-big">${motsmelesStats.totalPoints}</p>
+                <p class="stat-label">Points totaux</p>
+                <p class="stat-small">${motsmelesStats.gamesWon} victoires</p>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Total</h3>
+                <p class="stat-big">${
+                  motusStats.totalPoints + motsmelesStats.totalPoints
+                }</p>
+                <p class="stat-label">Points totaux</p>
+                <p class="stat-small">${
+                  motusStats.gamesWon + motsmelesStats.gamesWon
+                } victoires</p>
+            </div>
+        </div>
+    `;
+}
