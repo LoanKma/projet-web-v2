@@ -1,0 +1,60 @@
+// Global popup helpers used across the app
+(function () {
+  function createOverlay(html) {
+    const overlay = document.createElement("div");
+    overlay.className = "popup-overlay";
+    overlay.innerHTML = html;
+    document.body.appendChild(overlay);
+    // allow CSS transitions
+    setTimeout(() => overlay.classList.add("show"), 10);
+    return overlay;
+  }
+
+  window.showPopup = function (message, title = "") {
+    const html = `
+			<div class="popup-content info">
+				<div class="popup-icon">ℹ️</div>
+				${title ? `<h2>${title}</h2>` : ""}
+				<p>${message}</p>
+				<div class="popup-buttons">
+					<button class="popup-btn primary">OK</button>
+				</div>
+			</div>`;
+
+    const overlay = createOverlay(html);
+    overlay
+      .querySelector(".popup-btn.primary")
+      .addEventListener("click", () => {
+        overlay.classList.remove("show");
+        setTimeout(() => overlay.remove(), 300);
+      });
+    return overlay;
+  };
+
+  window.showConfirmPopup = function (message, onConfirm, title = "") {
+    const html = `
+			<div class="popup-content confirm">
+				<div class="popup-icon">❓</div>
+				${title ? `<h2>${title}</h2>` : ""}
+				<p>${message}</p>
+				<div class="popup-buttons">
+					<button class="popup-btn primary" id="confirmOk">Oui</button>
+					<button class="popup-btn secondary" id="confirmCancel">Non</button>
+				</div>
+			</div>`;
+
+    const overlay = createOverlay(html);
+    overlay.querySelector("#confirmOk").addEventListener("click", () => {
+      overlay.classList.remove("show");
+      setTimeout(() => {
+        overlay.remove();
+        if (typeof onConfirm === "function") onConfirm();
+      }, 300);
+    });
+    overlay.querySelector("#confirmCancel").addEventListener("click", () => {
+      overlay.classList.remove("show");
+      setTimeout(() => overlay.remove(), 300);
+    });
+    return overlay;
+  };
+})();

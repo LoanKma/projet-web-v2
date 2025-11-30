@@ -1,3 +1,13 @@
+// Charger `main.js` si nécessaire (fournit `showPopup`/`showConfirmPopup`)
+if (typeof showPopup !== "function") {
+  (function () {
+    const s = document.createElement("script");
+    s.src = "assets/js/main.js";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+}
+
 // Configuration des niveaux
 const LEVELS = {
   // Facile (1-6)
@@ -558,7 +568,11 @@ document.getElementById("hintBtn").addEventListener("click", () => {
   const unfoundWords = WORDS.filter((word) => !foundWords.includes(word));
 
   if (unfoundWords.length === 0) {
-    alert("Tous les mots ont été trouvés !");
+    if (typeof showPopup === "function") {
+      showPopup("Tous les mots ont été trouvés !", "Félicitations");
+    } else {
+      alert("Tous les mots ont été trouvés !");
+    }
     return;
   }
 
@@ -601,7 +615,12 @@ document.getElementById("hintBtn").addEventListener("click", () => {
             }
           });
 
-          alert(`Indice : Cherchez le mot "${word}"`);
+          const hintMsg = `Indice : Cherchez le mot "${word}"`;
+          if (typeof showPopup === "function") {
+            showPopup(hintMsg, "Indice");
+          } else {
+            alert(hintMsg);
+          }
           return;
         }
       }
@@ -611,7 +630,7 @@ document.getElementById("hintBtn").addEventListener("click", () => {
 
 // Bouton recommencer
 document.getElementById("restartBtn").addEventListener("click", () => {
-  if (confirm("Voulez-vous vraiment recommencer ce niveau ?")) {
+  const doRestart = () => {
     foundWords = [];
     startTime = Date.now();
     clearInterval(timerInterval);
@@ -621,6 +640,13 @@ document.getElementById("restartBtn").addEventListener("click", () => {
     createWordsList();
     updateProgress();
     startTimer();
+  };
+
+  const msg = "Voulez-vous vraiment recommencer ce niveau ?";
+  if (typeof showConfirmPopup === "function") {
+    showConfirmPopup(msg, doRestart, "Confirmer");
+  } else if (confirm(msg)) {
+    doRestart();
   }
 });
 

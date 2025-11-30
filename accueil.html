@@ -263,18 +263,22 @@
                 }
             })
             .then(response => {
-                if (response.ok) {
-                    // Afficher le popup
-                    popup.classList.add('show');
+              if (response.ok) {
+                // Afficher le popup
+                popup.classList.add('show');
                     
-                    // Réinitialiser le formulaire
-                    form.reset();
-                } else {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
-                }
+                // Réinitialiser le formulaire
+                form.reset();
+              } else {
+                const msg = 'Une erreur est survenue. Veuillez réessayer.';
+                if (typeof showPopup === 'function') showPopup(msg, 'Erreur');
+                else alert(msg);
+              }
             })
             .catch(error => {
-                alert('Une erreur est survenue. Veuillez réessayer.');
+              const msg = 'Une erreur est survenue. Veuillez réessayer.';
+              if (typeof showPopup === 'function') showPopup(msg, 'Erreur');
+              else alert(msg);
             });
         });
 

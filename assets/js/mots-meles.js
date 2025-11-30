@@ -1,3 +1,13 @@
+// Charger `main.js` si nécessaire (fournit `showPopup`/`showConfirmPopup`)
+if (typeof showPopup !== "function") {
+  (function () {
+    const s = document.createElement("script");
+    s.src = "assets/js/main.js";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+}
+
 //header load
 fetch("header.html")
   .then((response) => response.text())
@@ -48,9 +58,13 @@ function playLevel(levelId, difficulty) {
     `.level-card[data-level-id="${levelId}"]`
   );
   if (levelCard && levelCard.classList.contains("locked")) {
-    alert(
-      "Ce niveau est verrouillé. Complétez les niveaux précédents pour le débloquer."
-    );
+    const msg =
+      "Ce niveau est verrouillé. Complétez les niveaux précédents pour le débloquer.";
+    if (typeof showPopup === "function") {
+      showPopup(msg, "Verrouillé");
+    } else {
+      alert(msg);
+    }
     return;
   }
 
@@ -372,12 +386,18 @@ function startLevel(levelId) {
 
 // Réinitialiser la progression
 function resetProgress() {
-  if (
-    confirm("Êtes-vous sûr de vouloir réinitialiser toute votre progression ?")
-  ) {
+  const msg =
+    "Êtes-vous sûr de vouloir réinitialiser toute votre progression ?";
+  const doReset = () => {
     localStorage.removeItem("gameProgress");
     localStorage.removeItem("currentWordSearchLevel");
     loadLevels();
+  };
+
+  if (typeof showConfirmPopup === "function") {
+    showConfirmPopup(msg, doReset, "Confirmer");
+  } else if (confirm(msg)) {
+    doReset();
   }
 }
 

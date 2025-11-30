@@ -14,29 +14,8 @@ function switchTab(tabName) {
   event.target.closest(".tab").classList.add("active");
 }
 
-function confirmDelete() {
-  if (
-    confirm(
-      "⚠️ ATTENTION !\n\nÊtes-vous absolument certain de vouloir supprimer votre compte ?\n\nToutes vos données (progression, succès, statistiques) seront définitivement perdues.\n\nCette action est IRRÉVERSIBLE."
-    )
-  ) {
-    if (confirm("Dernière confirmation : Voulez-vous vraiment continuer ?")) {
-      alert(
-        "✅ Votre compte a été supprimé.\n\nVous allez être redirigé vers la page d'accueil."
-      );
-      // Redirection ici
-      window.location.href = "accueil.html";
-    }
-  }
-}
-// fonction de déconnexion avec confirmation
-function confirmLogout() {
-  if (confirm("👋 Êtes-vous sûr de vouloir vous déconnecter ?")) {
-    alert("✅ Déconnexion réussie !\n\nÀ bientôt !");
-    // Redirection ici
-    window.location.href = "inscription.html";
-  }
-}
+// Les actions de confirmation (suppression, déconnexion) sont gérées
+// plus bas via des popups réutilisables (`showPopup` / `showConfirmPopup`).
 // header load
 fetch("header.html")
   .then((response) => response.text())

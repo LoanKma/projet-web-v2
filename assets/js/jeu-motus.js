@@ -1,3 +1,13 @@
+// Charger `main.js` si nécessaire (fournit `showPopup`/`showConfirmPopup`)
+if (typeof showPopup !== "function") {
+  (function () {
+    const s = document.createElement("script");
+    s.src = "assets/js/main.js";
+    s.async = true;
+    document.head.appendChild(s);
+  })();
+}
+
 // Configuration des niveaux Motus
 const MOTUS_LEVELS = {
   // Facile (1-6) - Mots de 5 lettres
@@ -248,7 +258,6 @@ function deleteLetter() {
 // Valider le mot
 function validateWord() {
   if (currentCol !== WORD_LENGTH) {
-    alert("Complétez le mot avant de valider !");
     return;
   }
 
@@ -367,7 +376,6 @@ function startTimer() {
 // Bouton indice
 document.getElementById("hintBtn").addEventListener("click", () => {
   if (gameOver) {
-    alert("La partie est terminée !");
     return;
   }
 
@@ -395,19 +403,18 @@ document.getElementById("hintBtn").addEventListener("click", () => {
     }
 
     const levelData = MOTUS_LEVELS[currentLevelId];
-    alert(
-      `Indice : ${
-        levelData.hint
-      }\nLa lettre "${letter}" a été révélée en position ${randomPos + 1} !`
-    );
+    const hintMessage = `Indice : ${
+      levelData.hint
+    }\nLa lettre "${letter}" a été révélée en position ${randomPos + 1} !`;
+    showPopup(hintMessage, "Indice");
   } else {
-    alert("Toutes les lettres sont déjà remplies !");
+    showPopup("Toutes les lettres sont déjà remplies !", "Info");
   }
 });
 
 // Bouton recommencer
 document.getElementById("restartBtn").addEventListener("click", () => {
-  if (confirm("Voulez-vous vraiment recommencer ce niveau ?")) {
+  const restartAction = () => {
     currentRow = 0;
     currentCol = 1;
     gameOver = false;
@@ -422,6 +429,13 @@ document.getElementById("restartBtn").addEventListener("click", () => {
     initGrid();
     updateAttempts();
     startTimer();
+  };
+
+  const msg = "Voulez-vous vraiment recommencer ce niveau ?";
+  if (typeof showConfirmPopup === "function") {
+    showConfirmPopup(msg, restartAction);
+  } else if (confirm(msg)) {
+    restartAction();
   }
 });
 

@@ -155,7 +155,9 @@
         .getElementById("connexionForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
-          alert("Connexion réussie !");
+          const msg = "Connexion réussie !";
+          if (typeof showPopup === "function") showPopup(msg, "Succès");
+          else alert(msg);
         });
 
       document
@@ -166,10 +168,14 @@
             '#inscriptionForm input[type="password"]'
           );
           if (passwords[0].value !== passwords[1].value) {
-            alert("Les mots de passe ne correspondent pas !");
+            const msg = "Les mots de passe ne correspondent pas !";
+            if (typeof showPopup === "function") showPopup(msg, "Erreur");
+            else alert(msg);
             return;
           }
-          alert("Compte créé avec succès !");
+          const msg = "Compte créé avec succès !";
+          if (typeof showPopup === "function") showPopup(msg, "Succès");
+          else alert(msg);
         });
     </script>
   </body>

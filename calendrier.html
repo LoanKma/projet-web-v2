@@ -256,7 +256,9 @@
       }
 
       function goBack() {
-        alert("Retour à l'accueil");
+        const msg = "Retour à l'accueil";
+        if (typeof showPopup === 'function') showPopup(msg, 'Info');
+        else alert(msg);
       }
 
       // Calcul du streak actuel
