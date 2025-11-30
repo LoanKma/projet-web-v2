@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Initialisation Motus terminée");
 });
 
-// Système de score simple - À ajouter dans jeu-motus.js et jeu-mots-meles.js
+// Système de score
 
 // Fonction pour calculer le score
 function calculateScore(difficulty, timeSeconds, attempts, completed) {
@@ -846,39 +846,4 @@ function getGameStats(gameType) {
       bestScores: {},
     }
   );
-}
-
-// Fonction pour afficher les stats sur la page profil
-function displayUserStats() {
-  const motusStats = getGameStats("motus");
-  const motsmelesStats = getGameStats("mots_meles");
-
-  return `
-        <div class="stats-container">
-            <div class="stat-card">
-                <h3>Motus</h3>
-                <p class="stat-big">${motusStats.totalPoints}</p>
-                <p class="stat-label">Points totaux</p>
-                <p class="stat-small">${motusStats.gamesWon} victoires</p>
-            </div>
-            
-            <div class="stat-card">
-                <h3>Mots Mêlés</h3>
-                <p class="stat-big">${motsmelesStats.totalPoints}</p>
-                <p class="stat-label">Points totaux</p>
-                <p class="stat-small">${motsmelesStats.gamesWon} victoires</p>
-            </div>
-            
-            <div class="stat-card">
-                <h3>Total</h3>
-                <p class="stat-big">${
-                  motusStats.totalPoints + motsmelesStats.totalPoints
-                }</p>
-                <p class="stat-label">Points totaux</p>
-                <p class="stat-small">${
-                  motusStats.gamesWon + motsmelesStats.gamesWon
-                } victoires</p>
-            </div>
-        </div>
-    `;
 }

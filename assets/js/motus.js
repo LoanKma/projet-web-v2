@@ -268,7 +268,6 @@ function updateProgressStats() {
 }
 
 // Script pour afficher les scores sur les cartes de niveaux
-// À ajouter dans mots-meles.js et motus.js (pages de sélection)
 
 // Fonction pour récupérer le meilleur score d'un niveau
 function getLevelBestScore(gameType, difficulty, levelId) {
@@ -421,7 +420,7 @@ function updateLevelStars(card, gameType, difficulty, levelId) {
   starsContainer.innerHTML = starsHTML;
 }
 
-// POUR MOTUS - À ajouter dans motus.js (page de sélection)
+// Initialisation après le chargement du DOM
 document.addEventListener("DOMContentLoaded", () => {
   // Charger les scores après un court délai pour s'assurer que tout est chargé
   setTimeout(() => {
