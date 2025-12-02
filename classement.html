@@ -39,7 +39,7 @@
           document.getElementById("header-placeholder").innerHTML = data;
         });
       const users = [
-        { name: "Moussa", points: 1200000000000000 },
+        { name: "Moussa", points: 120 },
         { name: "Jean", points: 95 },
         { name: "Mamadou", points: 80 },
         { name: "Sarah", points: 70 },
@@ -82,6 +82,10 @@
 
       // Activer par défaut le premier onglet
       document.querySelector(".tab").classList.add("active");
+      </script>
+      <!-- FOOTER PLACEHOLDER -->
+  <div id="footer-placeholder"></div>
+      <script>
       // footer load
       fetch("footer.html")
         .then((response) => response.text())
@@ -90,6 +94,5 @@
         });
     </script>
   </body>
-  <!-- FOOTER PLACEHOLDER -->
-  <div id="footer-placeholder"></div>
+  
 </html>
