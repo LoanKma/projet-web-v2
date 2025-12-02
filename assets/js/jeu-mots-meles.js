@@ -440,18 +440,29 @@ function markWordAsFound(word, cells) {
   }
 }
 
-// Créer le popup de succès
 function showSuccessPopup(elapsedTime, nextLevelId) {
-  const minutes = Math.floor(elapsedTime / 60);
-  const seconds = elapsedTime % 60;
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
 
-  const popup = document.createElement("div");
-  popup.className = "popup-overlay";
-  popup.innerHTML = `
+    // 1. Calculer et Envoyer le score
+    const difficulty = LEVELS[currentLevelId].difficulty;
+    const score = calculateScoreMotsMeles(difficulty, elapsedTime);
+    
+    // Sauvegarde BDD
+    envoyerScoreBDD("mots_meles", currentLevelId, difficulty, score, elapsedTime);
+
+    const popup = document.createElement("div");
+    popup.className = "popup-overlay";
+    popup.innerHTML = `
         <div class="popup-content success">
             <div class="popup-icon">🎉</div>
             <h2>Félicitations !</h2>
             <p>Vous avez trouvé tous les mots !</p>
+            
+            <div style="background: #e0f2fe; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                <h3 style="margin:0; color:#0284c7;">+${score} Points !</h3>
+            </div>
+
             <div class="popup-stats">
                 <div class="stat">
                     <i class="fa-solid fa-clock"></i>
@@ -464,19 +475,17 @@ function showSuccessPopup(elapsedTime, nextLevelId) {
             </div>
             <div class="popup-buttons">
                 <button class="popup-btn primary" onclick="goToNextLevelWordSearch(${nextLevelId})">
-                    <i class="fa-solid fa-arrow-right"></i>
-                    Niveau suivant
+                    <i class="fa-solid fa-arrow-right"></i> Niveau suivant
                 </button>
                 <button class="popup-btn secondary" onclick="closePopupWordSearch()">
-                    <i class="fa-solid fa-home"></i>
-                    Retour aux niveaux
+                    <i class="fa-solid fa-home"></i> Menu
                 </button>
             </div>
         </div>
     `;
 
-  document.body.appendChild(popup);
-  setTimeout(() => popup.classList.add("show"), 10);
+    document.body.appendChild(popup);
+    setTimeout(() => popup.classList.add("show"), 10);
 }
 
 // Créer le popup de completion totale
@@ -711,3 +720,25 @@ document.addEventListener("DOMContentLoaded", () => {
   loadLevelInfo();
   updateProgress();
 });
+
+// --- FONCTIONS AJOUTÉES POUR LE SCORE ---
+
+// Calculer les points (100/200/300 pts + bonus temps)
+function calculateScoreMotsMeles(difficulty, time) {
+    const points = { 'easy': 100, 'medium': 200, 'hard': 300 };
+    let score = points[difficulty] || 100;
+    // Bonus: +1 pt toutes les 2 secondes économisées sur 5 minutes
+    let bonus = Math.max(0, Math.floor((300 - time) / 2));
+    return score + bonus;
+}
+
+// Envoyer à la BDD
+async function envoyerScoreBDD(jeu, niveau, difficulte, score, temps) {
+    try {
+        await fetch('api/save_score.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jeu, niveau, difficulte, score, temps })
+        });
+    } catch (e) { console.error(e); }
+}
