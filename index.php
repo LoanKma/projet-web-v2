@@ -1,3 +1,12 @@
+<?php
+require_once 'php/db.php';
+require_once 'php/auth.php';
+
+requireLogin();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
   <head>
