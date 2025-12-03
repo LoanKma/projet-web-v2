@@ -582,3 +582,50 @@ body {
     font-size: 24px;
   }
 }
+
+/* BOUTON RETOUR (NAVIGATION) */
+.navigation-header {
+  position: absolute; /* Pour le placer en haut à gauche sans pousser le contenu */
+  top: 200px;
+  left: 70px;
+  z-index: 10;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  /* Fond sombre semi-transparent */
+  background: rgba(30, 41, 59, 0.8);
+  /* Bordure violette pour le thème Mots Mêlés */
+  border: 2px solid rgba(37, 99, 235, 0.5); 
+  border-radius: 12px;
+  /* Texte violet clair */
+  color: #60a5fa; 
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.back-button:hover {
+  /* Fond violet transparent au survol */
+  background: rgba(37, 99, 235, 0.2);
+  border-color: #2563eb;
+  color: #ffffff;
+  transform: translateX(-5px); /* Petit mouvement vers la gauche */
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+/* RESPONSIVE : Ajustement pour mobile */
+@media (max-width: 768px) {
+  .navigation-header {
+    position: relative; /* Sur mobile, on évite l'absolute pour ne pas chevaucher */
+    top: 0;
+    left: 0;
+    padding: 20px 20px 0 20px;
+    text-align: left;
+  }
+}

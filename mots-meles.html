@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mots Mêlés - Letterix</title>
+    <title>Niveaux de Mots Mêlés - Letterix</title>
+    <link rel="stylesheet" href="assets/css/motus-selection.css"> 
     <link rel="stylesheet" href="assets/css/mots-meles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
+
+  <div class="navigation-header">
+      <button class="back-button" onclick="window.location.href='index.php'">
+          <i class="fa-solid fa-arrow-left"></i>
+          Retour à l'accueil
+      </button>
+  </div>
 
     <section class="hero-section">
-        <h1>Mots Mêlés</h1>
-        <p>Trouvez les mots cachés dans la grille</p>
+        <h1>Niveaux de Mots Mêlés</h1>
+        <p>Retrouvez tous les mots cachés dans la grille</p>
     </section>
 
     <section class="stats-section">
         <div class="global-stats" id="globalStats">
             <div class="stat-item">
                 <div class="stat-icon">🏆</div>
-                <div class="stat-value" id="totalPointsDisplay">0</div>
+                <div class="stat-value">0</div>
                 <div class="stat-label">Points</div>
             </div>
             <div class="stat-item">
                 <div class="stat-icon">⭐</div>
-                <div class="stat-value" id="totalCompleted">0</div>
-                <div class="stat-label">Niveaux Terminés</div>
+                <div class="stat-value">0</div>
+                <div class="stat-label">Victoires</div>
             </div>
             <div class="stat-item">
                 <div class="stat-icon">📊</div>
-                <div class="stat-value" id="completionRate">0%</div>
-                <div class="stat-label">Progression</div>
+                <div class="stat-value">0%</div>
+                <div class="stat-label">Réussite</div>
             </div>
         </div>
     </section>
@@ -38,24 +46,24 @@
     <div class="difficulty-section">
         <div class="difficulty-badge easy active" data-difficulty="easy" onclick="filterLevels('easy')">
             <div class="difficulty-icon">
-                <i class="fa-solid fa-smile"></i>
+                <i class="fa-solid fa-star"></i>
             </div>
             <div class="difficulty-title">Facile</div>
-            <div class="difficulty-subtitle">Grille 8x8</div>
+            <div class="difficulty-subtitle">Grilles 8x8</div>
         </div>
         <div class="difficulty-badge medium" data-difficulty="medium" onclick="filterLevels('medium')">
             <div class="difficulty-icon">
-                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-bolt"></i>
             </div>
             <div class="difficulty-title">Moyen</div>
-            <div class="difficulty-subtitle">Grille 10x10</div>
+            <div class="difficulty-subtitle">Grilles 10x10</div>
         </div>
         <div class="difficulty-badge hard" data-difficulty="hard" onclick="filterLevels('hard')">
             <div class="difficulty-icon">
-                <i class="fa-solid fa-fire"></i>
+                <i class="fa-solid fa-trophy"></i>
             </div>
             <div class="difficulty-title">Difficile</div>
-            <div class="difficulty-subtitle">Grille 12x12</div>
+            <div class="difficulty-subtitle">Grilles 12x12+</div>
         </div>
     </div>
 
@@ -66,31 +74,32 @@
         <div class="progress-section">
             <div class="progress-card easy">
                 <div class="progress-icon">
-                    <i class="fa-solid fa-smile"></i>
+                    <i class="fa-solid fa-star"></i>
                 </div>
                 <div class="progress-number" id="easyProgress">0/6</div>
-                <div class="progress-label">Facile complété</div>
+                <div class="progress-label">Niveaux faciles complétés</div>
             </div>
 
             <div class="progress-card medium">
                 <div class="progress-icon">
-                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
                 <div class="progress-number" id="mediumProgress">0/6</div>
-                <div class="progress-label">Moyen complété</div>
+                <div class="progress-label">Niveaux moyens complétés</div>
             </div>
 
             <div class="progress-card hard">
                 <div class="progress-icon">
-                    <i class="fa-solid fa-fire"></i>
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
                 <div class="progress-number" id="hardProgress">0/6</div>
-                <div class="progress-label">Difficile complété</div>
+                <div class="progress-label">Niveaux difficiles complétés</div>
             </div>
         </div>
     </div>
 
     <script src="assets/js/mots-meles.js"></script>
+
     <div id="footer-placeholder"></div>
 </body>
 </html>

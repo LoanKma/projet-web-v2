@@ -1,3 +1,5 @@
+/* assets/css/jeu-mots-meles.css */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,9 +12,11 @@ body {
   color: #e2e8f0;
   min-height: 100vh;
   padding: 20px;
+  /* Empêche la sélection de texte accidentelle pendant le jeu */
+  user-select: none; 
 }
 
-/* HEADER */
+/* HEADER (Identique au Motus) */
 .game-header {
   display: flex;
   justify-content: space-between;
@@ -111,39 +115,45 @@ body {
 
 /* GRID SECTION */
 .grid-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center; /* Centrer la grille */
+}
+
+.game-title {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  background: linear-gradient(#60a5fa, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  width: 100%;
+}
+
+/* MOTS MELES GRID (Spécifique) */
+.grid-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.mots-meles-grid {
   background: rgba(30, 41, 59, 0.5);
   border: 2px solid rgba(37, 99, 235, 0.3);
   border-radius: 20px;
-  padding: 30px;
-}
-
-.section-title {
-  font-size: 24px;
-  color: #60a5fa;
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.wordsearch-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.wordsearch-grid {
-  display: inline-grid;
-  gap: 3px;
-  background: rgba(15, 23, 42, 0.8);
-  padding: 15px;
-  border-radius: 12px;
-  user-select: none;
+  padding: 20px;
+  display: grid; /* Utilisation de Grid Layout */
+  gap: 4px; /* Espacement serré pour le glisser */
+  /* Les colonnes seront définies via JS: grid-template-columns: repeat(N, 1fr); */
+  touch-action: none; /* Indispensable pour le drag sur mobile */
 }
 
 .grid-cell {
-  width: 45px;
+  width: 45px; /* Cellules un peu plus petites que Motus pour tenir sur 12x12 */
   height: 45px;
-  border: 2px solid #334155;
+  border: 1px solid #334155; /* Bordure plus fine */
   background: #1e293b;
   display: flex;
   align-items: center;
@@ -151,112 +161,156 @@ body {
   font-size: 20px;
   font-weight: 700;
   color: #e2e8f0;
+  border-radius: 6px; /* Cellules légèrement arrondies */
   cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 4px;
+  transition: background-color 0.1s, transform 0.1s;
 }
 
-.grid-cell:hover {
-  background: rgba(37, 99, 235, 0.2);
-  border-color: #2563eb;
+/* États des cellules */
+
+/* Cellule sélectionnée (pendant le drag) */
+.grid-cell.selected {
+  background: rgba(96, 165, 250, 0.6); /* Bleu clair transparent */
+  border-color: #60a5fa;
+  color: white;
+  transform: scale(0.95);
 }
 
-.grid-cell.selecting {
-  background: rgba(37, 99, 235, 0.4);
-  border-color: #2563eb;
-  transform: scale(1.05);
-}
-
+/* Cellule validée (mot trouvé) */
 .grid-cell.found {
-  background: rgba(34, 197, 94, 0.3);
-  border-color: #22c55e;
-  color: #22c55e;
-  animation: foundPulse 0.5s ease;
+  background: #22c55e; /* Vert */
+  border-color: #20b356;
+  color: #ffffff;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes foundPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
+/* Animation pour la validation */
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-.instructions {
+/* LISTE DES MOTS (Remplace le clavier) */
+.words-list-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  background: rgba(30, 41, 59, 0.3);
+  border-radius: 15px;
+  padding: 20px;
   text-align: center;
-  padding: 15px;
-  background: rgba(37, 99, 235, 0.1);
-  border: 2px solid rgba(37, 99, 235, 0.3);
-  border-radius: 12px;
-  color: #cbd5e1;
-  font-size: 14px;
 }
 
-.instructions i {
-  color: #60a5fa;
-  margin-right: 8px;
-}
-
-/* WORDS SECTION */
-.words-section {
-  background: rgba(30, 41, 59, 0.5);
-  border: 2px solid rgba(37, 99, 235, 0.3);
-  border-radius: 20px;
-  padding: 30px;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
-}
-
-.words-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid rgba(37, 99, 235, 0.2);
-}
-
-.words-header h2 {
-  font-size: 24px;
-  color: #60a5fa;
-}
-
-.progress-indicator {
-  padding: 8px 16px;
-  background: rgba(37, 99, 235, 0.2);
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #60a5fa;
+.words-list-container h3 {
+  color: #94a3b8;
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .words-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 .word-item {
-  padding: 15px;
-  background: rgba(15, 23, 42, 0.5);
-  border: 2px solid rgba(37, 99, 235, 0.2);
-  border-radius: 10px;
-  text-align: center;
-  font-size: 16px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #e2e8f0;
   transition: all 0.3s;
-  text-transform: uppercase;
 }
 
+/* Mot trouvé dans la liste */
 .word-item.found {
   background: rgba(34, 197, 94, 0.2);
   border-color: #22c55e;
   color: #22c55e;
   text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* HELP SECTION (Adapté) */
+.help-section {
+  background: rgba(30, 41, 59, 0.5);
+  border: 2px solid rgba(37, 99, 235, 0.3);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  height: fit-content; /* Pour ne pas qu'elle prenne toute la hauteur si vide */
+}
+
+.help-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(37, 99, 235, 0.2);
+}
+
+.help-header i, .help-header h2 {
+  font-size: 24px;
+  color: #60a5fa;
+}
+
+.help-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 12px;
+}
+
+.help-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 8px;
+  border: 2px solid;
+}
+
+/* Icônes d'aide spécifiques */
+.selection-demo {
+  background: rgba(96, 165, 250, 0.2);
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+.directions-demo {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.help-text strong {
+  display: block;
+  font-size: 16px;
+  color: #e2e8f0;
+  margin-bottom: 5px;
+}
+
+.help-text p {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.5;
 }
 
 .info-box {
@@ -280,63 +334,41 @@ body {
   line-height: 1.6;
 }
 
-/* SCROLLBAR */
-.words-section::-webkit-scrollbar {
-  width: 8px;
-}
-
-.words-section::-webkit-scrollbar-track {
+.stats-box {
+  padding: 20px;
   background: rgba(15, 23, 42, 0.5);
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
-.words-section::-webkit-scrollbar-thumb {
-  background: rgba(37, 99, 235, 0.5);
-  border-radius: 10px;
+.stats-box h3 {
+  font-size: 18px;
+  color: #60a5fa;
+  margin-bottom: 15px;
 }
 
-.words-section::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.2);
 }
 
-/* RESPONSIVE */
-@media (max-width: 1200px) {
-  .game-content {
-    grid-template-columns: 1fr;
-  }
-
-  .words-section {
-    max-height: 500px;
-  }
+.stat-row:last-child {
+  border-bottom: none;
 }
 
-@media (max-width: 768px) {
-  .game-header {
-    padding: 20px;
-  }
-
-  .game-stats {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .grid-cell {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
-
-  .words-list {
-    grid-template-columns: 1fr;
-  }
-
-  .words-section {
-    padding: 20px;
-  }
+.stat-row span {
+  font-size: 14px;
+  color: #94a3b8;
 }
 
-/* POPUP STYLES - À ajouter dans jeu-mots-meles.css */
+.stat-row strong {
+  font-size: 16px;
+  color: #60a5fa;
+}
 
+/* POPUP STYLES (Identique Motus) */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -351,10 +383,12 @@ body {
   z-index: 1000;
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none; /* Désactivé par défaut */
 }
 
 .popup-overlay.show {
   opacity: 1;
+  pointer-events: all;
 }
 
 .popup-content {
@@ -374,16 +408,6 @@ body {
   transform: scale(1);
 }
 
-.popup-content.success {
-  border-color: #22c55e;
-  box-shadow: 0 20px 60px rgba(34, 197, 94, 0.3);
-}
-
-.popup-content.failure {
-  border-color: #ef4444;
-  box-shadow: 0 20px 60px rgba(239, 68, 68, 0.3);
-}
-
 .popup-content.completion {
   border-color: #fbbf24;
   box-shadow: 0 20px 60px rgba(251, 191, 36, 0.3);
@@ -396,13 +420,8 @@ body {
 }
 
 @keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
 
 .popup-content h2 {
@@ -498,33 +517,122 @@ body {
   transform: translateY(-2px);
 }
 
-.popup-btn i {
-  font-size: 18px;
+/* AFFICHAGE SCORE */
+.score-display {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(29, 78, 216, 0.2));
+  border: 2px solid #2563eb;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+  text-align: center;
 }
 
-/* Responsive */
+.score-title {
+  font-size: 14px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.score-main {
+  font-size: 48px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin: 10px 0;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+  animation: scoreGlow 2s ease infinite;
+}
+
+@keyframes scoreGlow {
+  0%, 100% { text-shadow: 0 0 20px rgba(96, 165, 250, 0.5); transform: scale(1); }
+  50% { text-shadow: 0 0 30px rgba(96, 165, 250, 0.8); transform: scale(1.05); }
+}
+
+.new-record {
+  display: inline-block;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0;
+  animation: recordPulse 1s ease infinite;
+}
+
+@keyframes recordPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+}
+
+.score-total {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.score-total strong {
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .game-content {
+    grid-template-columns: 1fr;
+  }
+  .help-section {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
+  .game-header {
+    padding: 20px;
+  }
+  .game-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .game-title {
+    font-size: 28px;
+  }
+  
+  /* Ajustement cellules sur mobile */
+  .grid-cell {
+    width: 32px; /* Plus petit sur mobile */
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .mots-meles-grid {
+    padding: 10px;
+    gap: 2px;
+  }
+
+  .help-section {
+    padding: 20px;
+  }
+  
   .popup-content {
     padding: 30px 20px;
   }
-
   .popup-icon {
     font-size: 60px;
   }
-
   .popup-content h2 {
     font-size: 28px;
   }
-
   .popup-stats {
     flex-direction: column;
     gap: 20px;
   }
-
   .popup-buttons {
     flex-direction: column;
   }
-
   .popup-btn {
     width: 100%;
   }

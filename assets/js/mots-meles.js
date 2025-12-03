@@ -1,81 +1,187 @@
-// Charger le header et footer
+// assets/js/mots-meles.js
+
+// header load
 fetch("header.html")
   .then((response) => response.text())
   .then((data) => {
     document.getElementById("header-placeholder").innerHTML = data;
   });
 
+// footer load
 fetch("footer.html")
   .then((response) => response.text())
   .then((data) => {
     document.getElementById("footer-placeholder").innerHTML = data;
   });
 
-// --- CONFIGURATION DES NIVEAUX ---
-const LEVELS = {
-  // Facile (1-6)
-  1: { gridSize: 8, words: ["CHAT", "CHIEN", "LION", "OURS"], difficulty: "easy", theme: "Animaux domestiques" },
-  2: { gridSize: 8, words: ["ROSE", "LYS", "IRIS", "TULIPE"], difficulty: "easy", theme: "Fleurs" },
-  3: { gridSize: 8, words: ["ROUGE", "BLEU", "VERT", "JAUNE"], difficulty: "easy", theme: "Couleurs" },
-  4: { gridSize: 8, words: ["PAIN", "LAIT", "CAFE", "THE"], difficulty: "easy", theme: "Petit déjeuner" },
-  5: { gridSize: 8, words: ["SOLEIL", "LUNE", "ETOILE", "NUAGE"], difficulty: "easy", theme: "Dans le ciel" },
-  6: { gridSize: 8, words: ["POMME", "POIRE", "BANANE", "ORANGE"], difficulty: "easy", theme: "Fruits" },
+// Configuration des niveaux pour Mots Mêlés
+// Note: Dans un mot mêlé, on définit souvent une taille de grille et un thème
+const MOTS_MELES_LEVELS = {
+  // FACILE (Grilles 8x8)
+  1: {
+    theme: "Animaux de la ferme",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 6,
+    desc: "Trouvez les animaux classiques",
+  },
+  2: {
+    theme: "Fruits d'été",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 6,
+    desc: "Des fruits juteux et sucrés",
+  },
+  3: {
+    theme: "Couleurs",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 7,
+    desc: "Toutes les couleurs de l'arc-en-ciel",
+  },
+  4: {
+    theme: "Vêtements",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 6,
+    desc: "Ce qu'on porte tous les jours",
+  },
+  5: {
+    theme: "École",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 7,
+    desc: "Fournitures scolaires",
+  },
+  6: {
+    theme: "Météo",
+    difficulty: "easy",
+    gridSize: "8x8",
+    wordsCount: 6,
+    desc: "Soleil, pluie et nuages",
+  },
 
-  // Moyen (7-12)
-  7: { gridSize: 10, words: ["TIGRE", "ZEBRE", "GIRAFE", "ELEPHANT", "SINGE"], difficulty: "medium", theme: "Animaux sauvages" },
-  8: { gridSize: 10, words: ["PARIS", "LYON", "MARSEILLE", "TOULOUSE", "NANTES"], difficulty: "medium", theme: "Villes de France" },
-  9: { gridSize: 10, words: ["GUITARE", "PIANO", "VIOLON", "FLUTE", "BATTERIE"], difficulty: "medium", theme: "Instruments" },
-  10: { gridSize: 10, words: ["FOOTBALL", "TENNIS", "BASKET", "RUGBY", "NATATION"], difficulty: "medium", theme: "Sports" },
-  11: { gridSize: 10, words: ["PRINTEMPS", "ETE", "AUTOMNE", "HIVER", "SAISON"], difficulty: "medium", theme: "Les saisons" },
-  12: { gridSize: 10, words: ["ORDINATEUR", "TABLETTE", "TELEPHONE", "SOURIS", "CLAVIER"], difficulty: "medium", theme: "Informatique" },
+  // MOYEN (Grilles 10x10)
+  7: {
+    theme: "Métiers",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 9,
+    desc: "Diverses professions",
+  },
+  8: {
+    theme: "Sports Olympiques",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 9,
+    desc: "Disciplines sportives",
+  },
+  9: {
+    theme: "Cuisine",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 10,
+    desc: "Ustensiles et ingrédients",
+  },
+  10: {
+    theme: "Transports",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 9,
+    desc: "Moyens de locomotion",
+  },
+  11: {
+    theme: "Corps Humain",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 10,
+    desc: "Anatomie et organes",
+  },
+  12: {
+    theme: "Meubles",
+    difficulty: "medium",
+    gridSize: "10x10",
+    wordsCount: 9,
+    desc: "Mobilier de la maison",
+  },
 
-  // Difficile (13-18)
-  13: { gridSize: 12, words: ["RHINOCEROS", "HIPPOPOTAME", "CROCODILE", "KANGOUROU", "PANTHERE", "CHAMEAU"], difficulty: "hard", theme: "Animaux exotiques" },
-  14: { gridSize: 12, words: ["ASTRONOMIE", "BIOLOGIE", "CHIMIE", "PHYSIQUE", "GEOGRAPHIE", "MATHEMATIQUE"], difficulty: "hard", theme: "Sciences" },
-  15: { gridSize: 12, words: ["ARCHITECTURE", "SCULPTURE", "PEINTURE", "PHOTOGRAPHIE", "LITTERATURE", "MUSIQUE"], difficulty: "hard", theme: "Arts" },
-  16: { gridSize: 12, words: ["RENAISSANCE", "REVOLUTION", "MOYENAGE", "ANTIQUITE", "PREHISTOIRE", "MODERNE"], difficulty: "hard", theme: "Histoire" },
-  17: { gridSize: 12, words: ["DEMOCRATIE", "REPUBLIQUE", "MONARCHIE", "PARLEMENT", "GOUVERNEMENT", "CONSTITUTION"], difficulty: "hard", theme: "Politique" },
-  18: { gridSize: 12, words: ["PHILOSOPHIE", "PSYCHOLOGIE", "AUTORITARISME", "ANTHROPOLOGIE", "HEGEMONIE", "PEDAGOGIE"], difficulty: "hard", theme: "Sciences humaines" },
+  // DIFFICILE (Grilles 12x12 ou +)
+  13: {
+    theme: "Astronomie",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 12,
+    desc: "Planètes et constellations",
+  },
+  14: {
+    theme: "Pays du Monde",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 12,
+    desc: "Voyage autour du globe",
+  },
+  15: {
+    theme: "Sciences",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 13,
+    desc: "Physique, chimie et biologie",
+  },
+  16: {
+    theme: "Sentiments",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 12,
+    desc: "Émotions et états d'esprit",
+  },
+  17: {
+    theme: "Informatique",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 14,
+    desc: "Hardware et software",
+  },
+  18: {
+    theme: "Arbres et Forêts",
+    difficulty: "hard",
+    gridSize: "12x12",
+    wordsCount: 13,
+    desc: "Nature et botanique",
+  },
 };
 
 let currentFilter = "easy";
 
-// --- INITIALISATION ---
+// Charger tous les niveaux au démarrage
 document.addEventListener("DOMContentLoaded", () => {
   generateAllLevels();
-  updateGlobalStats();
-  
-  // Par défaut, afficher les niveaux faciles
-  filterLevels('easy');
+  updateProgressStats();
 });
 
-// --- GÉNÉRATION DE L'INTERFACE ---
-
-// 1. Générer toutes les cartes de niveaux
+// Générer tous les niveaux
 function generateAllLevels() {
   const grid = document.getElementById("levelsGrid");
-  // Attention : Motus utilise "motusProgress", Mots Mêlés utilise "gameProgress"
-  const progress = JSON.parse(localStorage.getItem("gameProgress") || "{}");
-  
-  grid.innerHTML = ""; // Vider la grille
+  // Changement de la clé localStorage pour ne pas mélanger avec le Motus
+  const progress = JSON.parse(localStorage.getItem("motsMelesProgress") || "{}");
 
-  Object.keys(LEVELS).forEach((key) => {
-    const levelId = parseInt(key);
-    const level = LEVELS[levelId];
-    const card = createLevelCard(levelId, level, progress);
+  grid.innerHTML = "";
+
+  Object.keys(MOTS_MELES_LEVELS).forEach((levelId) => {
+    const level = MOTS_MELES_LEVELS[levelId];
+    const card = createLevelCard(parseInt(levelId), level, progress);
     grid.appendChild(card);
   });
+
+  filterLevels(currentFilter);
 }
 
-// 2. Créer une carte individuelle
+// Créer une carte de niveau
 function createLevelCard(levelId, level, progress) {
   const card = document.createElement("div");
   card.className = "level-card";
-  // Important pour le filtrage :
   card.setAttribute("data-difficulty", level.difficulty);
   card.setAttribute("data-level-id", levelId);
 
-  // Logique de verrouillage : Niveau 1 débloqué, ou si le précédent est fini
   const isUnlocked = levelId === 1 || progress[levelId - 1]?.completed || false;
   const isCompleted = progress[levelId]?.completed || false;
 
@@ -83,76 +189,82 @@ function createLevelCard(levelId, level, progress) {
     card.classList.add("locked");
   }
 
-  // Calcul du numéro relatif (1, 2, 3... au lieu de 13, 14, 15)
-  const displayNum = levelId <= 6 ? levelId : levelId <= 12 ? levelId - 6 : levelId - 12;
+  const levelNumber =
+    levelId <= 6 ? levelId : levelId <= 12 ? levelId - 6 : levelId - 12;
 
-  // Icônes selon difficulté
-  let iconClass = "fa-smile";
-  if (level.difficulty === "medium") iconClass = "fa-star";
-  if (level.difficulty === "hard") iconClass = "fa-fire";
+  let starsHTML = "";
 
-  // Score et Temps
-  let scoreHTML = "";
+  let statsHTML = "";
   if (isCompleted && progress[levelId].bestTime) {
-      const t = progress[levelId].bestTime;
-      const min = Math.floor(t / 60);
-      const sec = t % 60;
-      // On peut ajouter un badge ici si vous avez stocké le score
-      scoreHTML = `
-        <div class="score-badge">
-            <div class="score-time"><i class="fa-solid fa-clock"></i> ${min}:${sec.toString().padStart(2, '0')}</div>
-        </div>
-      `;
+    const time = progress[levelId].bestTime;
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    statsHTML = `<div class="level-stats">Meilleur temps: ${minutes}m ${seconds}s</div>`;
   }
 
-  // Message de verrouillage
-  let lockMsg = "";
+  let lockMessage = "";
   if (!isUnlocked) {
-    lockMsg = `<div class="lock-message"><i class="fa-solid fa-lock"></i> Terminez le niveau précédent</div>`;
+    lockMessage = `
+                    <div class="lock-message">
+                        <i class="fa-solid fa-lock"></i>
+                        Complétez le niveau précédent
+                    </div>
+                `;
   }
 
-  card.innerHTML = `
-    ${scoreHTML}
-    <div class="level-header">
-        <div class="level-icon">
-            <i class="fa-solid ${!isUnlocked ? 'fa-lock' : iconClass}"></i>
-        </div>
-        <div class="level-info">
-            <h3>${level.theme}</h3>
-            <div class="level-number">Niveau ${displayNum}</div>
-        </div>
-    </div>
-    
-    <div class="level-description">
-        ${level.words.length} mots à trouver • Grille ${level.gridSize}x${level.gridSize}
-    </div>
-    ${lockMsg}
-  `;
+  const iconClass =
+    level.difficulty === "easy"
+      ? "fa-star"
+      : level.difficulty === "medium"
+      ? "fa-bolt"
+      : "fa-trophy";
 
-  // Clic sur la carte
+  // Adaptation de l'affichage pour Mots Mêlés
+  card.innerHTML = `
+                <div class="level-header">
+                    <div class="level-icon">
+                        <i class="fa-solid ${
+                          !isUnlocked ? "fa-lock" : iconClass
+                        }"></i>
+                    </div>
+                    <div class="level-info">
+                        <h3>${level.theme}</h3>
+                        <div class="level-number">Niveau ${levelNumber}</div>
+                    </div>
+                </div>
+                ${starsHTML}
+                <div class="level-title">${level.theme}</div>
+                <div class="level-description">Grille ${level.gridSize} - ${
+    level.wordsCount
+  } mots</div>
+                <div class="level-description" style="margin-top:-10px; font-size:12px; opacity:0.8">${
+                  level.desc
+                }</div>
+                ${statsHTML}
+                ${lockMessage}
+            `;
+
   if (isUnlocked) {
-    card.onclick = () => playLevel(levelId, level.difficulty);
+    card.onclick = () => playLevel(levelId);
   }
 
   return card;
 }
 
-// --- LOGIQUE DE JEU ---
-
-// Filtrer les niveaux (Facile / Moyen / Difficile)
+// Filtrer les niveaux par difficulté
 function filterLevels(difficulty) {
   currentFilter = difficulty;
 
-  // 1. Gérer les badges actifs (UI)
+  // Mettre à jour les badges de difficulté
   document.querySelectorAll(".difficulty-badge").forEach((badge) => {
     badge.classList.remove("active");
   });
-  const activeBadge = document.querySelector(`.difficulty-badge[data-difficulty="${difficulty}"]`);
-  if (activeBadge) activeBadge.classList.add("active");
+  document
+    .querySelector(`.difficulty-badge[data-difficulty="${difficulty}"]`)
+    .classList.add("active");
 
-  // 2. Afficher/Masquer les cartes (Logique)
-  const cards = document.querySelectorAll(".level-card");
-  cards.forEach((card) => {
+  // Filtrer les cartes
+  document.querySelectorAll(".level-card").forEach((card) => {
     if (card.getAttribute("data-difficulty") === difficulty) {
       card.style.display = "block";
     } else {
@@ -161,53 +273,210 @@ function filterLevels(difficulty) {
   });
 }
 
-// Lancer le niveau
-function playLevel(levelId, difficulty) {
-  // Sauvegarde de la config pour la page de jeu
-  localStorage.setItem("currentWordSearchLevel", JSON.stringify({
-    levelId: levelId,
-    difficulty: difficulty
-  }));
-  
-  // Redirection
+// Lancer un niveau
+function playLevel(levelId) {
+  localStorage.setItem(
+    "currentMotsMelesLevel", // Clé spécifique mots mêlés
+    JSON.stringify({ levelId: levelId })
+  );
+  // Redirection vers la page de jeu des mots mêlés
   window.location.href = "jeu-mots-meles.html";
 }
 
-// Mettre à jour les statistiques globales (Haut de page et Bas de page)
-function updateGlobalStats() {
-  const progress = JSON.parse(localStorage.getItem("gameProgress") || "{}");
-  
-  // Compteurs
-  let counts = { easy: 0, medium: 0, hard: 0, total: 0 };
-  let points = 0; // Si vous stockez les points, récupérez-les ici
+// Mettre à jour les statistiques de progression
+function updateProgressStats() {
+  const progress = JSON.parse(localStorage.getItem("motsMelesProgress") || "{}");
 
-  Object.keys(progress).forEach(id => {
-      if (progress[id].completed) {
-          counts.total++;
-          const lvl = LEVELS[id];
-          if (lvl) counts[lvl.difficulty]++;
-          // Estimation points si non stockés (100/200/300)
-          points += (lvl.difficulty === 'easy' ? 100 : lvl.difficulty === 'medium' ? 200 : 300);
-      }
+  let easyCount = 0,
+    mediumCount = 0,
+    hardCount = 0;
+
+  Object.keys(progress).forEach((levelId) => {
+    if (progress[levelId].completed) {
+      const level = MOTS_MELES_LEVELS[levelId];
+      if (level.difficulty === "easy") easyCount++;
+      else if (level.difficulty === "medium") mediumCount++;
+      else if (level.difficulty === "hard") hardCount++;
+    }
   });
 
-  // Mise à jour DOM (Haut de page)
-  const totalEl = document.getElementById("totalCompleted");
-  if(totalEl) totalEl.textContent = counts.total;
-  
-  const pointsEl = document.getElementById("totalPointsDisplay");
-  if(pointsEl) pointsEl.textContent = points;
-
-  const rateEl = document.getElementById("completionRate");
-  if(rateEl) rateEl.textContent = Math.round((counts.total / 18) * 100) + "%";
-
-  // Mise à jour DOM (Bas de page - Barres de progression)
-  const easyEl = document.getElementById("easyProgress");
-  if(easyEl) easyEl.textContent = `${counts.easy}/6`;
-
-  const medEl = document.getElementById("mediumProgress");
-  if(medEl) medEl.textContent = `${counts.medium}/6`;
-
-  const hardEl = document.getElementById("hardProgress");
-  if(hardEl) hardEl.textContent = `${counts.hard}/6`;
+  document.getElementById("easyProgress").textContent = `${easyCount}/6`;
+  document.getElementById("mediumProgress").textContent = `${mediumCount}/6`;
+  document.getElementById("hardProgress").textContent = `${hardCount}/6`;
 }
+
+// Script pour afficher les scores sur les cartes de niveaux
+
+// Fonction pour récupérer le meilleur score d'un niveau
+function getLevelBestScore(gameType, difficulty, levelId) {
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+
+  if (!allScores[gameType] || !allScores[gameType].bestScores) {
+    return null;
+  }
+
+  const levelKey = `${difficulty}_${levelId}`;
+  return allScores[gameType].bestScores[levelKey] || null;
+}
+
+// Fonction pour formater le temps
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+}
+
+// Fonction pour ajouter le badge de score sur une carte
+function addScoreBadge(card, gameType, difficulty, levelId) {
+  const bestScore = getLevelBestScore(gameType, difficulty, levelId);
+
+  if (!bestScore) return;
+
+  // Vérifier si le badge existe déjà
+  let scoreBadge = card.querySelector(".score-badge");
+
+  if (!scoreBadge) {
+    // Créer le badge de score
+    scoreBadge = document.createElement("div");
+    scoreBadge.className = "score-badge";
+    card.appendChild(scoreBadge);
+  }
+
+  // Afficher le score et le temps
+  scoreBadge.innerHTML = `
+        <div class="score-badge-content">
+            <div class="score-points">
+                <i class="fa-solid fa-star"></i>
+                ${bestScore.score} pts
+            </div>
+            <div class="score-time">
+                <i class="fa-solid fa-clock"></i>
+                ${formatTime(bestScore.time)}
+            </div>
+        </div>
+    `;
+}
+
+// Fonction pour mettre à jour tous les scores sur la page
+function updateAllLevelScores(gameType) {
+  // Pour chaque carte de niveau
+  document.querySelectorAll(".level-card").forEach((card) => {
+    const levelId = parseInt(card.getAttribute("data-level-id"));
+    const difficulty = card.getAttribute("data-difficulty");
+
+    if (levelId && difficulty) {
+      addScoreBadge(card, gameType, difficulty, levelId);
+    }
+  });
+}
+
+// Fonction pour afficher les statistiques globales en haut de page
+function displayGlobalStats(gameType) {
+  const statsContainer = document.querySelector(".global-stats");
+
+  if (!statsContainer) return;
+
+  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  const gameStats = allScores[gameType] || {
+    totalPoints: 0,
+    gamesPlayed: 0,
+    gamesWon: 0,
+  };
+
+  const winRate =
+    gameStats.gamesPlayed > 0
+      ? Math.round((gameStats.gamesWon / gameStats.gamesPlayed) * 100)
+      : 0;
+
+  statsContainer.innerHTML = `
+        <div class="stat-item">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-value">${gameStats.totalPoints}</div>
+            <div class="stat-label">Points</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">${gameStats.gamesWon}</div>
+            <div class="stat-label">Victoires</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value">${winRate}%</div>
+            <div class="stat-label">Réussite</div>
+        </div>
+    `;
+}
+
+// Fonction pour obtenir le nombre d'étoiles selon le score
+function getStarsFromScore(score, difficulty) {
+  // Seuils adaptés pour les mots mêlés (souvent on marque plus de points)
+  const thresholds = {
+    easy: { three: 600, two: 400, one: 200 },
+    medium: { three: 900, two: 600, one: 300 },
+    hard: { three: 1200, two: 800, one: 400 },
+  };
+
+  const levels = thresholds[difficulty] || thresholds.easy;
+
+  if (score >= levels.three) return 3;
+  if (score >= levels.two) return 2;
+  if (score >= levels.one) return 1;
+  return 0;
+}
+
+// Fonction pour afficher les étoiles sur la carte
+function updateLevelStars(card, gameType, difficulty, levelId) {
+  const bestScore = getLevelBestScore(gameType, difficulty, levelId);
+
+  if (!bestScore) return;
+
+  const stars = getStarsFromScore(bestScore.score, difficulty);
+
+  // Chercher ou créer le conteneur d'étoiles
+  let starsContainer = card.querySelector(".stars");
+
+  if (!starsContainer) {
+    starsContainer = document.createElement("div");
+    starsContainer.className = "stars";
+
+    // Insérer après le level-header
+    const levelHeader = card.querySelector(".level-header");
+    if (levelHeader) {
+      levelHeader.after(starsContainer);
+    }
+  }
+
+  // Générer les étoiles
+  let starsHTML = "";
+  for (let i = 0; i < 3; i++) {
+    if (i < stars) {
+      starsHTML += '<i class="fa-solid fa-star star filled"></i>';
+    } else {
+      starsHTML += '<i class="fa-regular fa-star star empty"></i>';
+    }
+  }
+
+  starsContainer.innerHTML = starsHTML;
+}
+
+// Initialisation après le chargement du DOM
+document.addEventListener("DOMContentLoaded", () => {
+  // Charger les scores après un court délai pour s'assurer que tout est chargé
+  setTimeout(() => {
+    // Note: on utilise "mots-meles" comme clé pour gameScores
+    updateAllLevelScores("mots-meles");
+
+    // Mettre à jour les étoiles
+    document.querySelectorAll(".level-card").forEach((card) => {
+      const levelId = parseInt(card.getAttribute("data-level-id"));
+      const difficulty = card.getAttribute("data-difficulty");
+
+      if (levelId && difficulty) {
+        updateLevelStars(card, "mots-meles", difficulty, levelId);
+      }
+    });
+
+    // Afficher les stats globales pour mots-meles
+    displayGlobalStats("mots-meles");
+  }, 100);
+});
