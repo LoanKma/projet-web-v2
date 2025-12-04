@@ -1,8 +1,5 @@
 <?php
-/**
- * FICHIER : includes/auth.php
- * Fonctions d'authentification
- */
+require_once 'php/db.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
