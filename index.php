@@ -182,11 +182,12 @@ requireLogin();
                 </button>
             </form>
         </div>
-        
-        <div class="logout"
+        <!-- LOGOUT BUTTON -->
+        <div class="logout">
         <a href="logout.php" class="btn btn-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
             </a>
+    </div>
 
 
          <!-- POPUP DE CONFIRMATION -->

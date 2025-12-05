@@ -665,9 +665,9 @@ function calculateScore(difficulty, timeSeconds, attempts, completed) {
   return Math.round(score);
 }
 
-// Fonction pour sauvegarder le score
+// Fonction pour sauvegarder le score (Modifiée pour BDD)
 function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
-  // Récupérer les scores existants
+  // Récupérer les scores existants (localStorage)
   const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
 
   // Initialiser le jeu s'il n'existe pas
@@ -682,7 +682,7 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
 
   const gameScores = allScores[gameType];
 
-  // Mettre à jour les statistiques
+  // Mettre à jour les statistiques locales
   gameScores.totalPoints += score;
   gameScores.gamesPlayed++;
   gameScores.gamesWon++;
@@ -703,6 +703,11 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
   // Sauvegarder dans localStorage
   localStorage.setItem("gameScores", JSON.stringify(allScores));
 
+  // --- NOUVEAU : ENVOI VERS LA BASE DE DONNÉES ---
+  // Appelle le fichier PHP que nous avons créé
+  envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
+  // -----------------------------------------------
+
   return {
     currentScore: score,
     totalPoints: gameScores.totalPoints,
@@ -711,6 +716,20 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
       !gameScores.bestScores[levelKey] ||
       score === gameScores.bestScores[levelKey].score,
   };
+}
+
+// Fonction utilitaire pour parler à l'API PHP (À laisser ici)
+async function envoyerScoreBDD(jeu, niveau, difficulte, score, temps) {
+    try {
+        await fetch('api/save_score.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jeu, niveau, difficulte, score, temps })
+        });
+        console.log("Score envoyé à la BDD avec succès !");
+    } catch (e) {
+        console.error("Erreur lors de l'envoi du score à la BDD :", e);
+    }
 }
 
 // Fonction pour afficher le score dans le popup
