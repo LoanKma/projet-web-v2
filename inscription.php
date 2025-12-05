@@ -71,32 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <title>Jeux de Lettres - Authentification</title>
-    <style>
-      .alert {
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        animation: slideIn 0.3s ease-out;
-      }
-      .alert-error {
-        background-color: #fee;
-        border: 1px solid #fcc;
-        color: #c33;
-      }
-      .alert-success {
-        background-color: #efe;
-        border: 1px solid #cfc;
-        color: #3c3;
-      }
-      .alert ul {
-        margin: 5px 0;
-        padding-left: 20px;
-      }
-      @keyframes slideIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    </style>
   </head>
   <body>
     <div class="container">

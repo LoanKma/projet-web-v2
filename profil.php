@@ -199,6 +199,13 @@
             <i class="fas fa-key"></i> Modifier le mot de passe
           </button>
         </div>
+        <?php
+require_once 'includes/auth.php';
+
+logout();
+header('Location: inscription.php');
+exit;
+?>
         <!-- LOGOUT SECTION -->
         <div class="settings-section">
           <h2><i class="fas fa-sign-out-alt"></i> Déconnexion</h2>
@@ -206,7 +213,7 @@
             Vous serez redirigé vers la page de connexion
           </p>
 
-          <button
+          <button logout
             class="save-btn"
             onclick="confirmLogout()"
             style="
