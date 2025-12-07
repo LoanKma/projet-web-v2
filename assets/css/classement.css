@@ -1,166 +1,307 @@
 /* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #01040a;
-  color: #e2e8f0;
-  min-height: 100vh;
-  padding: 20px;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #01040a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-/* PAGE CONTAINER */
-.page-content,
-.ranking-header,
-.ranking-list {
-  max-width: 900px;
-  margin: 0 auto;
-}
+        /* PAGE CONTAINER */
+        .page-content,
+        .ranking-header,
+        .ranking-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-/* ------------------------- */
-/*        TITRE PAGE         */
-/* ------------------------- */
+        /* ------------------------- */
+        /*        TITRE PAGE         */
+        /* ------------------------- */
 
-.ranking-header {
-  text-align: center;
-  margin-bottom: 80px;
-  padding: 50px 20px;
-  position: relative;
-}
+        .ranking-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 50px 20px 20px;
+            position: relative;
+        }
 
-.ranking-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(14, 165, 233, 0.4);
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #2563eb;
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
-  animation: float 3s ease-in-out infinite;
-  margin-bottom: 30px;
-}
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+        .ranking-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(14, 165, 233, 0.15);
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2563eb;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+            animation: float 3s ease-in-out infinite;
+            margin-bottom: 30px;
+        }
 
-.ranking-header h1 {
-  background: linear-gradient(#60a5fa, #2563eb);
-  font-size: 48px;
-  font-weight: 700;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
 
-.ranking-subtitle {
-  margin-top: 10px;
-  font-size: 16px;
-  color: #94a3b8;
-}
+        .ranking-header h1 {
+            background: linear-gradient(#60a5fa, #2563eb);
+            font-size: 48px;
+            font-weight: 700;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-/* ------------------------- */
-/*         LISTE             */
-/* ------------------------- */
+        .ranking-subtitle {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #94a3b8;
+        }
 
-.ranking-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
+        /* ------------------------- */
+        /*      CARTE UTILISATEUR    */
+        /* ------------------------- */
 
-/* ------------------------- */
-/*        CARTES JOUEURS     */
-/* ------------------------- */
+        .user-card {
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid rgba(37, 99, 235, 0.4);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.2);
+        }
 
-.rank-card {
-  background: rgba(30, 41, 59, 0.45);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  padding: 18px 22px;
-  border-radius: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: fadeSlideIn 0.5s ease both;
-  transition: 0.25s ease;
-}
+        .user-card h2 {
+            font-size: 24px;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-.rank-card:hover {
-  border-color: #2563eb;
-  transform: translateY(-4px);
-}
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
 
-/* Podium */
-.rank-card.gold {
-  border-color: gold;
-}
-.rank-card.silver {
-  border-color: silver;
-}
-.rank-card.bronze {
-  border-color: #cd7f32;
-}
+        .stat-item {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
 
-.rank-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
 
-.rank-pos {
-  font-size: 22px;
-  font-weight: bold;
-}
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-.rank-name {
-  font-size: 18px;
-  font-weight: 600;
-}
+        /* ------------------------- */
+        /*         LISTE             */
+        /* ------------------------- */
 
-.rank-right {
-  text-align: right;
-}
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 40px;
+        }
 
-.rank-points {
-  font-size: 18px;
-  font-weight: 700;
-  color: #2563eb;
-}
+        /* ------------------------- */
+        /*        CARTES JOUEURS     */
+        /* ------------------------- */
 
-/* ------------------------- */
-/*       ANIMATION           */
-/* ------------------------- */
+        .rank-card {
+            background: rgba(30, 41, 59, 0.45);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            padding: 18px 22px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeSlideIn 0.5s ease both;
+            transition: 0.25s ease;
+        }
 
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        .rank-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-4px);
+        }
 
-/* Responsive */
-@media (max-width: 700px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-}
+        /* Podium */
+        .rank-card.gold {
+            border-color: gold;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .rank-card.silver {
+            border-color: silver;
+            background: rgba(192, 192, 192, 0.05);
+        }
+
+        .rank-card.bronze {
+            border-color: #cd7f32;
+            background: rgba(205, 127, 50, 0.05);
+        }
+
+        /* Utilisateur actuel */
+        .rank-card.current-user {
+            border-color: #2563eb;
+            background: rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .rank-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank-pos {
+            font-size: 22px;
+            font-weight: bold;
+            min-width: 50px;
+        }
+
+        .rank-medal {
+            font-size: 28px;
+        }
+
+        .rank-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .rank-name .you-tag {
+            color: #60a5fa;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .rank-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .rank-points {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .rank-games {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* ------------------------- */
+        /*       LOADING/ERROR       */
+        /* ------------------------- */
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* ------------------------- */
+        /*       BOUTON RETOUR       */
+        /* ------------------------- */
+
+        .back-button-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: rgba(37, 99, 235, 0.15);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            color: #60a5fa;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.25s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(37, 99, 235, 0.25);
+            border-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        /* ------------------------- */
+        /*       ANIMATION           */
+        /* ------------------------- */
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .ranking-header h1 {
+                font-size: 36px;
+            }
+
+            .user-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .rank-card {
+                padding: 16px 18px;
+            }
+
+            .rank-name {
+                font-size: 16px;
+            }
+
+            .rank-games {
+                display: none;
+            }
+        }
