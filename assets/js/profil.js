@@ -17,7 +17,7 @@ function switchTab(tabName) {
 // Les actions de confirmation (suppression, déconnexion) sont gérées
 // plus bas via des popups réutilisables (`showPopup` / `showConfirmPopup`).
 // header load
-fetch("header.html")
+fetch("header.php")
   .then((response) => response.text())
   .then((data) => {
     document.getElementById("header-placeholder").innerHTML = data;

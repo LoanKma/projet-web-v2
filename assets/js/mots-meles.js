@@ -1,7 +1,7 @@
 // assets/js/mots-meles.js
 
 // header load
-fetch("header.html")
+fetch("header.php")
   .then((response) => response.text())
   .then((data) => {
     document.getElementById("header-placeholder").innerHTML = data;
@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function generateAllLevels() {
   const grid = document.getElementById("levelsGrid");
   // Changement de la clé localStorage pour ne pas mélanger avec le Motus
-  const progress = JSON.parse(localStorage.getItem("motsMelesProgress") || "{}");
+  const progress = JSON.parse(
+    localStorage.getItem("motsMelesProgress") || "{}"
+  );
 
   grid.innerHTML = "";
 
@@ -285,7 +287,9 @@ function playLevel(levelId) {
 
 // Mettre à jour les statistiques de progression
 function updateProgressStats() {
-  const progress = JSON.parse(localStorage.getItem("motsMelesProgress") || "{}");
+  const progress = JSON.parse(
+    localStorage.getItem("motsMelesProgress") || "{}"
+  );
 
   let easyCount = 0,
     mediumCount = 0,

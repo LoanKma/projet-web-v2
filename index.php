@@ -181,13 +181,7 @@ requireLogin();
                     <i class="fa-solid fa-paper-plane"></i> Envoyer le message
                 </button>
             </form>
-        </div>
-        <!-- LOGOUT BUTTON -->
-        <div class="logout">
-        <a href="logout.php" class="btn btn-logout">
-                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
-            </a>
-    </div>
+       
 
 
          <!-- POPUP DE CONFIRMATION -->
@@ -202,8 +196,8 @@ requireLogin();
     </section>
 
     <script>
-       // header load
-      fetch("header.html")
+      // header load
+      fetch("header.php")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("header-placeholder").innerHTML = data;
