@@ -10,6 +10,9 @@ session_start();
     <title>Classement - Jeux de Lettres</title>
 </head>
 <body>
+    <!-- Particles background -->
+    <div class="particles" id="particles"></div>
+
     <div class="page-content">
         <div class="ranking-header">
             <div class="ranking-badge">
@@ -19,8 +22,17 @@ session_start();
             <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p>
         </div>
 
+        <!-- Podium pour le TOP 3 -->
+        <div class="podium-section" id="podium-section" style="display: none;">
+            <div class="podium-container" id="podium-container">
+                <!-- Le podium sera inséré ici par JavaScript -->
+            </div>
+        </div>
+
+        <!-- Carte position utilisateur -->
         <div id="user-position"></div>
 
+        <!-- Liste du classement (à partir de la 4ème place ou tout si pas de podium) -->
         <div class="ranking-list" id="leaderboard-content">
             <div class="loading">⏳ Chargement du classement...</div>
         </div>
@@ -33,11 +45,26 @@ session_start();
     </div>
 
     <script>
+        // Créer les particules de fond
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         async function loadClassement() {
             try {
                 const response = await fetch('php/get_classement.php', {
-                 method: "GET",
-                 credentials: "include", // OBLIGATOIRE
+                    method: "GET",
+                    credentials: "include",
                 });
                 const data = await response.json();
 
@@ -47,7 +74,7 @@ session_start();
                 }
 
                 displayUserPosition(data.user_position);
-                displayLeaderboard(data.top20, data.user_position.id_user);
+                displayPodiumAndLeaderboard(data.top20, data.user_position.id_user);
 
             } catch (error) {
                 showError('Erreur de connexion au serveur');
@@ -82,35 +109,87 @@ session_start();
             `;
         }
 
+        function displayPodiumAndLeaderboard(players, currentUserId) {
+            if (players.length === 0) {
+                document.getElementById('leaderboard-content').innerHTML = 
+                    '<div class="loading">Aucun joueur dans le classement</div>';
+                return;
+            }
+
+            // Afficher le podium pour le TOP 3
+            if (players.length >= 3) {
+                displayPodium(players.slice(0, 3));
+            }
+
+            // Afficher le reste de la liste (à partir de la 4ème place)
+            displayLeaderboard(players, currentUserId);
+        }
+
+        function displayPodium(top3) {
+            const podiumSection = document.getElementById('podium-section');
+            const podiumContainer = document.getElementById('podium-container');
+            
+            podiumSection.style.display = 'block';
+
+            // Réorganiser pour mettre 1er au centre : [2ème, 1er, 3ème]
+            const orderedPlayers = [top3[1], top3[0], top3[2]].filter(p => p);
+            
+            let html = '';
+            orderedPlayers.forEach((player, index) => {
+                const position = player.rang;
+                const positionClass = position === 1 ? 'first' : position === 2 ? 'second' : 'third';
+                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : '🥉';
+                const rankText = position === 1 ? '1ER' : position === 2 ? '2ÈME' : '3ÈME';
+                
+                // Initiale du pseudo pour l'avatar
+                const initial = player.pseudo.charAt(0).toUpperCase();
+
+                html += `
+                    <div class="podium-place ${positionClass}">
+                        <div class="podium-avatar-container">
+                            ${position === 1 ? '<div class="podium-crown">👑</div>' : ''}
+                            <div class="rays"></div>
+                            <div class="podium-avatar">
+                                ${initial}
+                            </div>
+                            ${position === 1 ? '<div class="medal-icon">🏆</div>' : ''}
+                        </div>
+                        <div class="podium-rank">${rankText}</div>
+                        <div class="podium-name">${escapeHtml(player.pseudo)}</div>
+                        <div class="podium-points">
+                            ${player.score_total.toLocaleString()} pts
+                        </div>
+                        <div class="podium-base">${position}</div>
+                    </div>
+                `;
+            });
+
+            podiumContainer.innerHTML = html;
+        }
+
         function displayLeaderboard(players, currentUserId) {
             const content = document.getElementById('leaderboard-content');
             
-            if (players.length === 0) {
-                content.innerHTML = '<div class="loading">Aucun joueur dans le classement</div>';
+            // Filtrer pour n'afficher que les joueurs à partir de la 4ème place
+            const listPlayers = players.filter(p => p.rang > 3);
+
+            if (listPlayers.length === 0) {
+                content.innerHTML = '';
                 return;
             }
 
             let html = '';
-            players.forEach((player, index) => {
+            listPlayers.forEach((player, index) => {
                 const isCurrentUser = player.id_user == currentUserId;
                 
                 let cardClass = '';
-                if (player.rang === 1) cardClass = 'gold';
-                else if (player.rang === 2) cardClass = 'silver';
-                else if (player.rang === 3) cardClass = 'bronze';
-                if (isCurrentUser) cardClass += ' current-user';
-
-                const medal = player.rang === 1 ? '🥇' : 
-                             player.rang === 2 ? '🥈' : 
-                             player.rang === 3 ? '🥉' : '';
+                if (isCurrentUser) cardClass = 'current-user';
 
                 html += `
                     <div class="rank-card ${cardClass}" style="animation-delay: ${index * 0.05}s">
                         <div class="rank-left">
-                            ${medal ? 
-                                `<span class="rank-medal">${medal}</span>` : 
-                                `<span class="rank-pos">#${player.rang}</span>`
-                            }
+                            <span class="rank-pos">#${player.rang}</span>
+                            <div class="rank-avatar">${player.pseudo.charAt(0).toUpperCase()}</div>
                             <span class="rank-name">
                                 ${escapeHtml(player.pseudo)}
                                 ${isCurrentUser ? '<span class="you-tag">(Vous)</span>' : ''}
@@ -138,7 +217,8 @@ session_start();
             return div.innerHTML;
         }
 
-        // Charger le classement au chargement de la page
+        // Initialisation
+        createParticles();
         loadClassement();
 
         // Rafraîchir toutes les 30 secondes
