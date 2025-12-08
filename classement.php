@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -32,7 +35,10 @@
     <script>
         async function loadClassement() {
             try {
-                const response = await fetch('get_classement.php');
+                const response = await fetch('php/get_classement.php', {
+                 method: "GET",
+                 credentials: "include", // OBLIGATOIRE
+                });
                 const data = await response.json();
 
                 if (!data.success) {
