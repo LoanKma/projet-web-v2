@@ -11,14 +11,36 @@
     <link rel="stylesheet" href="assets/css/profil.css" />
   </head>
   <body>
+    <?php
+    require_once 'php/auth.php';
+    require_once 'php/db.php';
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    requireLogin();
+
+    $userId = $_SESSION['user_id'];
+    $stmt = $pdo->prepare("SELECT pseudo, email, date_creation FROM utilisateurs WHERE id_user = ?");
+    $stmt->execute([$userId]);
+    $user = $stmt->fetch();
+
+    $pseudo = $user['pseudo'] ?? '';
+    $email = $user['email'] ?? '';
+    $memberSince = isset($user['date_creation']) ? date('F Y', strtotime($user['date_creation'])) : '';
+
+    $csrf = generateCSRFToken();
+    ?>
+
     <div id="header-placeholder"></div>
     <!-- HEADER -->
     <div class="user-header">
       <div class="header-content">
         <div class="user-avatare"><i class="fa-solid fa-user"></i></div>
         <div class="header-info">
-          <h1>LesBGduLobby</h1>
-          <p>Membre depuis novembre 2025</p>
+          <h1><?php echo htmlspecialchars($pseudo, ENT_QUOTES, 'UTF-8'); ?></h1>
+          <p>Membre depuis <?php echo htmlspecialchars($memberSince ?: 'inconnu', ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
         <div class="header-stats">
           <div class="header-stat">
@@ -158,19 +180,22 @@
             Modifiez vos informations personnelles
           </p>
 
-          <div class="form-group">
-            <label>Pseudo</label>
-            <input type="text" value="LesBGduLobby" />
-          </div>
+          <form method="POST" action="php/update_profile.php">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+            <div class="form-group">
+              <label>Pseudo</label>
+              <input type="text" name="pseudo" value="<?php echo htmlspecialchars($pseudo, ENT_QUOTES, 'UTF-8'); ?>" required />
+            </div>
 
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" value="LesBGduLobby@gmail.com" />
-          </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required />
+            </div>
 
-          <button class="save-btn" onclick="saveAccountInfo()">
-            <i class="fas fa-save"></i> Sauvegarder les modifications
-          </button>
+            <button class="save-btn" type="submit">
+              <i class="fas fa-save"></i> Sauvegarder les modifications
+            </button>
+          </form>
         </div>
 
         <!-- CHANGE PASSWORD -->
@@ -180,32 +205,29 @@
             Assurez-vous d'utiliser un mot de passe fort
           </p>
 
-          <div class="form-group">
-            <label>Mot de passe actuel</label>
-            <input type="password" placeholder="••••••••" />
-          </div>
+          <form method="POST" action="php/change_password.php">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+            <div class="form-group">
+              <label>Mot de passe actuel</label>
+              <input type="password" name="current_password" placeholder="••••••••" required />
+            </div>
 
-          <div class="form-group">
-            <label>Nouveau mot de passe</label>
-            <input type="password" placeholder="••••••••" />
-          </div>
+            <div class="form-group">
+              <label>Nouveau mot de passe</label>
+              <input type="password" name="new_password" placeholder="••••••••" required />
+            </div>
 
-          <div class="form-group">
-            <label>Confirmer le nouveau mot de passe</label>
-            <input type="password" placeholder="••••••••" />
-          </div>
+            <div class="form-group">
+              <label>Confirmer le nouveau mot de passe</label>
+              <input type="password" name="confirm_password" placeholder="••••••••" required />
+            </div>
 
-          <button class="save-btn" onclick="confirmChange()">
-            <i class="fas fa-key"></i> Modifier le mot de passe
-          </button>
+            <button class="save-btn" type="submit">
+              <i class="fas fa-key"></i> Modifier le mot de passe
+            </button>
+          </form>
         </div>
-        <?php
-require_once 'includes/auth.php';
-
-logout();
-header('Location: inscription.php');
-exit;
-?>
+        
         <!-- LOGOUT SECTION -->
         <div class="settings-section">
           <h2><i class="fas fa-sign-out-alt"></i> Déconnexion</h2>
@@ -213,15 +235,12 @@ exit;
             Vous serez redirigé vers la page de connexion
           </p>
 
-          <button logout
-            class="save-btn"
-            onclick="confirmLogout()"
-            style="
-              background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            "
-          >
-            <i class="fas fa-sign-out-alt"></i> Se déconnecter
-          </button>
+          <form method="POST" action="php/logout.php">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+            <button class="save-btn" type="submit" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
+              <i class="fas fa-sign-out-alt"></i> Se déconnecter
+            </button>
+          </form>
         </div>
 
         <!-- DANGER ZONE -->
@@ -231,9 +250,12 @@ exit;
             Cette action est irréversible. Toutes vos données seront
             définitivement supprimées.
           </p>
-          <button class="delete-btn" onclick="confirmDelete()">
-            <i class="fas fa-trash-alt"></i> Supprimer mon compte
-          </button>
+          <form method="POST" action="php/delete_account.php" onsubmit="return confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.');">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+            <button class="delete-btn" type="submit">
+              <i class="fas fa-trash-alt"></i> Supprimer mon compte
+            </button>
+          </form>
         </div>
       </div>
     </div>
