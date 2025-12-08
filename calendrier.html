@@ -90,11 +90,11 @@
       
     <script>
  // header load
- fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-            });
+ fetch('header.php')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
 
       // Variables globales
       let currentDate = new Date();

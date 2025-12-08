@@ -33,7 +33,7 @@
     $csrf = generateCSRFToken();
     ?>
 
-    <div id="header-placeholder"></div>
+    <?php include __DIR__ . '/header.php'; ?>
     <!-- HEADER -->
     <div class="user-header">
       <div class="header-content">
@@ -250,7 +250,7 @@
             Cette action est irréversible. Toutes vos données seront
             définitivement supprimées.
           </p>
-          <form method="POST" action="php/delete_account.php" onsubmit="return confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.');">
+          <form method="POST" action="php/delete_account.php">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
             <button class="delete-btn" type="submit">
               <i class="fas fa-trash-alt"></i> Supprimer mon compte
@@ -259,22 +259,6 @@
         </div>
       </div>
     </div>
-    <!-- POPUP CONFIRMATION -->
-    <div id="popupConfirm" class="popup-overlay">
-      <div class="popup-box">
-        <h3 id="popupTitle">Confirmation</h3>
-        <p id="popupMessage"></p>
-        <div class="popup-actions">
-          <button class="popup-btn cancel" onclick="closePopup()">
-            Annuler
-          </button>
-          <button class="popup-btn confirm" id="popupConfirmBtn">
-            Confirmer
-          </button>
-        </div>
-      </div>
-    </div>
-
     <script src="assets/js/profil.js"></script>
   </body>
   <div id="footer-placeholder"></div>
