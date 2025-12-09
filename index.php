@@ -189,7 +189,7 @@ requireLogin();
         <div class="popup">
             <div class="popup-icon">✓</div>
             <h2>Message envoyé !</h2>
-            <p>Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais en attendant profiter du jeu . ( man u second best team ever )</p>
+            <p>Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais en attendant profiter du jeu .</p>
             <button class="popup-btn" onclick="closePopup()">Fermer</button>
         </div>
     </div>
