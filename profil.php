@@ -171,95 +171,116 @@
         </div>
       </div>
 
-      <!-- SETTINGS TAB -->
-      <div id="settings" class="tab-content">
-        <!-- ACCOUNT INFORMATION -->
-        <div class="settings-section">
-          <h2><i class="fas fa-user"></i> Informations du compte</h2>
-          <p class="settings-subtitle">
-            Modifiez vos informations personnelles
-          </p>
+     <!-- SETTINGS TAB -->
+<div id="settings" class="tab-content">
+  <!-- ACCOUNT INFORMATION -->
+  <div class="settings-section">
+    <h2><i class="fas fa-user"></i> Informations du compte</h2>
+    <p class="settings-subtitle">
+      Modifiez vos informations personnelles
+    </p>
 
-          <form method="POST" action="php/update_profile.php">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
-            <div class="form-group">
-              <label>Pseudo</label>
-              <input type="text" name="pseudo" value="<?php echo htmlspecialchars($pseudo, ENT_QUOTES, 'UTF-8'); ?>" required />
-            </div>
-
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required />
-            </div>
-
-            <button class="save-btn" type="submit">
-              <i class="fas fa-save"></i> Sauvegarder les modifications
-            </button>
-          </form>
-        </div>
-
-        <!-- CHANGE PASSWORD -->
-        <div class="settings-section">
-          <h2><i class="fas fa-lock"></i> Changer de mot de passe</h2>
-          <p class="settings-subtitle">
-            Assurez-vous d'utiliser un mot de passe fort
-          </p>
-
-          <form method="POST" action="php/change_password.php">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
-            <div class="form-group">
-              <label>Mot de passe actuel</label>
-              <input type="password" name="current_password" placeholder="••••••••" required />
-            </div>
-
-            <div class="form-group">
-              <label>Nouveau mot de passe</label>
-              <input type="password" name="new_password" placeholder="••••••••" required />
-            </div>
-
-            <div class="form-group">
-              <label>Confirmer le nouveau mot de passe</label>
-              <input type="password" name="confirm_password" placeholder="••••••••" required />
-            </div>
-
-            <button class="save-btn" type="submit">
-              <i class="fas fa-key"></i> Modifier le mot de passe
-            </button>
-          </form>
-        </div>
-        
-        <!-- LOGOUT SECTION -->
-        <div class="settings-section">
-          <h2><i class="fas fa-sign-out-alt"></i> Déconnexion</h2>
-          <p class="settings-subtitle">
-            Vous serez redirigé vers la page de connexion
-          </p>
-
-          <form method="POST" action="php/logout.php">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
-            <button class="save-btn" type="submit" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
-              <i class="fas fa-sign-out-alt"></i> Se déconnecter
-            </button>
-          </form>
-        </div>
-
-        <!-- DANGER ZONE -->
-        <div class="danger-zone">
-          <h2><i class="fas fa-exclamation-triangle"></i> Zone dangereuse</h2>
-          <p>
-            Cette action est irréversible. Toutes vos données seront
-            définitivement supprimées.
-          </p>
-          <form method="POST" action="php/delete_account.php">
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
-            <button class="delete-btn" type="submit">
-              <i class="fas fa-trash-alt"></i> Supprimer mon compte
-            </button>
-          </form>
-        </div>
+    <form method="POST" action="php/update_profile.php" id="profileForm">
+      <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+      <div class="form-group">
+        <label>Pseudo</label>
+        <input type="text" name="pseudo" value="<?php echo htmlspecialchars($pseudo, ENT_QUOTES, 'UTF-8'); ?>" required />
       </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required />
+      </div>
+
+      <button class="save-btn" type="button" onclick="showConfirmModal('profile')">
+        <i class="fas fa-save"></i> Sauvegarder les modifications
+      </button>
+    </form>
+  </div>
+
+  <!-- CHANGE PASSWORD -->
+  <div class="settings-section">
+    <h2><i class="fas fa-lock"></i> Changer de mot de passe</h2>
+    <p class="settings-subtitle">
+      Assurez-vous d'utiliser un mot de passe fort
+    </p>
+
+    <form method="POST" action="php/change_password.php" id="passwordForm">
+      <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+      <div class="form-group">
+        <label>Mot de passe actuel</label>
+        <input type="password" name="current_password" placeholder="••••••••" required />
+      </div>
+
+      <div class="form-group">
+        <label>Nouveau mot de passe</label>
+        <input type="password" name="new_password" placeholder="••••••••" required />
+      </div>
+
+      <div class="form-group">
+        <label>Confirmer le nouveau mot de passe</label>
+        <input type="password" name="confirm_password" placeholder="••••••••" required />
+      </div>
+
+      <button class="save-btn" type="button" onclick="showConfirmModal('password')">
+        <i class="fas fa-key"></i> Modifier le mot de passe
+      </button>
+    </form>
+  </div>
+  
+  <!-- LOGOUT SECTION -->
+  <div class="settings-section">
+    <h2><i class="fas fa-sign-out-alt"></i> Déconnexion</h2>
+    <p class="settings-subtitle">
+      Vous serez redirigé vers la page de connexion
+    </p>
+
+    <form method="POST" action="php/logout.php" id="logoutForm">
+      <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+      <button class="save-btn" type="button" onclick="showConfirmModal('logout')" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
+        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+      </button>
+    </form>
+  </div>
+
+  <!-- DANGER ZONE -->
+  <div class="danger-zone">
+    <h2><i class="fas fa-exclamation-triangle"></i> Zone dangereuse</h2>
+    <p>
+      Cette action est irréversible. Toutes vos données seront
+      définitivement supprimées.
+    </p>
+    <form method="POST" action="php/delete_account.php" id="deleteForm">
+      <input type="hidden" name="csrf_token" value="<?php echo $csrf; ?>" />
+      <button class="delete-btn" type="button" onclick="showConfirmModal('delete')">
+        <i class="fas fa-trash-alt"></i> Supprimer mon compte
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMATION -->
+<div id="confirmModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <i id="modalIcon" class="fas fa-question-circle"></i>
+      <h3 id="modalTitle">Confirmation</h3>
     </div>
-    <script src="assets/js/profil.js"></script>
+    <div class="modal-body">
+      <p id="modalMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn cancel-btn" onclick="closeConfirmModal()">
+        <i class="fas fa-times"></i> Annuler
+      </button>
+      <button class="modal-btn confirm-btn" id="confirmButton">
+        <i class="fas fa-check"></i> Confirmer
+      </button>
+    </div>
+  </div>
+</div>
+
+ <script src="assets/js/profil.js"></script>
   </body>
   <div id="footer-placeholder"></div>
 </html>

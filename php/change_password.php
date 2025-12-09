@@ -23,6 +23,17 @@ $current = $_POST['current_password'] ?? '';
 $new = $_POST['new_password'] ?? '';
 $confirm = $_POST['confirm_password'] ?? '';
 
+if (empty($current) || empty($new) || empty($confirm)) {
+    header('Location: ../profil.php?error=' . urlencode('Tous les champs sont requis.'));
+    exit;
+}
+
+
+if ($current === $new) {
+    header('Location: ../profil.php?error=' . urlencode('Le nouveau mot de passe doit être différent de l\'actuel.'));
+    exit;
+}
+
 if (strlen($new) < 6) {
     header('Location: ../profil.php?error=' . urlencode('Le nouveau mot de passe doit contenir au moins 6 caractères.'));
     exit;
