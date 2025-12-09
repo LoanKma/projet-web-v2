@@ -280,7 +280,223 @@
   </div>
 </div>
 
- <script src="assets/js/profil.js"></script>
+<style>
+/* MODAL STYLES */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  margin: 15% auto;
+  padding: 0;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.modal-header i {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #fff;
+}
+
+.modal-body {
+  padding: 24px;
+  text-align: center;
+}
+
+.modal-body p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  padding: 20px 24px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancel-btn {
+  background: rgba(100, 116, 139, 0.2);
+  color: #cbd5e1;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.cancel-btn:hover {
+  background: rgba(100, 116, 139, 0.3);
+  transform: translateY(-2px);
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg,#2563eb 0%,#3b82f6 100%);
+  color: white;
+}
+
+.confirm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(22, 79, 249, 0.71);
+}
+
+.confirm-btn.danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.confirm-btn.danger:hover {
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Icon colors */
+.modal-header i.info { color: #3b82f6; }
+.modal-header i.warning { color: #f59e0b; }
+.modal-header i.danger { color: #ef4444; }
+.modal-header i.success { color: #10b981; }
+</style>
+
+<script>
+let currentFormId = '';
+
+const confirmMessages = {
+  profile: {
+    title: 'Modifier le profil',
+    message: 'Êtes-vous sûr de vouloir sauvegarder ces modifications à votre profil ?',
+    icon: 'fa-user-edit',
+    iconClass: 'info',
+    buttonClass: ''
+  },
+  password: {
+    title: 'Changer le mot de passe',
+    message: 'Êtes-vous sûr de vouloir modifier votre mot de passe ?',
+    icon: 'fa-key',
+    iconClass: 'warning',
+    buttonClass: ''
+  },
+  logout: {
+    title: 'Se déconnecter',
+    message: 'Êtes-vous sûr de vouloir vous déconnecter ? Vous serez redirigé vers la page de connexion.',
+    icon: 'fa-sign-out-alt',
+    iconClass: 'info',
+    buttonClass: ''
+  },
+  delete: {
+    title: 'Supprimer le compte',
+    message: '⚠️ ATTENTION : Cette action est irréversible ! Toutes vos données seront définitivement supprimées. Êtes-vous absolument certain de vouloir supprimer votre compte ?',
+    icon: 'fa-exclamation-triangle',
+    iconClass: 'danger',
+    buttonClass: 'danger'
+  }
+};
+
+function showConfirmModal(formType) {
+  const config = confirmMessages[formType];
+  const modal = document.getElementById('confirmModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const modalIcon = document.getElementById('modalIcon');
+  const confirmButton = document.getElementById('confirmButton');
+  
+  // Configuration du modal
+  modalTitle.textContent = config.title;
+  modalMessage.textContent = config.message;
+  modalIcon.className = `fas ${config.icon} ${config.iconClass}`;
+  
+  // Configuration du bouton de confirmation
+  confirmButton.className = `modal-btn confirm-btn ${config.buttonClass}`;
+  confirmButton.onclick = () => confirmAction(formType);
+  
+  // Stockage du form ID
+  currentFormId = formType + 'Form';
+  
+  // Affichage du modal
+  modal.style.display = 'block';
+}
+
+function closeConfirmModal() {
+  const modal = document.getElementById('confirmModal');
+  modal.style.display = 'none';
+  currentFormId = '';
+}
+
+function confirmAction(formType) {
+  const form = document.getElementById(currentFormId);
+  if (form) {
+    form.submit();
+  }
+  closeConfirmModal();
+}
+
+// Fermeture du modal en cliquant à l'extérieur
+window.onclick = function(event) {
+  const modal = document.getElementById('confirmModal');
+  if (event.target === modal) {
+    closeConfirmModal();
+  }
+}
+
+// Fermeture avec la touche Echap
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeConfirmModal();
+  }
+});
+</script>
+    <script src="assets/js/profil.js"></script>
   </body>
   <div id="footer-placeholder"></div>
 </html>
