@@ -106,6 +106,19 @@ $pseudo = isset($_SESSION['pseudo']) ? htmlspecialchars($_SESSION['pseudo'], ENT
     }
   }
 </style>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/classement.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title> Jeux de Lettres</title>
+</head>
+<body>
 
 <header class="header">
   <div class="logo">
@@ -131,3 +144,5 @@ $pseudo = isset($_SESSION['pseudo']) ? htmlspecialchars($_SESSION['pseudo'], ENT
     </div>
   </nav>
 </header>
+</body>
+</html>

@@ -7,16 +7,23 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/classement.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <title>Classement - Jeux de Lettres</title>
 </head>
 <body>
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div>
+
     <!-- Particles background -->
     <div class="particles" id="particles"></div>
 
     <div class="page-content">
         <div class="ranking-header">
             <div class="ranking-badge">
-                🏆 Classement Global
+                <i class="fa-solid fa-trophy"></i>  Classement Global
             </div>
             <h1>Classement</h1>
             <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p>
@@ -44,7 +51,23 @@ session_start();
         </div>
     </div>
 
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder"></div>
+
     <script>
+        // Load header and footer
+        fetch('header.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            });
+        
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+
         // Créer les particules de fond
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
