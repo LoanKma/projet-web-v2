@@ -7,8 +7,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/classement.css" />
-    <link
-      rel="stylesheet"
+    <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <title>Classement - Jeux de Lettres</title>
@@ -17,235 +16,148 @@ session_start();
     <!-- Header placeholder -->
     <div id="header-placeholder"></div>
 
-    <!-- Particles background -->
-    <div class="particles" id="particles"></div>
-
     <div class="page-content">
+
+        <!-- TITRE -->
         <div class="ranking-header">
             <div class="ranking-badge">
-                <i class="fa-solid fa-trophy"></i>  Classement Global
+                <i class="fa-solid fa-trophy"></i> Classement
             </div>
-            <h1>Classement</h1>
-            <p class="ranking-subtitle">Comparez vos performances avec les autres joueurs</p>
+
+            <h1>Classement Général</h1>
+            <p class="ranking-subtitle">Comparez vos performances avec les meilleurs joueurs</p>
         </div>
 
-        <!-- Podium pour le TOP 3 -->
-        <div class="podium-section" id="podium-section" style="display: none;">
-            <div class="podium-container" id="podium-container">
-                <!-- Le podium sera inséré ici par JavaScript -->
-            </div>
+        <!-- PODIUM 3D -->
+        <div class="podium-section" id="podium-content">
+            <div class="loading">Chargement du podium...</div>
         </div>
 
-        <!-- Carte position utilisateur -->
-        <div id="user-position"></div>
-
-        <!-- Liste du classement (à partir de la 4ème place ou tout si pas de podium) -->
+        <!-- LISTE DES AUTRES JOUEURS -->
         <div class="ranking-list" id="leaderboard-content">
-            <div class="loading">⏳ Chargement du classement...</div>
+            <!-- Liste générée par JS -->
         </div>
 
-        <div class="back-button-container">
-            <a href="index.php" class="back-button">
-                ← Retour à l'accueil
-            </a>
-        </div>
     </div>
 
     <!-- Footer placeholder -->
     <div id="footer-placeholder"></div>
 
-    <script>
-        // Load header and footer
-        fetch('header.php')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-            });
-        
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            });
+<script>
+    // Charger Header et Footer
+    fetch('header.php')
+        .then(r => r.text())
+        .then(html => document.getElementById('header-placeholder').innerHTML = html);
 
-        // Créer les particules de fond
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+    fetch('footer.html')
+        .then(r => r.text())
+        .then(html => document.getElementById('footer-placeholder').innerHTML = html);
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                particlesContainer.appendChild(particle);
+    async function loadClassement() {
+        try {
+            const res = await fetch('php/get_classement.php');
+            const data = await res.json();
+
+            if (!data.success) {
+                showError(data.message || "Erreur lors du chargement");
+                return;
             }
+
+            displayPodium(data.classement);
+            displayClassement(data.classement);
+
+        } catch (err) {
+            showError("Impossible de contacter le serveur");
+        }
+    }
+
+    function displayPodium(players) {
+        const container = document.getElementById('podium-content');
+        if (!players.length) return container.innerHTML = "";
+
+        const top3 = players.slice(0,3);
+        const first = top3[0] || null;
+        const second = top3[1] || null;
+        const third = top3[2] || null;
+
+        let html = `<div class="podium-container">`;
+
+        if(second){
+            html += `
+            <div class="podium-place second">
+                <div class="podium-avatar">${second.pseudo.charAt(0).toUpperCase()}</div>
+                <div class="podium-name">${escapeHtml(second.pseudo)}</div>
+                <div class="podium-points">${second.score_total} pts</div>
+                <div class="podium-base"></div>
+            </div>`;
         }
 
-        async function loadClassement() {
-            try {
-                const response = await fetch('php/get_classement.php', {
-                    method: "GET",
-                    credentials: "include",
-                });
-                const data = await response.json();
-
-                if (!data.success) {
-                    showError(data.message || 'Erreur lors du chargement');
-                    return;
-                }
-
-                displayUserPosition(data.user_position);
-                displayPodiumAndLeaderboard(data.top20, data.user_position.id_user);
-
-            } catch (error) {
-                showError('Erreur de connexion au serveur');
-                console.error(error);
-            }
+        if(first){
+            html += `
+            <div class="podium-place first">
+                <div class="rays"></div>
+                <div class="podium-avatar">${first.pseudo.charAt(0).toUpperCase()}</div>
+                <div class="podium-crown">👑</div>
+                <div class="podium-name">${escapeHtml(first.pseudo)}</div>
+                <div class="podium-points">${first.score_total} pts</div>
+                <div class="podium-base"></div>
+            </div>`;
         }
 
-        function displayUserPosition(user) {
-            const userDiv = document.getElementById('user-position');
-            
-            const medal = user.rang <= 3 ? 
-                (user.rang === 1 ? '🥇' : user.rang === 2 ? '🥈' : '🥉') : '';
-            
-            userDiv.innerHTML = `
-                <div class="user-card">
-                    <h2>${medal} Votre Position</h2>
-                    <div class="user-stats">
-                        <div class="stat-item">
-                            <div class="stat-value">#${user.rang}</div>
-                            <div class="stat-label">Classement</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${user.score_total.toLocaleString()}</div>
-                            <div class="stat-label">Score Total</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${user.nb_parties}</div>
-                            <div class="stat-label">Parties Jouées</div>
-                        </div>
+        if(third){
+            html += `
+            <div class="podium-place third">
+                <div class="podium-avatar">${third.pseudo.charAt(0).toUpperCase()}</div>
+                <div class="podium-name">${escapeHtml(third.pseudo)}</div>
+                <div class="podium-points">${third.score_total} pts</div>
+                <div class="podium-base"></div>
+            </div>`;
+        }
+
+        html += `</div>`;
+        container.innerHTML = html;
+    }
+
+    function displayClassement(players) {
+        const content = document.getElementById('leaderboard-content');
+        const remaining = players.slice(3);
+        if (!remaining.length) return content.innerHTML = "";
+
+        let html = "";
+        remaining.forEach((player,index) => {
+            html += `
+            <div class="rank-card" style="animation-delay:${(index+3)*0.05}s">
+                <div class="rank-left">
+                    <div class="rank-avatar">
+                        <i class="fa-solid fa-user"></i>
                     </div>
+                    <span class="rank-pos">#${player.rang}</span>
+                    <span class="rank-name">${escapeHtml(player.pseudo)}</span>
                 </div>
-            `;
-        }
+                <div class="rank-right">
+                    <span class="rank-points">${player.score_total} pts</span>
+                    <span class="rank-trend">${player.nb_parties} partie${player.nb_parties>1?"s":""}</span>
+                </div>
+            </div>`;
+        });
 
-        function displayPodiumAndLeaderboard(players, currentUserId) {
-            if (players.length === 0) {
-                document.getElementById('leaderboard-content').innerHTML = 
-                    '<div class="loading">Aucun joueur dans le classement</div>';
-                return;
-            }
+        content.innerHTML = html;
+    }
 
-            // Afficher le podium pour le TOP 3
-            if (players.length >= 3) {
-                displayPodium(players.slice(0, 3));
-            }
+    function showError(msg){
+        document.getElementById('podium-content').innerHTML = `<div class="error">${escapeHtml(msg)}</div>`;
+        document.getElementById('leaderboard-content').innerHTML = "";
+    }
 
-            // Afficher le reste de la liste (à partir de la 4ème place)
-            displayLeaderboard(players, currentUserId);
-        }
+    function escapeHtml(txt){
+        const div = document.createElement('div');
+        div.textContent = txt;
+        return div.innerHTML;
+    }
 
-        function displayPodium(top3) {
-            const podiumSection = document.getElementById('podium-section');
-            const podiumContainer = document.getElementById('podium-container');
-            
-            podiumSection.style.display = 'block';
+    loadClassement();
+    setInterval(loadClassement, 30000);
+</script>
 
-            // Réorganiser pour mettre 1er au centre : [2ème, 1er, 3ème]
-            const orderedPlayers = [top3[1], top3[0], top3[2]].filter(p => p);
-            
-            let html = '';
-            orderedPlayers.forEach((player, index) => {
-                const position = player.rang;
-                const positionClass = position === 1 ? 'first' : position === 2 ? 'second' : 'third';
-                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : '🥉';
-                const rankText = position === 1 ? '1ER' : position === 2 ? '2ÈME' : '3ÈME';
-                
-                // Initiale du pseudo pour l'avatar
-                const initial = player.pseudo.charAt(0).toUpperCase();
-
-                html += `
-                    <div class="podium-place ${positionClass}">
-                        <div class="podium-avatar-container">
-                            ${position === 1 ? '<div class="podium-crown">👑</div>' : ''}
-                            <div class="rays"></div>
-                            <div class="podium-avatar">
-                                ${initial}
-                            </div>
-                            ${position === 1 ? '<div class="medal-icon">🏆</div>' : ''}
-                        </div>
-                        <div class="podium-rank">${rankText}</div>
-                        <div class="podium-name">${escapeHtml(player.pseudo)}</div>
-                        <div class="podium-points">
-                            ${player.score_total.toLocaleString()} pts
-                        </div>
-                        <div class="podium-base">${position}</div>
-                    </div>
-                `;
-            });
-
-            podiumContainer.innerHTML = html;
-        }
-
-        function displayLeaderboard(players, currentUserId) {
-            const content = document.getElementById('leaderboard-content');
-            
-            // Filtrer pour n'afficher que les joueurs à partir de la 4ème place
-            const listPlayers = players.filter(p => p.rang > 3);
-
-            if (listPlayers.length === 0) {
-                content.innerHTML = '';
-                return;
-            }
-
-            let html = '';
-            listPlayers.forEach((player, index) => {
-                const isCurrentUser = player.id_user == currentUserId;
-                
-                let cardClass = '';
-                if (isCurrentUser) cardClass = 'current-user';
-
-                html += `
-                    <div class="rank-card ${cardClass}" style="animation-delay: ${index * 0.05}s">
-                        <div class="rank-left">
-                            <span class="rank-pos">#${player.rang}</span>
-                            <div class="rank-avatar">${player.pseudo.charAt(0).toUpperCase()}</div>
-                            <span class="rank-name">
-                                ${escapeHtml(player.pseudo)}
-                                ${isCurrentUser ? '<span class="you-tag">(Vous)</span>' : ''}
-                            </span>
-                        </div>
-                        <div class="rank-right">
-                            <span class="rank-points">${player.score_total.toLocaleString()} pts</span>
-                            <span class="rank-games">${player.nb_parties} partie${player.nb_parties > 1 ? 's' : ''}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            content.innerHTML = html;
-        }
-
-        function showError(message) {
-            const content = document.getElementById('leaderboard-content');
-            content.innerHTML = `<div class="error">❌ ${escapeHtml(message)}</div>`;
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Initialisation
-        createParticles();
-        loadClassement();
-
-        // Rafraîchir toutes les 30 secondes
-        setInterval(loadClassement, 30000);
-    </script>
 </body>
 </html>
