@@ -125,21 +125,21 @@ session_start();
 
         let html = "";
         remaining.forEach((player,index) => {
-            html += `
-            <div class="rank-card" style="animation-delay:${(index+3)*0.05}s">
-                <div class="rank-left">
-                    <div class="rank-avatar">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <span class="rank-pos">#${player.rang}</span>
-                    <span class="rank-name">${escapeHtml(player.pseudo)}</span>
-                </div>
-                <div class="rank-right">
-                    <span class="rank-points">${player.score_total} pts</span>
-                    <span class="rank-trend">${player.nb_parties} partie${player.nb_parties>1?"s":""}</span>
-                </div>
-            </div>`;
-        });
+    html += `
+    <div class="rank-card" style="animation-delay:${(index+3)*0.05}s">
+        <div class="rank-left">
+            <div class="rank-avatar rank-number">
+                ${player.rang}
+            </div>
+            <span class="rank-pos">#${player.rang}</span>
+            <span class="rank-name">${escapeHtml(player.pseudo)}</span>
+        </div>
+        <div class="rank-right">
+            <span class="rank-points">${player.score_total} pts</span>
+            <span class="rank-trend">${player.nb_parties} partie${player.nb_parties>1?"s":""}</span>
+        </div>
+    </div>`;
+});
 
         content.innerHTML = html;
     }
