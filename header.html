@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- Header static fallback — please use header.php instead. -->
+<div class="header-fallback">
+  <a href="index.php">Letterix</a>
+  <span><a href="inscription.php">Se connecter</a></span>
+</div>
+        font-weight: 700;
+        font-size: 30px;
+      }
+      .logo-icon a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .nav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+      .nav a {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 16px;
+        transition: opacity 0.4s;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: opacity 0.4s;
+      }
+
+      .nav-item:hover {
+        opacity: 0.8;
+      }
+      .user-section {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 20px;
+        background: rgba(14, 165, 233, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(14, 165, 233, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .user-section:hover {
+        background: rgba(14, 165, 233, 0.2);
+        border-color: rgba(14, 165, 233, 0.5);
+      }
+      .user-avatar {
+        font-size: 30px;
+        color: #2563eb;
+      }
+      /* Responsive */
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          gap: 20px;
+          padding: 20px 30px;
+        }
+        .nav {
+          gap: 20px;
+        }
+      }
+    </style>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon"><a href="index.php">L</a></div>
+        <span>Letterix</span>
+      </div>
+      <nav class="nav">
+        <div class="nav-item">
+          <span><i class="fa-solid fa-ranking-star"></i></span>
+          <span><a href="classement.php">Classements</a></span>
+        </div>
+        <div class="nav-item">
+          <span><i class="fa-solid fa-calendar-days"></i></span>
+          <span><a href="calendrier.html">Calendrier</a></span>
+        </div>
+        <div class="user-section">
+          <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
+          <span><a href="profil.html">LesBGduLobby</a></span>
+        </div>
+      </nav>
+    </header>
+  </body>
+</html>
