@@ -268,6 +268,11 @@
     </div>
     <div class="modal-body">
       <p id="modalMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+      <!-- Champ mot de passe uniquement pour la suppression -->
+      <div id="passwordFieldContainer" style="display: none; margin-top: 20px;">
+        <label for="deleteConfirmPassword" style="display: block; margin-bottom: 8px; font-weight: 500;">Entrez votre mot de passe pour confirmer :</label>
+        <input type="password" id="deleteConfirmPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;" />
+      </div>
     </div>
     <div class="modal-footer">
       <button class="modal-btn cancel-btn" onclick="closeConfirmModal()">
@@ -304,7 +309,7 @@
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   margin: 15% auto;
   padding: 0;
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(36, 47, 253, 0.62);
   border-radius: 16px;
   width: 90%;
   max-width: 450px;
@@ -326,7 +331,7 @@
 .modal-header {
   padding: 24px;
   text-align: center;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  border-bottom: 1px solid rgba(36, 47, 253, 0.62);
 }
 
 .modal-header i {
@@ -450,6 +455,8 @@ function showConfirmModal(formType) {
   const modalMessage = document.getElementById('modalMessage');
   const modalIcon = document.getElementById('modalIcon');
   const confirmButton = document.getElementById('confirmButton');
+  const passwordFieldContainer = document.getElementById('passwordFieldContainer');
+  const deleteConfirmPassword = document.getElementById('deleteConfirmPassword');
   
   // Configuration du modal
   modalTitle.textContent = config.title;
@@ -458,13 +465,57 @@ function showConfirmModal(formType) {
   
   // Configuration du bouton de confirmation
   confirmButton.className = `modal-btn confirm-btn ${config.buttonClass}`;
-  confirmButton.onclick = () => confirmAction(formType);
+  
+  // Afficher le champ mot de passe seulement pour la suppression
+  if (formType === 'delete') {
+    passwordFieldContainer.style.display = 'block';
+    deleteConfirmPassword.value = '';
+    deleteConfirmPassword.focus();
+    confirmButton.onclick = () => deleteAccountWithPassword();
+  } else {
+    passwordFieldContainer.style.display = 'none';
+    confirmButton.onclick = () => confirmAction(formType);
+  }
   
   // Stockage du form ID
   currentFormId = formType + 'Form';
   
   // Affichage du modal
   modal.style.display = 'block';
+}
+
+function deleteAccountWithPassword() {
+  const password = document.getElementById('deleteConfirmPassword').value;
+  
+  if (!password) {
+    alert('Veuillez entrer votre mot de passe');
+    return;
+  }
+  
+  // Envoyer la requête avec le mot de passe
+  const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+  
+  fetch('php/delete_account_with_password.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'csrf_token=' + encodeURIComponent(csrfToken) + '&password=' + encodeURIComponent(password)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert('Votre compte a été supprimé avec succès. Vous serez redirigé vers la page d\'accueil.');
+      window.location.href = 'inscription.php';
+    } else {
+      alert('Erreur : ' + (data.message || 'Le mot de passe est incorrect.'));
+      document.getElementById('deleteConfirmPassword').value = '';
+    }
+  })
+  .catch(error => {
+    console.error('Erreur:', error);
+    alert('Une erreur est survenue lors de la suppression du compte.');
+  });
 }
 
 function closeConfirmModal() {
