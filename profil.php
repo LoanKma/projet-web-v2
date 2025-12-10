@@ -272,6 +272,7 @@
       <div id="passwordFieldContainer" style="display: none; margin-top: 20px;">
         <label for="deleteConfirmPassword" style="display: block; margin-bottom: 8px; font-weight: 500;">Entrez votre mot de passe pour confirmer :</label>
         <input type="password" id="deleteConfirmPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;" />
+        <div id="deleteErrorMessage" style="display: none; margin-top: 12px; padding: 12px; border-radius: 5px; font-size: 14px; background-color: #fee2e2; color: #dc2626; border-left: 4px solid #dc2626;"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -486,9 +487,15 @@ function showConfirmModal(formType) {
 
 function deleteAccountWithPassword() {
   const password = document.getElementById('deleteConfirmPassword').value;
+  const errorMessageDiv = document.getElementById('deleteErrorMessage');
+  
+  // Réinitialiser le message d'erreur
+  errorMessageDiv.style.display = 'none';
+  errorMessageDiv.textContent = '';
   
   if (!password) {
-    alert('Veuillez entrer votre mot de passe');
+    errorMessageDiv.textContent = '⚠️ Veuillez entrer votre mot de passe';
+    errorMessageDiv.style.display = 'block';
     return;
   }
   
@@ -505,16 +512,23 @@ function deleteAccountWithPassword() {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      alert('Votre compte a été supprimé avec succès. Vous serez redirigé vers la page d\'accueil.');
-      window.location.href = 'inscription.php';
+      // Fermer le modal et afficher le message de succès
+      closeConfirmModal();
+      alert('Votre compte a été supprimé avec succès. Vous serez redirigé vers la page de connexion.');
+      setTimeout(() => {
+        window.location.href = 'inscription.php';
+      }, 1000);
     } else {
-      alert('Erreur : ' + (data.message || 'Le mot de passe est incorrect.'));
+      // Afficher le message d'erreur stylé
+      errorMessageDiv.textContent = '❌ ' + (data.message || 'Le mot de passe est incorrect.');
+      errorMessageDiv.style.display = 'block';
       document.getElementById('deleteConfirmPassword').value = '';
     }
   })
   .catch(error => {
     console.error('Erreur:', error);
-    alert('Une erreur est survenue lors de la suppression du compte.');
+    errorMessageDiv.textContent = '❌ Une erreur est survenue lors de la suppression du compte.';
+    errorMessageDiv.style.display = 'block';
   });
 }
 
