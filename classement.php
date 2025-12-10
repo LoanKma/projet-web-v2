@@ -131,7 +131,7 @@ session_start();
             <div class="rank-avatar rank-number">
                 ${player.rang}
             </div>
-            <span class="rank-pos">#${player.rang}</span>
+            
             <span class="rank-name">${escapeHtml(player.pseudo)}</span>
         </div>
         <div class="rank-right">
