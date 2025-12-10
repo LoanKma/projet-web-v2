@@ -36,7 +36,7 @@
     $statsQuery = "
         SELECT 
             COUNT(DISTINCT p.id_partie) as niveaux_completes,
-            COALESCE(SUM(p.score_obtenu), 0) as etoiles_totales,
+            COALESCE(SUM(p.score_obtenu), 0) as score_total,
             COALESCE(SUM(p.temps_passe), 0) as temps_total,
             COALESCE(MIN(p.temps_passe), 0) as meilleur_temps
         FROM parties p
@@ -47,7 +47,7 @@
     $stats = $stmt->fetch();
 
     $niveauxCompletes = $stats['niveaux_completes'] ?? 0;
-    $etoilesTotales = $stats['etoiles_totales'] ?? 0;
+    $scoreTotal = $stats['score_total'] ?? 0;
     $tempsTotal = $stats['temps_total'] ?? 0;
     $meilleurTemps = $stats['meilleur_temps'] ?? 0;
 
@@ -69,8 +69,8 @@
     $difficultyQuery = "
         SELECT 
             d.nom_difficulte,
-            COUNT(DISTINCT p.id_partie) as nombre_parties,
-            COALESCE(SUM(p.score_obtenu), 0) as etoiles
+            COUNT(DISTINCT p.id_partie) as niveaux_completes,
+            COALESCE(SUM(p.score_obtenu), 0) as score_total
         FROM parties p
         INNER JOIN difficultes d ON p.id_niveau = d.id_difficulte
         WHERE p.id_user = ? AND p.score_obtenu > 0
@@ -83,9 +83,9 @@
 
     // Organiser les stats par difficulté
     $statsDifficulte = [
-        'facile' => ['parties' => 0, 'etoiles' => 0],
-        'moyen' => ['parties' => 0, 'etoiles' => 0],
-        'difficile' => ['parties' => 0, 'etoiles' => 0]
+        'facile' => ['niveaux' => 0, 'score' => 0],
+        'moyen' => ['niveaux' => 0, 'score' => 0],
+        'difficile' => ['niveaux' => 0, 'score' => 0]
     ];
 
     // Mapper les noms de difficulté de la BDD vers les clés utilisées
@@ -94,14 +94,14 @@
         
         // Correspondance des noms possibles
         if (in_array($nomDiff, ['facile', 'easy', 'débutant'])) {
-            $statsDifficulte['facile']['parties'] = $stat['nombre_parties'];
-            $statsDifficulte['facile']['etoiles'] = $stat['etoiles'];
+            $statsDifficulte['facile']['niveaux'] = $stat['niveaux_completes'];
+            $statsDifficulte['facile']['score'] = $stat['score_total'];
         } elseif (in_array($nomDiff, ['moyen', 'medium', 'intermédiaire', 'normal'])) {
-            $statsDifficulte['moyen']['parties'] = $stat['nombre_parties'];
-            $statsDifficulte['moyen']['etoiles'] = $stat['etoiles'];
+            $statsDifficulte['moyen']['niveaux'] = $stat['niveaux_completes'];
+            $statsDifficulte['moyen']['score'] = $stat['score_total'];
         } elseif (in_array($nomDiff, ['difficile', 'hard', 'expert'])) {
-            $statsDifficulte['difficile']['parties'] = $stat['nombre_parties'];
-            $statsDifficulte['difficile']['etoiles'] = $stat['etoiles'];
+            $statsDifficulte['difficile']['niveaux'] = $stat['niveaux_completes'];
+            $statsDifficulte['difficile']['score'] = $stat['score_total'];
         }
     }
 
@@ -159,8 +159,8 @@
           <div class="stat-card">
             <div class="stat-icon yellow"><i class="fa-solid fa-star"></i></div>
             <div class="stat-info">
-              <h3>Étoiles totales</h3>
-              <div class="stat-value"><?php echo $etoilesTotales; ?></div>
+              <h3>Score total</h3>
+              <div class="stat-value"><?php echo number_format($scoreTotal, 0, ',', ' '); ?></div>
             </div>
           </div>
 
@@ -196,12 +196,12 @@
             </div>
             <div class="difficulty-stats">
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['facile']['parties']; ?></div>
+                <div class="difficulty-stat-label">Niveaux</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['facile']['niveaux']; ?></div>
               </div>
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['facile']['etoiles']; ?></div>
+                <div class="difficulty-stat-label">Score</div>
+                <div class="difficulty-stat-value"><?php echo number_format($statsDifficulte['facile']['score'], 0, ',', ' '); ?></div>
               </div>
             </div>
           </div>
@@ -215,12 +215,12 @@
             </div>
             <div class="difficulty-stats">
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['moyen']['parties']; ?></div>
+                <div class="difficulty-stat-label">Niveaux</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['moyen']['niveaux']; ?></div>
               </div>
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['moyen']['etoiles']; ?></div>
+                <div class="difficulty-stat-label">Score</div>
+                <div class="difficulty-stat-value"><?php echo number_format($statsDifficulte['moyen']['score'], 0, ',', ' '); ?></div>
               </div>
             </div>
           </div>
@@ -234,18 +234,18 @@
             </div>
             <div class="difficulty-stats">
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['difficile']['parties']; ?></div>
+                <div class="difficulty-stat-label">Niveaux</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['difficile']['niveaux']; ?></div>
               </div>
               <div class="difficulty-stat">
-                <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value"><?php echo $statsDifficulte['difficile']['etoiles']; ?></div>
+                <div class="difficulty-stat-label">Score</div>
+                <div class="difficulty-stat-value"><?php echo number_format($statsDifficulte['difficile']['score'], 0, ',', ' '); ?></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
+      
      <!-- SETTINGS TAB -->
 <div id="settings" class="tab-content">
   <!-- ACCOUNT INFORMATION -->
