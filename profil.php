@@ -22,6 +22,8 @@
     requireLogin();
 
     $userId = $_SESSION['user_id'];
+    
+    // Récupérer les informations utilisateur
     $stmt = $pdo->prepare("SELECT pseudo, email, date_creation FROM utilisateurs WHERE id_user = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch();
@@ -29,6 +31,79 @@
     $pseudo = $user['pseudo'] ?? '';
     $email = $user['email'] ?? '';
     $memberSince = isset($user['date_creation']) ? date('F Y', strtotime($user['date_creation'])) : '';
+
+    // Récupérer les statistiques globales
+    $statsQuery = "
+        SELECT 
+            COUNT(DISTINCT p.id_partie) as niveaux_completes,
+            COALESCE(SUM(p.score_obtenu), 0) as etoiles_totales,
+            COALESCE(SUM(p.temps_passe), 0) as temps_total,
+            COALESCE(MIN(p.temps_passe), 0) as meilleur_temps
+        FROM parties p
+        WHERE p.id_user = ? AND p.score_obtenu > 0
+    ";
+    $stmt = $pdo->prepare($statsQuery);
+    $stmt->execute([$userId]);
+    $stats = $stmt->fetch();
+
+    $niveauxCompletes = $stats['niveaux_completes'] ?? 0;
+    $etoilesTotales = $stats['etoiles_totales'] ?? 0;
+    $tempsTotal = $stats['temps_total'] ?? 0;
+    $meilleurTemps = $stats['meilleur_temps'] ?? 0;
+
+    // Formater le temps total (en heures et minutes)
+    $heures = floor($tempsTotal / 3600);
+    $minutes = floor(($tempsTotal % 3600) / 60);
+    $tempsFormate = $heures . "h " . $minutes . "m";
+
+    // Formater le meilleur temps (en minutes et secondes)
+    if ($meilleurTemps > 0) {
+        $minutesMeilleur = floor($meilleurTemps / 60);
+        $secondesMeilleur = $meilleurTemps % 60;
+        $meilleurTempsFormate = $minutesMeilleur . ":" . str_pad($secondesMeilleur, 2, '0', STR_PAD_LEFT);
+    } else {
+        $meilleurTempsFormate = '-';
+    }
+
+    // Récupérer les stats par difficulté
+    $difficultyQuery = "
+        SELECT 
+            d.nom_difficulte,
+            COUNT(DISTINCT p.id_partie) as nombre_parties,
+            COALESCE(SUM(p.score_obtenu), 0) as etoiles
+        FROM parties p
+        INNER JOIN difficultes d ON p.id_niveau = d.id_difficulte
+        WHERE p.id_user = ? AND p.score_obtenu > 0
+        GROUP BY d.id_difficulte, d.nom_difficulte
+        ORDER BY d.id_difficulte ASC
+    ";
+    $stmt = $pdo->prepare($difficultyQuery);
+    $stmt->execute([$userId]);
+    $difficultyStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Organiser les stats par difficulté
+    $statsDifficulte = [
+        'facile' => ['parties' => 0, 'etoiles' => 0],
+        'moyen' => ['parties' => 0, 'etoiles' => 0],
+        'difficile' => ['parties' => 0, 'etoiles' => 0]
+    ];
+
+    // Mapper les noms de difficulté de la BDD vers les clés utilisées
+    foreach ($difficultyStats as $stat) {
+        $nomDiff = strtolower($stat['nom_difficulte']);
+        
+        // Correspondance des noms possibles
+        if (in_array($nomDiff, ['facile', 'easy', 'débutant'])) {
+            $statsDifficulte['facile']['parties'] = $stat['nombre_parties'];
+            $statsDifficulte['facile']['etoiles'] = $stat['etoiles'];
+        } elseif (in_array($nomDiff, ['moyen', 'medium', 'intermédiaire', 'normal'])) {
+            $statsDifficulte['moyen']['parties'] = $stat['nombre_parties'];
+            $statsDifficulte['moyen']['etoiles'] = $stat['etoiles'];
+        } elseif (in_array($nomDiff, ['difficile', 'hard', 'expert'])) {
+            $statsDifficulte['difficile']['parties'] = $stat['nombre_parties'];
+            $statsDifficulte['difficile']['etoiles'] = $stat['etoiles'];
+        }
+    }
 
     $csrf = generateCSRFToken();
     ?>
@@ -44,8 +119,8 @@
         </div>
         <div class="header-stats">
           <div class="header-stat">
-            <span class="header-stat-value">999</span>
-            <span class="header-stat-label">Niveau </span>
+            <span class="header-stat-value"><?php echo $niveauxCompletes; ?></span>
+            <span class="header-stat-label">Niveau<?php echo $niveauxCompletes > 1 ? 's' : ''; ?> </span>
           </div>
           <div class="header-stat"></div>
         </div>
@@ -76,8 +151,8 @@
               <i class="fa-solid fa-circle-check"></i>
             </div>
             <div class="stat-info">
-              <h3>Niveaux complétées</h3>
-              <div class="stat-value">999</div>
+              <h3>Niveaux complétés</h3>
+              <div class="stat-value"><?php echo $niveauxCompletes; ?></div>
             </div>
           </div>
 
@@ -85,7 +160,7 @@
             <div class="stat-icon yellow"><i class="fa-solid fa-star"></i></div>
             <div class="stat-info">
               <h3>Étoiles totales</h3>
-              <div class="stat-value">67</div>
+              <div class="stat-value"><?php echo $etoilesTotales; ?></div>
             </div>
           </div>
 
@@ -95,7 +170,7 @@
             </div>
             <div class="stat-info">
               <h3>Temps de jeu</h3>
-              <div class="stat-value">2h 34m</div>
+              <div class="stat-value"><?php echo $tempsFormate; ?></div>
             </div>
           </div>
 
@@ -105,7 +180,7 @@
             </div>
             <div class="stat-info">
               <h3>Meilleur temps</h3>
-              <div class="stat-value">4:23</div>
+              <div class="stat-value"><?php echo $meilleurTempsFormate; ?></div>
             </div>
           </div>
         </div>
@@ -122,11 +197,11 @@
             <div class="difficulty-stats">
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value">12</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['facile']['parties']; ?></div>
               </div>
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value">34</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['facile']['etoiles']; ?></div>
               </div>
             </div>
           </div>
@@ -141,11 +216,11 @@
             <div class="difficulty-stats">
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value">8</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['moyen']['parties']; ?></div>
               </div>
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value">22</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['moyen']['etoiles']; ?></div>
               </div>
             </div>
           </div>
@@ -160,11 +235,11 @@
             <div class="difficulty-stats">
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Parties</div>
-                <div class="difficulty-stat-value">4</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['difficile']['parties']; ?></div>
               </div>
               <div class="difficulty-stat">
                 <div class="difficulty-stat-label">Étoiles</div>
-                <div class="difficulty-stat-value">11</div>
+                <div class="difficulty-stat-value"><?php echo $statsDifficulte['difficile']['etoiles']; ?></div>
               </div>
             </div>
           </div>
