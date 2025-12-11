@@ -257,11 +257,25 @@ function deleteLetter() {
 
 // Valider le mot
 function validateWord() {
+  // 1. Vérifier si le mot est complet (déjà présent dans ton code)
   if (currentCol !== WORD_LENGTH) {
+    // Optionnel : ajouter une petite alerte visuelle si mot incomplet
+    showPopup("Mot incomplet !", "Erreur", 1000); 
     return;
   }
 
   const guess = attempts[currentRow].join("");
+
+  // --- NOUVEAU CODE A AJOUTER ICI ---
+  
+  // 2. Vérifier si le mot existe dans le dictionnaire
+  // On vérifie si la variable DICTIONNAIRE existe (pour éviter les bugs si le fichier n'est pas chargé)
+  if (typeof DICTIONNAIRE !== 'undefined' && !isWordInDictionary(guess)) {
+      // Le mot n'existe pas : on secoue la ligne
+      shakeRow(currentRow);
+      showPopup(`Le mot "${guess}" n'est pas dans le dictionnaire.`, "Inconnu");
+      return; // On arrête la fonction ici, on ne valide pas la ligne
+  }
 
   // Colorer les cellules
   for (let i = 0; i < WORD_LENGTH; i++) {
@@ -879,4 +893,17 @@ function getGameStats(gameType) {
       bestScores: {},
     }
   );
+}
+
+// Fonction pour faire trembler la ligne (Feedback visuel d'erreur)
+function shakeRow(row) {
+    const rowDiv = document.querySelector(`.grid-row:nth-child(${row + 1})`);
+    
+    // Ajouter la classe shake
+    rowDiv.classList.add('shake');
+    
+    // Retirer la classe après l'animation (500ms) pour pouvoir le refaire
+    setTimeout(() => {
+        rowDiv.classList.remove('shake');
+    }, 500);
 }
