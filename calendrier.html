@@ -20,20 +20,20 @@
       <div class="streak-banner">
         <div class="streak-content">
           <div class="streak-flame">🔥</div>
-          <div class="streak-number" id="streakNumber">7</div>
+          <div class="streak-number" id="streakNumber">0</div>
           <div class="streak-label">jours de série !</div>
 
           <div class="streak-info">
             <div class="streak-stat">
-              <div class="streak-stat-value" id="totalDays">45</div>
+              <div class="streak-stat-value" id="totalDays">0</div>
               <div class="streak-stat-label">Jours totaux</div>
             </div>
             <div class="streak-stat">
-              <div class="streak-stat-value" id="longestStreak">12</div>
+              <div class="streak-stat-value" id="longestStreak">0</div>
               <div class="streak-stat-label">Meilleure série</div>
             </div>
             <div class="streak-stat">
-              <div class="streak-stat-value" id="thisMonth">18</div>
+              <div class="streak-stat-value" id="thisMonth">0</div>
               <div class="streak-stat-label">Ce mois-ci</div>
             </div>
           </div>
@@ -99,23 +99,52 @@
       // Variables globales
       let currentDate = new Date();
 
-      // Données simulées - À remplacer par ton backend
-      const completedDays = [
-        "2024-11-19",
-        "2024-11-20",
-        "2024-11-21",
-        "2024-11-22",
-        "2024-11-23",
-        "2024-11-24",
-        "2024-11-25",
-        "2024-11-15",
-        "2024-11-14",
-        "2024-11-10",
-        "2024-11-08",
-        "2024-11-05",
-        "2024-11-03",
-        "2024-11-01",
-      ];
+      // completedDays will be rempli depuis le backend (fenêtre 24h)
+      let completedDays = [];
+
+      // Charge les données de séries depuis le backend
+      async function loadStreaks() {
+        try {
+          const res = await fetch('php/get_streaks.php', { credentials: 'include' });
+          if (!res.ok) {
+            console.error('Erreur lors du chargement des séries');
+            return;
+          }
+          const data = await res.json();
+          console.log('Données reçues:', data); // Debug
+          
+          // data.activity_dates : array of 'YYYY-MM-DD'
+          completedDays = data.activity_dates || [];
+
+          // Mettre à jour les compteurs
+          document.getElementById('streakNumber').textContent = data.current || 0;
+          document.getElementById('totalDays').textContent = completedDays.length;
+          document.getElementById('longestStreak').textContent = data.best || 0;
+
+          // Calculer "Ce mois-ci" en fonction du mois actuellement affiché
+          updateThisMonthCount();
+
+          // Mettre à jour la vue du calendrier
+          renderCalendar();
+        } catch (err) {
+          console.error('Erreur loadStreaks', err);
+        }
+      }
+
+      // Fonction pour calculer le nombre de jours du mois affiché
+      function updateThisMonthCount() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        const thisMonthCount = completedDays.filter(d => {
+          const parts = d.split('-');
+          const dateYear = parseInt(parts[0], 10);
+          const dateMonth = parseInt(parts[1], 10) - 1; // Les mois en JS commencent à 0
+          return dateYear === year && dateMonth === month;
+        }).length;
+        
+        document.getElementById('thisMonth').textContent = thisMonthCount;
+      }
 
       function renderCalendar() {
         const year = currentDate.getFullYear();
@@ -139,6 +168,9 @@
         document.getElementById(
           "currentMonth"
         ).textContent = `${monthNames[month]} ${year}`;
+
+        // Mettre à jour le compteur "Ce mois-ci"
+        updateThisMonthCount();
 
         // Premier jour du mois et nombre de jours
         const firstDay = new Date(year, month, 1);
@@ -242,7 +274,12 @@
           "Décembre",
         ];
 
-       
+        const dateStr = `${day} ${monthNames[month]} ${year}`;
+        const message = isCompleted 
+          ? `✅ Tu as joué le ${dateStr} !` 
+          : `❌ Aucune partie le ${dateStr}`;
+        
+        alert(message);
       }
 
       function previousMonth() {
@@ -256,12 +293,10 @@
       }
 
       function goBack() {
-        const msg = "Retour à l'accueil";
-        if (typeof showPopup === 'function') showPopup(msg, 'Info');
-        else alert(msg);
+        window.location.href = 'index.php';
       }
 
-      // Calcul du streak actuel
+      // Calcul du streak actuel (non utilisé mais gardé pour référence)
       function calculateStreak() {
         const today = new Date();
         const sortedDays = completedDays
@@ -285,6 +320,7 @@
 
         return streak;
       }
+      
       // footer load
       fetch('footer.html')
             .then(response => response.text())
@@ -293,11 +329,7 @@
             });
 
       // Initialisation
-      renderCalendar();
-
-      // Mettre à jour le streak affiché
-      const currentStreak = calculateStreak();
-      document.getElementById("streakNumber").textContent = currentStreak;
+      loadStreaks();
     </script>
     <!-- FOOTER LOAD -->
     <div id="footer-placeholder"></div>
