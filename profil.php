@@ -32,13 +32,13 @@
     $email = $user['email'] ?? '';
     $memberSince = isset($user['date_creation']) ? date('F Y', strtotime($user['date_creation'])) : '';
 
-    // Récupérer les statistiques globales
+    // Récupérer les statistiques globales (CORRIGÉ)
     $statsQuery = "
         SELECT 
-            COUNT(DISTINCT p.id_partie) as niveaux_completes,
+            COUNT(DISTINCT CONCAT(p.id_niveau, '-', COALESCE(p.numero_niveau, 0))) as niveaux_completes,
             COALESCE(SUM(p.score_obtenu), 0) as score_total,
             COALESCE(SUM(p.temps_passe), 0) as temps_total,
-            COALESCE(MIN(p.temps_passe), 0) as meilleur_temps
+            COALESCE(MIN(CASE WHEN p.temps_passe > 0 THEN p.temps_passe END), 0) as meilleur_temps
         FROM parties p
         WHERE p.id_user = ? AND p.score_obtenu > 0
     ";
@@ -46,10 +46,10 @@
     $stmt->execute([$userId]);
     $stats = $stmt->fetch();
 
-    $niveauxCompletes = $stats['niveaux_completes'] ?? 0;
-    $scoreTotal = $stats['score_total'] ?? 0;
-    $tempsTotal = $stats['temps_total'] ?? 0;
-    $meilleurTemps = $stats['meilleur_temps'] ?? 0;
+    $niveauxCompletes = (int)($stats['niveaux_completes'] ?? 0);
+    $scoreTotal = (int)($stats['score_total'] ?? 0);
+    $tempsTotal = (int)($stats['temps_total'] ?? 0);
+    $meilleurTemps = (int)($stats['meilleur_temps'] ?? 0);
 
     // Formater le temps total (en heures et minutes)
     $heures = floor($tempsTotal / 3600);
@@ -65,15 +65,23 @@
         $meilleurTempsFormate = '-';
     }
 
-    // Récupérer les stats par difficulté
+    // Récupérer les stats par difficulté (CORRIGÉ)
     $difficultyQuery = "
         SELECT 
             d.nom_difficulte,
-            COUNT(DISTINCT p.id_partie) as niveaux_completes,
+            d.id_difficulte,
+            COUNT(DISTINCT 
+                CASE 
+                    WHEN p.id_partie IS NOT NULL 
+                    THEN CONCAT(p.id_niveau, '-', COALESCE(p.numero_niveau, 0))
+                    ELSE NULL 
+                END
+            ) as niveaux_completes,
             COALESCE(SUM(p.score_obtenu), 0) as score_total
-        FROM parties p
-        INNER JOIN difficultes d ON p.id_niveau = d.id_difficulte
-        WHERE p.id_user = ? AND p.score_obtenu > 0
+        FROM difficultes d
+        LEFT JOIN parties p ON d.id_difficulte = p.id_niveau 
+            AND p.id_user = ? 
+            AND p.score_obtenu > 0
         GROUP BY d.id_difficulte, d.nom_difficulte
         ORDER BY d.id_difficulte ASC
     ";
@@ -88,20 +96,23 @@
         'difficile' => ['niveaux' => 0, 'score' => 0]
     ];
 
-    // Mapper les noms de difficulté de la BDD vers les clés utilisées
+    // Mapper les noms de difficulté de la BDD vers les clés utilisées (CORRIGÉ)
     foreach ($difficultyStats as $stat) {
-        $nomDiff = strtolower($stat['nom_difficulte']);
+        $nomDiff = strtolower(trim($stat['nom_difficulte']));
+        
+        $niveaux = (int)$stat['niveaux_completes'];
+        $score = (int)$stat['score_total'];
         
         // Correspondance des noms possibles
-        if (in_array($nomDiff, ['facile', 'easy', 'débutant'])) {
-            $statsDifficulte['facile']['niveaux'] = $stat['niveaux_completes'];
-            $statsDifficulte['facile']['score'] = $stat['score_total'];
-        } elseif (in_array($nomDiff, ['moyen', 'medium', 'intermédiaire', 'normal'])) {
-            $statsDifficulte['moyen']['niveaux'] = $stat['niveaux_completes'];
-            $statsDifficulte['moyen']['score'] = $stat['score_total'];
-        } elseif (in_array($nomDiff, ['difficile', 'hard', 'expert'])) {
-            $statsDifficulte['difficile']['niveaux'] = $stat['niveaux_completes'];
-            $statsDifficulte['difficile']['score'] = $stat['score_total'];
+        if (in_array($nomDiff, ['facile', 'easy', 'débutant', 'beginner'])) {
+            $statsDifficulte['facile']['niveaux'] = $niveaux;
+            $statsDifficulte['facile']['score'] = $score;
+        } elseif (in_array($nomDiff, ['moyen', 'medium', 'intermédiaire', 'normal', 'intermediate'])) {
+            $statsDifficulte['moyen']['niveaux'] = $niveaux;
+            $statsDifficulte['moyen']['score'] = $score;
+        } elseif (in_array($nomDiff, ['difficile', 'hard', 'expert', 'difficulty'])) {
+            $statsDifficulte['difficile']['niveaux'] = $niveaux;
+            $statsDifficulte['difficile']['score'] = $score;
         }
     }
 
@@ -109,6 +120,7 @@
     ?>
 
     <?php include __DIR__ . '/header.php'; ?>
+    
     <!-- HEADER -->
     <div class="user-header">
       <div class="header-content">
@@ -245,7 +257,7 @@
           </div>
         </div>
       </div>
-      
+
      <!-- SETTINGS TAB -->
 <div id="settings" class="tab-content">
   <!-- ACCOUNT INFORMATION -->
@@ -602,7 +614,7 @@ function deleteAccountWithPassword() {
   })
   .catch(error => {
     console.error('Erreur:', error);
-    errorMessageDiv.textContent = '❌ Une erreur est survenue lors de la suppression du compte.';
+    errorMessageDiv.textContent = '❌ Une erreur est survenue . Actualisez la page pour etre redirigé .';
     errorMessageDiv.style.display = 'block';
   });
 }
