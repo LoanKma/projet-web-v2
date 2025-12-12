@@ -3,6 +3,37 @@ require_once 'php/db.php';
 require_once 'php/auth.php';
 
 requireLogin();
+
+// Récupérer les stats de l'utilisateur connecté
+$userId = $_SESSION['user_id'];
+try {
+    // Nombre de parties jouées
+    $stmtParties = $pdo->prepare("SELECT COUNT(*) as total FROM parties WHERE id_user = ?");
+    $stmtParties->execute([$userId]);
+    $totalParties = $stmtParties->fetch(PDO::FETCH_ASSOC)['total'];
+    
+    // Niveaux complétés
+    $stmtLevels = $pdo->prepare("SELECT COUNT(DISTINCT CONCAT(id_jeu, '_', numero_niveau)) as total FROM parties WHERE id_user = ? AND score_obtenu > 0");
+    $stmtLevels->execute([$userId]);
+    $completedLevels = $stmtLevels->fetch(PDO::FETCH_ASSOC)['total'];
+    
+    // Score total
+    $stmtScore = $pdo->prepare("SELECT score_total FROM utilisateurs WHERE id_user = ?");
+    $stmtScore->execute([$userId]);
+    $totalScore = $stmtScore->fetch(PDO::FETCH_ASSOC)['score_total'] ?? 0;
+    
+    // Meilleur temps
+    $stmtBest = $pdo->prepare("SELECT MIN(temps_passe) as best FROM parties WHERE id_user = ? AND score_obtenu > 0");
+    $stmtBest->execute([$userId]);
+    $bestTime = $stmtBest->fetch(PDO::FETCH_ASSOC)['best'] ?? 0;
+    $bestTimeFormatted = $bestTime > 0 ? sprintf("%d:%02d", floor($bestTime/60), $bestTime%60) : "0:00";
+    
+} catch (Exception $e) {
+    $totalParties = 0;
+    $completedLevels = 0;
+    $totalScore = 0;
+    $bestTimeFormatted = "0:00";
+}
 ?>
 
 
@@ -76,20 +107,20 @@ requireLogin();
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-number" id="gamesPlayed">127</div>
+          <div class="stat-number" id="gamesPlayed"><?php echo $totalParties; ?></div>
           <div class="stat-label">Parties jouées</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="winRate">89%</div>
-          <div class="stat-label">Taux de réussite</div>
+          <div class="stat-number" id="levelCompleted"><?php echo $completedLevels; ?></div>
+          <div class="stat-label">Niveaux complétés</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="currentStreak">15</div>
-          <div class="stat-label">Série actuelle</div>
+          <div class="stat-number" id="totalScore"><?php echo $totalScore; ?></div>
+          <div class="stat-label">Score total</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="bestStreak">42</div>
-          <div class="stat-label">Meilleure série</div>
+          <div class="stat-number" id="bestTime"><?php echo $bestTimeFormatted; ?></div>
+          <div class="stat-label">Meilleur temps</div>
         </div>
       </div>
     </div>
@@ -223,23 +254,31 @@ requireLogin();
       // Animer les statistiques au chargement
       function animateStats() {
         const stats = [
-          { id: "gamesPlayed", target: 127 },
-          { id: "winRate", target: 89, suffix: "%" },
-          { id: "currentStreak", target: 15 },
-          { id: "bestStreak", target: 42 },
+          { id: "gamesPlayed", target: parseInt(document.getElementById("gamesPlayed")?.textContent || 0) },
+          { id: "levelCompleted", target: parseInt(document.getElementById("levelCompleted")?.textContent || 0) },
+          { id: "totalScore", target: parseInt(document.getElementById("totalScore")?.textContent || 0) },
+          { id: "bestTime", isTime: true },
         ];
 
         stats.forEach((stat) => {
           const element = document.getElementById(stat.id);
+          if (!element) return;
+
+          if (stat.isTime) {
+            // Format time is already "m:ss", no animation needed
+            return;
+          }
+
+          const target = stat.target;
           let current = 0;
-          const increment = stat.target / 50;
+          const increment = target / 50;
           const timer = setInterval(() => {
             current += increment;
-            if (current >= stat.target) {
-              current = stat.target;
+            if (current >= target) {
+              current = target;
               clearInterval(timer);
             }
-            element.textContent = Math.floor(current) + (stat.suffix || "");
+            element.textContent = Math.floor(current);
           }, 20);
         });
       }
