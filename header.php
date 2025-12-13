@@ -132,7 +132,7 @@ $pseudo = isset($_SESSION['pseudo']) ? htmlspecialchars($_SESSION['pseudo'], ENT
     </div>
     <div class="nav-item">
       <span><i class="fa-solid fa-calendar-days"></i></span>
-      <span><a href="calendrier.html">Calendrier</a></span>
+      <span><a href="calendrier.php">Calendrier</a></span>
     </div>
     <div class="user-section">
       <div class="user-avatar"><i class="fa-solid fa-circle-user"></i></div>
