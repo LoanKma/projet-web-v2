@@ -17,12 +17,12 @@ try {
     $stmt->execute([$userId]);
     $rows = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // Convert to unix timestamps (descending order)
+    // Conversion en timestamps Unix (ordre décroissant)
     $timestamps = array_map(function ($d) {
         return strtotime($d);
     }, $rows);
 
-    // Build buckets: one bucket represents a period separated from previous bucket by > 24h
+    // Construire des "buckets" : un bucket représente une période séparée du précédent par > 24h
     $buckets = [];
     foreach ($timestamps as $ts) {
         if (empty($buckets)) {
@@ -31,13 +31,13 @@ try {
         }
         $last = $buckets[count($buckets) - 1];
         if (($last - $ts) > 86400) {
-            // more than 24 hours from last bucket -> new bucket
+            // plus de 24 heures depuis le dernier bucket -> nouveau bucket
             $buckets[] = $ts;
         }
-        // otherwise skip (same 24h window as the last bucket)
+        // sinon ignorer (même fenêtre de 24h que le dernier bucket)
     }
 
-    // Current streak (sliding 24h): starts only if latest bucket is within last 24h
+    // Série actuelle (fenêtre glissante 24h) : commence seulement si le dernier bucket est dans les dernières 24h
     $now = time();
     $current = 0;
     if (count($buckets) > 0 && ($now - $buckets[0]) <= 86400) {
@@ -51,7 +51,7 @@ try {
         }
     }
 
-    // Best streak: find the longest run of consecutive buckets separated by <=24h
+    // Meilleure série : trouver la plus longue suite de buckets consécutifs séparés par <=24h
     $best = 0;
     if (count($buckets) > 0) {
         $temp = 1;
@@ -66,7 +66,7 @@ try {
         if ($temp > $best) $best = $temp;
     }
 
-    // Activity dates for calendar marking (unique YYYY-MM-DD)
+    // Dates d'activité pour marquer le calendrier (format unique YYYY-MM-DD)
     $activity_dates = [];
     foreach ($rows as $d) {
         $dt = new DateTime($d);
