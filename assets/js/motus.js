@@ -1,4 +1,17 @@
-// motus.js
+// Variable globale
+let CURRENT_USER_ID = "guest";
+
+// Fonction pour récupérer l'identité
+async function initSession() {
+    try {
+        const response = await fetch('api/get_user.php');
+        const data = await response.json();
+        CURRENT_USER_ID = data.userId;
+        console.log("Menu Motus chargé pour :", CURRENT_USER_ID);
+    } catch (e) {
+        CURRENT_USER_ID = "guest";
+    }
+}
 // header load
 fetch("header.php")
   .then((response) => response.text())
@@ -121,15 +134,36 @@ const MOTUS_LEVELS = {
 let currentFilter = "easy";
 
 // Charger tous les niveaux au démarrage
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1. On attend la session
+  await initSession(); 
+  
+  // 2. On génère les niveaux et la progression
   generateAllLevels();
   updateProgressStats();
+
+  // 3. AJOUTS : On met à jour les scores et les étoiles MAINTENANT
+  updateAllLevelScores("motus");
+  displayGlobalStats("motus");
+  
+  // On lance manuellement la mise à jour des étoiles
+  document.querySelectorAll(".level-card").forEach((card) => {
+      const levelId = parseInt(card.getAttribute("data-level-id"));
+      const difficulty = card.getAttribute("data-difficulty");
+      if (levelId && difficulty) {
+        updateLevelStars(card, "motus", difficulty, levelId);
+      }
+  });
 });
+
 
 // Générer tous les niveaux
 function generateAllLevels() {
   const grid = document.getElementById("levelsGrid");
-  const progress = JSON.parse(localStorage.getItem("motusProgress") || "{}");
+  
+  //ajoute l'ID à la clé
+  const storageKey = `motusProgress_${CURRENT_USER_ID}`;
+  const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
   grid.innerHTML = "";
 
@@ -247,7 +281,8 @@ function playLevel(levelId) {
 
 // Mettre à jour les statistiques de progression
 function updateProgressStats() {
-  const progress = JSON.parse(localStorage.getItem("motusProgress") || "{}");
+  const storageKey = `motusProgress_${CURRENT_USER_ID}`;
+  const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
   let easyCount = 0,
     mediumCount = 0,
@@ -267,11 +302,11 @@ function updateProgressStats() {
   document.getElementById("hardProgress").textContent = `${hardCount}/6`;
 }
 
-// Script pour afficher les scores sur les cartes de niveaux
-
 // Fonction pour récupérer le meilleur score d'un niveau
 function getLevelBestScore(gameType, difficulty, levelId) {
-  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  // MODIFICATION ICI : On utilise l'ID de l'utilisateur
+  const storageKey = `gameScores_${CURRENT_USER_ID}`;
+  const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
   if (!allScores[gameType] || !allScores[gameType].bestScores) {
     return null;
@@ -338,7 +373,10 @@ function displayGlobalStats(gameType) {
 
   if (!statsContainer) return;
 
-  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  // MODIFICATION ICI : On utilise l'ID de l'utilisateur
+  const storageKey = `gameScores_${CURRENT_USER_ID}`;
+  const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  
   const gameStats = allScores[gameType] || {
     totalPoints: 0,
     gamesPlayed: 0,
@@ -419,24 +457,3 @@ function updateLevelStars(card, gameType, difficulty, levelId) {
 
   starsContainer.innerHTML = starsHTML;
 }
-
-// Initialisation après le chargement du DOM
-document.addEventListener("DOMContentLoaded", () => {
-  // Charger les scores après un court délai pour s'assurer que tout est chargé
-  setTimeout(() => {
-    updateAllLevelScores("motus");
-
-    // Mettre à jour les étoiles
-    document.querySelectorAll(".level-card").forEach((card) => {
-      const levelId = parseInt(card.getAttribute("data-level-id"));
-      const difficulty = card.getAttribute("data-difficulty");
-
-      if (levelId && difficulty) {
-        updateLevelStars(card, "motus", difficulty, levelId);
-      }
-    });
-
-    // Afficher les stats globales si le conteneur existe
-    displayGlobalStats("motus");
-  }, 100);
-});

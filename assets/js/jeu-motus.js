@@ -1,4 +1,18 @@
-// Charger `main.js` si nécessaire (fournit `showPopup`/`showConfirmPopup`)
+// Variable globale
+let CURRENT_USER_ID = "guest";
+
+// Fonction pour récupérer l'identité
+async function initSession() {
+    try {
+        const response = await fetch('api/get_user.php');
+        const data = await response.json();
+        CURRENT_USER_ID = data.userId;
+        console.log("Menu Motus chargé pour :", CURRENT_USER_ID);
+    } catch (e) {
+        CURRENT_USER_ID = "guest";
+    }
+}
+
 if (typeof showPopup !== "function") {
   (function () {
     const s = document.createElement("script");
@@ -348,7 +362,9 @@ function validateWord() {
 
 // Sauvegarder la progression
 function saveProgress(levelId, time) {
-  const progress = JSON.parse(localStorage.getItem("motusProgress") || "{}");
+  // MODIFICATION ICI : Clé dynamique
+  const storageKey = `motusProgress_${CURRENT_USER_ID}`;
+  const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
   if (!progress[levelId] || time < progress[levelId].bestTime) {
     progress[levelId] = {
@@ -359,7 +375,8 @@ function saveProgress(levelId, time) {
     };
   }
 
-  localStorage.setItem("motusProgress", JSON.stringify(progress));
+  // SAUVEGARDE ICI AUSSI
+  localStorage.setItem(storageKey, JSON.stringify(progress));
 }
 
 // Mettre à jour le compteur de tentatives
@@ -637,9 +654,13 @@ function restartLevel() {
 }
 
 // Initialisation
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   console.log("Début initialisation Motus...");
 
+  // 1. On attend de savoir QUI est connecté avant de lancer le jeu
+  await initSession(); 
+
+  // 2. Ensuite on lance le reste normalement
   loadLevel();
   console.log("Mot cible:", TARGET_WORD, "Longueur:", WORD_LENGTH);
 
@@ -681,8 +702,9 @@ function calculateScore(difficulty, timeSeconds, attempts, completed) {
 
 // Fonction pour sauvegarder le score (Modifiée pour BDD)
 function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
-  // Récupérer les scores existants (localStorage)
-  const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+  // MODIFICATION ICI : Clé dynamique
+  const storageKey = `gameScores_${CURRENT_USER_ID}`;
+  const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
   // Initialiser le jeu s'il n'existe pas
   if (!allScores[gameType]) {
@@ -713,14 +735,10 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
       date: new Date().toISOString(),
     };
   }
-
-  // Sauvegarder dans localStorage
-  localStorage.setItem("gameScores", JSON.stringify(allScores));
+  localStorage.setItem(storageKey, JSON.stringify(allScores));
 
   // --- NOUVEAU : ENVOI VERS LA BASE DE DONNÉES ---
-  // Appelle le fichier PHP que nous avons créé
   envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
-  // -----------------------------------------------
 
   return {
     currentScore: score,

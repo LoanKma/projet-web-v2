@@ -1,4 +1,17 @@
-// assets/js/jeu-mots-meles.js
+// Variable globale pour l'utilisateur
+let CURRENT_USER_ID = "guest";
+
+// Fonction pour identifier le joueur
+async function initSession() {
+    try {
+        const response = await fetch('api/get_user.php');
+        const data = await response.json();
+        CURRENT_USER_ID = data.userId;
+        console.log("Jeu Mots-Mêlés lancé pour :", CURRENT_USER_ID);
+    } catch (e) {
+        CURRENT_USER_ID = "guest";
+    }
+}
 
 // Charger `main.js` si nécessaire
 if (typeof showPopup !== "function") {
@@ -450,19 +463,21 @@ function checkWin() {
     }
 }
 
-// Sauvegarder la progression
 function saveProgress(levelId, time) {
-    const progress = JSON.parse(localStorage.getItem("motsMelesProgress") || "{}");
-  
+    // On utilise une clé unique pour ce joueur pour les Mots Mêlés
+    const storageKey = `motsMelesProgress_${CURRENT_USER_ID}`;
+    
+    // On lit la progression de CE joueur
+    const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
     if (!progress[levelId] || time < progress[levelId].bestTime) {
-      progress[levelId] = {
-        completed: true,
-        bestTime: time,
-        completedAt: Date.now(),
-      };
+        progress[levelId] = {
+            completed: true,
+            bestTime: time,
+        };
     }
-  
-    localStorage.setItem("motsMelesProgress", JSON.stringify(progress));
+
+    localStorage.setItem(storageKey, JSON.stringify(progress));
 }
 
 // Mettre à jour les stats affichées
@@ -567,17 +582,25 @@ function loadLevelInfo() {
   }
 }
 
-// Initialisation
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Début initialisation Mots Mêlés...");
+// Initialisation du jeu
+document.addEventListener("DOMContentLoaded", async () => {
+    // 1. On attend de savoir qui joue
+    await initSession();
 
-  loadLevel();
-  generateGrid();
-  initGameInterface();
-  loadLevelInfo();
-  startTimer();
+    // 2. On charge les infos du niveau (quel mot chercher ?)
+    loadLevel();
 
-  console.log("Initialisation terminée");
+    // 3. On génère la grille de lettres (Logique)
+    // C'était ça qu'il manquait !
+    generateGrid(); 
+
+    // 4. On dessine la grille à l'écran (Visuel)
+    // C'était ça aussi !
+    initGameInterface();
+
+    // 5. On lance le reste
+    startTimer();
+    loadLevelInfo();
 });
 
 
@@ -603,7 +626,8 @@ function calculateScore(difficulty, timeSeconds) {
 
 // Fonction pour sauvegarder le score (API PHP incluse)
 function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
-    const allScores = JSON.parse(localStorage.getItem("gameScores") || "{}");
+    const storageKey = `gameScores_${CURRENT_USER_ID}`;
+    const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
   
     if (!allScores[gameType]) {
       allScores[gameType] = {
@@ -632,10 +656,12 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
       };
     }
   
-    localStorage.setItem("gameScores", JSON.stringify(allScores));
+    localStorage.setItem(storageKey, JSON.stringify(allScores));
   
     // Envoi BDD
-    envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
+    if (typeof envoyerScoreBDD === "function") {
+        envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
+    }
   
     return {
       currentScore: score,
