@@ -119,7 +119,7 @@ Mise à jour régulière des tâches et commits
 
 Projet réalisé par :
 - Moussa Keita  ( https://github.com/moussa197 )
-- Maxime Luneau
+- Maxime Luneau ( https://github.com/max13003 )
 - Kenny Yan Bukuru
-- Loan Roinel 
+- Loan Roinel ( https://github.com/LoanKma )
 
