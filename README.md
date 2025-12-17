@@ -113,6 +113,8 @@ Travail en équipe de 4 personnes
 
 Mise à jour régulière des tâches et commits
 
+une réunion journalière pour parler de l'avancement des tâches 
+
 ---
 
 ## 🚀 Équipe 
@@ -120,6 +122,6 @@ Mise à jour régulière des tâches et commits
 Projet réalisé par :
 - Moussa Keita  ( https://github.com/moussa197 )
 - Maxime Luneau ( https://github.com/max13003 )
-- Kenny Yan Bukuru
+- Kenny Yan Bukuru ( https://github.com/bukuru2006 )
 - Loan Roinel ( https://github.com/LoanKma )
 
