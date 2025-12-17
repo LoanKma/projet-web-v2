@@ -118,7 +118,7 @@ Mise à jour régulière des tâches et commits
 ## 🚀 Équipe 
 
 Projet réalisé par :
-- Moussa Keita
+- Moussa Keita  ( https://github.com/moussa197 )
 - Maxime Luneau
 - Kenny Yan Bukuru
 - Loan Roinel 
