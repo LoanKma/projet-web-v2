@@ -62,8 +62,9 @@
                             <th>Utilisateur</th>
                             <th>Email</th>
                             <th>Date d'inscription</th>
+                            <th>Rôle</th>
                             <th>Statut</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,8 +77,14 @@
                             </td>
                             <td>marie.dupont@email.com</td>
                             <td>15 Nov 2024</td>
-                            <td><span class="score-badge">Actif</span></td>
-                            <td><button class="action-btn" onclick="deleteUser('Marie Dupont')">Supprimer</button></td>
+                            <td>
+                                <select class="role-select" onchange="changeRole('Marie Dupont', this.value)">
+                                    <option value="joueur" selected>👤 Joueur</option>
+                                    <option value="admin">👑 Admin</option>
+                                </select>
+                            </td>
+                            <td><span class="status-badge">Actif</span></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Marie Dupont')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -88,8 +95,14 @@
                             </td>
                             <td>pierre.laurent@email.com</td>
                             <td>10 Nov 2024</td>
-                            <td><span class="score-badge">Actif</span></td>
-                            <td><button class="action-btn" onclick="deleteUser('Pierre Laurent')">Supprimer</button></td>
+                            <td>
+                                <select class="role-select" onchange="changeRole('Pierre Laurent', this.value)">
+                                    <option value="joueur">👤 Joueur</option>
+                                    <option value="admin" selected>👑 Admin</option>
+                                </select>
+                            </td>
+                            <td><span class="status-badge">Actif</span></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Pierre Laurent')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -100,8 +113,14 @@
                             </td>
                             <td>sophie.bernard@email.com</td>
                             <td>05 Nov 2024</td>
-                            <td><span class="score-badge">Actif</span></td>
-                            <td><button class="action-btn" onclick="deleteUser('Sophie Bernard')">Supprimer</button></td>
+                            <td>
+                                <select class="role-select" onchange="changeRole('Sophie Bernard', this.value)">
+                                    <option value="joueur" selected>👤 Joueur</option>
+                                    <option value="admin">👑 Admin</option>
+                                </select>
+                            </td>
+                            <td><span class="status-badge">Actif</span></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Sophie Bernard')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td>
@@ -112,8 +131,14 @@
                             </td>
                             <td>lucas.martin@email.com</td>
                             <td>01 Nov 2024</td>
-                            <td><span class="score-badge">Actif</span></td>
-                            <td><button class="action-btn" onclick="deleteUser('Lucas Martin')">Supprimer</button></td>
+                            <td>
+                                <select class="role-select" onchange="changeRole('Lucas Martin', this.value)">
+                                    <option value="joueur" selected>👤 Joueur</option>
+                                    <option value="admin">👑 Admin</option>
+                                </select>
+                            </td>
+                            <td><span class="status-badge">Actif</span></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Lucas Martin')">Supprimer</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,7 +175,7 @@
                             <td><span class="score-badge">8,542</span></td>
                             <td>156</td>
                             <td>987</td>
-                            <td><button class="action-btn" onclick="deleteUser('Marie Dupont')">Supprimer</button></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Marie Dupont')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td><strong>🥈 2</strong></td>
@@ -163,7 +188,7 @@
                             <td><span class="score-badge">7,891</span></td>
                             <td>143</td>
                             <td>945</td>
-                            <td><button class="action-btn" onclick="deleteUser('Pierre Laurent')">Supprimer</button></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Pierre Laurent')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td><strong>🥉 3</strong></td>
@@ -176,7 +201,7 @@
                             <td><span class="score-badge">6,734</span></td>
                             <td>128</td>
                             <td>892</td>
-                            <td><button class="action-btn" onclick="deleteUser('Sophie Bernard')">Supprimer</button></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Sophie Bernard')">Supprimer</button></td>
                         </tr>
                         <tr>
                             <td><strong>4</strong></td>
@@ -189,7 +214,7 @@
                             <td><span class="score-badge">5,923</span></td>
                             <td>112</td>
                             <td>856</td>
-                            <td><button class="action-btn" onclick="deleteUser('Lucas Martin')">Supprimer</button></td>
+                            <td><button class="action-btn delete-btn" onclick="deleteUser('Lucas Martin')">Supprimer</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -205,6 +230,18 @@
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal()">Annuler</button>
                 <button class="btn-confirm" onclick="confirmDelete()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Change Confirmation Modal -->
+    <div id="roleModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-header">🔄 Changer le rôle</h2>
+            <p class="modal-text">Voulez-vous changer le rôle de <strong id="roleUserName"></strong> en <strong id="newRoleName"></strong> ?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeRoleModal()">Annuler</button>
+                <button class="btn-confirm btn-role-confirm" onclick="confirmRoleChange()">Confirmer</button>
             </div>
         </div>
     </div>
