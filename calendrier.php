@@ -1,3 +1,42 @@
+<?php
+require_once 'php/db.php';
+require_once 'php/auth.php';
+
+requireLogin();
+
+// Récupérer les stats de l'utilisateur connecté
+$userId = $_SESSION['user_id'];
+try {
+    // Nombre de parties jouées
+    $stmtParties = $pdo->prepare("SELECT COUNT(*) as total FROM parties WHERE id_user = ?");
+    $stmtParties->execute([$userId]);
+    $totalParties = $stmtParties->fetch(PDO::FETCH_ASSOC)['total'];
+    
+    // Niveaux complétés
+    $stmtLevels = $pdo->prepare("SELECT COUNT(DISTINCT CONCAT(id_jeu, '_', numero_niveau)) as total FROM parties WHERE id_user = ? AND score_obtenu > 0");
+    $stmtLevels->execute([$userId]);
+    $completedLevels = $stmtLevels->fetch(PDO::FETCH_ASSOC)['total'];
+    
+    // Score total
+    $stmtScore = $pdo->prepare("SELECT score_total FROM utilisateurs WHERE id_user = ?");
+    $stmtScore->execute([$userId]);
+    $totalScore = $stmtScore->fetch(PDO::FETCH_ASSOC)['score_total'] ?? 0;
+    
+    // Meilleur temps
+    $stmtBest = $pdo->prepare("SELECT MIN(temps_passe) as best FROM parties WHERE id_user = ? AND score_obtenu > 0");
+    $stmtBest->execute([$userId]);
+    $bestTime = $stmtBest->fetch(PDO::FETCH_ASSOC)['best'] ?? 0;
+    $bestTimeFormatted = $bestTime > 0 ? sprintf("%d:%02d", floor($bestTime/60), $bestTime%60) : "0:00";
+    
+} catch (Exception $e) {
+    $totalParties = 0;
+    $completedLevels = 0;
+    $totalScore = 0;
+    $bestTimeFormatted = "0:00";
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -43,23 +82,23 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
-          <div class="stat-value" id="completedLevels">24</div>
+          <div class="stat-value" id="completedLevels"><?php echo $completedLevels; ?></div>
           <div class="stat-label">Niveaux complétés</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-          <div class="stat-value" id="totalStars">67</div>
-          <div class="stat-label">Étoiles gagnées</div>
+          <div class="stat-value" id="totalStars"><?php echo $totalScore ?></div>
+          <div class="stat-label">Score Total </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-stopwatch"></i></div>
-          <div class="stat-value" id="totalTime">2h 34m</div>
-          <div class="stat-label">Temps de jeu total</div>
+          <div class="stat-value" id="totalTime"><?php echo $bestTimeFormatted ?></div>
+          <div class="stat-label">Meilleur Temps</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-medal"></i></div>
-          <div class="stat-value" id="achievements">5/10</div>
-          <div class="stat-label">Succès débloqués</div>
+          <div class="stat-value" id="achievements"><?php $totalParties ?></div>
+          <div class="stat-label">Parties jouées</div>
         </div>
       </div>
 
