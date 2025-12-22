@@ -122,6 +122,6 @@ une réunion journalière pour parler de l'avancement des tâches
 Projet réalisé par :
 - Moussa Keita  ( https://github.com/moussa197 )
 - Maxime Luneau ( https://github.com/max13003 )
-- Kenny Yan Bukuru ( https://github.com/bukuru2006 )
+- Kenny Ian Bukuru ( https://github.com/bukuru2006 )
 - Loan Roinel ( https://github.com/LoanKma )
 
