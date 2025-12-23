@@ -11,47 +11,48 @@ requireAdmin();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Letterix - Panel Admin</title>
     <link rel="stylesheet" href="assets/css/panel-admin.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 </head>
 <body>
+    <!--header placeholder-->
+    <div id="header-placeholder"></div>
+
     <div class="header">
         <div class="logo">
-            <div class="logo-icon">🎮</div>
-            <h1>Letterix</h1>
-        </div>
-        <p class="subtitle">Panel Administration</p>
-        <div class="admin-info">
-            Connecté en tant que: <strong><?= htmlspecialchars($_SESSION['pseudo']) ?></strong>
-            <a href="php/logout.php" class="logout-btn">Déconnexion</a>
+            <h1>Administration</h1>
         </div>
     </div>
 
     <div class="container">
         <div class="admin-nav">
-            <button class="nav-btn active" onclick="showSection('dashboard')">📊 Tableau de bord</button>
-            <button class="nav-btn" onclick="showSection('users')">👥 Gestion Utilisateurs</button>
-            <button class="nav-btn" onclick="showSection('scores')">🏆 Scores</button>
+            <button class="nav-btn active" onclick="showSection('dashboard')"><i class="fa-solid fa-chart-simple"></i> Tableau de bord</button>
+            <button class="nav-btn" onclick="showSection('users')"><i class="fa-solid fa-users"></i> Gestion Utilisateurs</button>
+            <button class="nav-btn" onclick="showSection('scores')"><i class="fa-solid fa-trophy"></i> Scores</button>
         </div>
 
         <!-- Dashboard Section -->
         <div id="dashboard" class="content-section active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">👥</div>
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
                     <div class="stat-value">0</div>
                     <div class="stat-label">Utilisateurs Total</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">🎮</div>
+                    <div class="stat-icon"><i class="fa-solid fa-gamepad"></i></div>
                     <div class="stat-value">0</div>
                     <div class="stat-label">Parties Jouées</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
+                    <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
                     <div class="stat-value">0</div>
                     <div class="stat-label">Points Total</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">📈</div>
+                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
                     <div class="stat-value">+0%</div>
                     <div class="stat-label">Croissance ce mois</div>
                 </div>
@@ -62,8 +63,8 @@ requireAdmin();
         <div id="users" class="content-section">
             <div class="table-container">
                 <div class="table-header">
-                    <h2>👥 Gestion des Utilisateurs</h2>
-                    <input type="text" class="search-box" placeholder="🔍 Rechercher un utilisateur..." oninput="filterTable('usersTable', this.value)">
+                    <h2><i class="fa-solid fa-users"></i> Gestion des Utilisateurs</h2>
+                    <input type="text" class="search-box" placeholder="Rechercher un utilisateur..." oninput="filterTable('usersTable', this.value)">
                 </div>
                 <table id="usersTable">
                     <thead>
@@ -92,8 +93,8 @@ requireAdmin();
         <div id="scores" class="content-section">
             <div class="table-container">
                 <div class="table-header">
-                    <h2>🏆 Classement des Joueurs</h2>
-                    <input type="text" class="search-box" placeholder="🔍 Rechercher un joueur..." oninput="filterTable('scoresTable', this.value)">
+                    <h2><i class="fa-solid fa-trophy"></i> Classement des Joueurs</h2>
+                    <input type="text" class="search-box" placeholder=" Rechercher un joueur..." oninput="filterTable('scoresTable', this.value)">
                 </div>
                 <table id="scoresTable">
                     <thead>
@@ -122,7 +123,7 @@ requireAdmin();
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
-            <h2 class="modal-header">⚠️ Confirmer la suppression</h2>
+            <h2 class="modal-header"><i class="fa-solid fa-triangle-exclamation"></i> Confirmer la suppression</h2>
             <p class="modal-text">Êtes-vous sûr de vouloir supprimer le compte de <strong id="userName"></strong> ? Cette action est irréversible.</p>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal()">Annuler</button>
@@ -134,7 +135,7 @@ requireAdmin();
     <!-- Role Change Confirmation Modal -->
     <div id="roleModal" class="modal">
         <div class="modal-content">
-            <h2 class="modal-header">🔄 Changer le rôle</h2>
+            <h2 class="modal-header"><i class="fa-solid fa-rotate"></i> Changer le rôle</h2>
             <p class="modal-text">Voulez-vous changer le rôle de <strong id="roleUserName"></strong> en <strong id="newRoleName"></strong> ?</p>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeRoleModal()">Annuler</button>
@@ -142,7 +143,22 @@ requireAdmin();
             </div>
         </div>
     </div>
-
+<!--footer pl=aceholder-->
+<div id="footer-placeholder"></div>
     <script src="assets/js/panel-admin.js"></script>
+    <script>
+           // header load
+      fetch("header.php")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header-placeholder").innerHTML = data;
+        });
+      // footer load
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("footer-placeholder").innerHTML = data;
+        });
+    </script>
 </body>
 </html>
