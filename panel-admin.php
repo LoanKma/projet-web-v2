@@ -1,5 +1,6 @@
 <?php
 require_once 'php/auth.php';
+require_once 'php/db.php';
 
 // Protéger la page - Seuls les admins peuvent accéder
 requireAdmin();
