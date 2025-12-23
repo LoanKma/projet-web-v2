@@ -40,7 +40,7 @@ function register($pseudo, $email, $password) {
     
     try {
         $stmt = $pdo->prepare(
-            "INSERT INTO utilisateurs (pseudo, email, mot_de_passe, role) VALUES (?, ?, ?, 'joueur')"
+            "INSERT INTO utilisateurs (pseudo, email, mot_de_passe, role, date_creation) VALUES (?, ?, ?, 'joueur', NOW())"
         );
         $stmt->execute([$pseudo, $email, $hashedPassword]);
         
@@ -98,12 +98,34 @@ function isLoggedIn() {
 }
 
 /**
+ * Vérifier si admin
+ */
+function isAdmin() {
+    return isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+/**
  * Protéger une page
  */
 function requireLogin() {
     if (!isLoggedIn()) {
         header('Location: inscription.php');
         exit;
+    }
+}
+
+/**
+ * Protéger une page admin
+ */
+function requireAdmin() {
+    if (!isLoggedIn()) {
+        header('Location: inscription.php');
+        exit;
+    }
+    
+    if (!isAdmin()) {
+        http_response_code(403);
+        die("Accès refusé. Vous devez être administrateur pour accéder à cette page.");
     }
 }
 
