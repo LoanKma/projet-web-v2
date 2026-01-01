@@ -1,6 +1,8 @@
 <?php
 // api/get_user.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 
 // Si connecté, on renvoie l'ID. Sinon "guest".

@@ -3,14 +3,14 @@ let CURRENT_USER_ID = "guest";
 
 // Fonction pour identifier le joueur
 async function initSession() {
-    try {
-        const response = await fetch('api/get_user.php');
-        const data = await response.json();
-        CURRENT_USER_ID = data.userId;
-        console.log("Jeu Mots-Mêlés lancé pour :", CURRENT_USER_ID);
-    } catch (e) {
-        CURRENT_USER_ID = "guest";
-    }
+  try {
+    const response = await fetch("api/get_user.php");
+    const data = await response.json();
+    CURRENT_USER_ID = data.userId;
+    console.log("Jeu Mots-Mêlés lancé pour :", CURRENT_USER_ID);
+  } catch (e) {
+    CURRENT_USER_ID = "guest";
+  }
 }
 
 // Charger `main.js` si nécessaire
@@ -69,37 +69,99 @@ const MOTS_MELES_LEVELS = {
     theme: "Métiers",
     difficulty: "medium",
     gridSize: 10,
-    words: ["DOCTEUR", "AVOCAT", "MAACON", "JUGE", "PILOTE", "POLICE", "CHEF", "VENDEUR", "ACTEUR"],
+    words: [
+      "DOCTEUR",
+      "AVOCAT",
+      "GUIDE",
+      "JUGE",
+      "PILOTE",
+      "POLICE",
+      "CHEF",
+      "VENDEUR",
+      "ACTEUR",
+    ],
   },
   8: {
     theme: "Sports",
     difficulty: "medium",
     gridSize: 10,
-    words: ["TENNIS", "FOOT", "RUGBY", "JUDO", "BOXE", "GOLF", "SKI", "SURF", "VELO"],
+    words: [
+      "TENNIS",
+      "FOOT",
+      "RUGBY",
+      "JUDO",
+      "BOXE",
+      "GOLF",
+      "SKI",
+      "SURF",
+      "VELO",
+    ],
   },
   9: {
     theme: "Cuisine",
     difficulty: "medium",
     gridSize: 10,
-    words: ["FOUR", "POELE", "MIXEUR", "COUPE", "BOL", "TASSE", "VERRE", "PLAT", "FOUET", "WOK"],
+    words: [
+      "FOUR",
+      "POELE",
+      "MIXEUR",
+      "COUPE",
+      "BOL",
+      "TASSE",
+      "VERRE",
+      "PLAT",
+      "FOUET",
+      "WOK",
+    ],
   },
   10: {
     theme: "Transports",
     difficulty: "medium",
     gridSize: 10,
-    words: ["TRAIN", "AVION", "METRO", "BUS", "TAXI", "BATEAU", "VELO", "MOTO", "AUTO"],
+    words: [
+      "TRAIN",
+      "AVION",
+      "METRO",
+      "BUS",
+      "TAXI",
+      "BATEAU",
+      "VELO",
+      "MOTO",
+      "AUTO",
+    ],
   },
   11: {
     theme: "Corps Humain",
     difficulty: "medium",
     gridSize: 10,
-    words: ["COEUR", "BRAS", "JAMBE", "TETE", "MAIN", "PIED", "NEZ", "YEUX", "DOS", "COU"],
+    words: [
+      "COEUR",
+      "BRAS",
+      "JAMBE",
+      "TETE",
+      "MAIN",
+      "PIED",
+      "NEZ",
+      "YEUX",
+      "DOS",
+      "COU",
+    ],
   },
   12: {
     theme: "Meubles",
     difficulty: "medium",
     gridSize: 10,
-    words: ["TABLE", "CHAISE", "LIT", "SOFA", "BUREAU", "LAMPE", "TAPIS", "ARMOIRE", "BANC"],
+    words: [
+      "TABLE",
+      "CHAISE",
+      "LIT",
+      "SOFA",
+      "BUREAU",
+      "LAMPE",
+      "TAPIS",
+      "ARMOIRE",
+      "BANC",
+    ],
   },
 
   // Difficile (Grilles 12x12)
@@ -107,37 +169,118 @@ const MOTS_MELES_LEVELS = {
     theme: "Astronomie",
     difficulty: "hard",
     gridSize: 12,
-    words: ["PLANETE", "ETOILE", "LUNE", "MARS", "VENUS", "TERRE", "SOLEIL", "COMETE", "GALAXIE", "ORBITE", "FUSEE", "ESPACE"],
+    words: [
+      "PLANETE",
+      "ETOILE",
+      "LUNE",
+      "MARS",
+      "VENUS",
+      "TERRE",
+      "SOLEIL",
+      "COMETE",
+      "GALAXIE",
+      "ORBITE",
+      "FUSEE",
+      "ESPACE",
+    ],
   },
   14: {
     theme: "Pays",
     difficulty: "hard",
     gridSize: 12,
-    words: ["FRANCE", "CHINE", "JAPON", "BRESIL", "ITALIE", "ESPAGNE", "CANADA", "INDE", "MAROC", "EGYPTE", "GRECE", "PEROU"],
+    words: [
+      "FRANCE",
+      "CHINE",
+      "JAPON",
+      "BRESIL",
+      "ITALIE",
+      "ESPAGNE",
+      "CANADA",
+      "INDE",
+      "MAROC",
+      "EGYPTE",
+      "GRECE",
+      "PEROU",
+    ],
   },
   15: {
     theme: "Sciences",
     difficulty: "hard",
     gridSize: 12,
-    words: ["ATOME", "CHIMIE", "CELLULE", "VIRUS", "ROBOT", "LASER", "ENERGIE", "CLIMAT", "FOSSILE", "METAL", "ACIDE", "GAZ"],
+    words: [
+      "ATOME",
+      "CHIMIE",
+      "CELLULE",
+      "VIRUS",
+      "ROBOT",
+      "LASER",
+      "ENERGIE",
+      "CLIMAT",
+      "FOSSILE",
+      "METAL",
+      "ACIDE",
+      "GAZ",
+    ],
   },
   16: {
     theme: "Sentiments",
     difficulty: "hard",
     gridSize: 12,
-    words: ["AMOUR", "JOIE", "PEUR", "COLERE", "HONTE", "ESPOIR", "FIERTE", "HAINE", "ENNUI", "CALME", "JALOUX", "TRISTE"],
+    words: [
+      "AMOUR",
+      "JOIE",
+      "PEUR",
+      "COLERE",
+      "HONTE",
+      "ESPOIR",
+      "FIERTE",
+      "HAINE",
+      "ENNUI",
+      "CALME",
+      "JALOUX",
+      "TRISTE",
+    ],
   },
   17: {
     theme: "Informatique",
     difficulty: "hard",
     gridSize: 12,
-    words: ["CLAVIER", "SOURIS", "ECRAN", "WIFI", "CODE", "DATA", "BUG", "WEB", "LIEN", "PIXEL", "SERVER", "CLOUD", "APP", "JAVA"],
+    words: [
+      "CLAVIER",
+      "SOURIS",
+      "ECRAN",
+      "WIFI",
+      "CODE",
+      "DATA",
+      "BUG",
+      "WEB",
+      "LIEN",
+      "PIXEL",
+      "SERVER",
+      "CLOUD",
+      "APP",
+      "JAVA",
+    ],
   },
   18: {
     theme: "Arbres",
     difficulty: "hard",
     gridSize: 12,
-    words: ["CHENE", "SAPIN", "ERABLE", "PIN", "BOULEAU", "POMMIER", "OLIVIER", "PALMIER", "SAULE", "FRENE", "HETRE", "CEDRE", "IF"],
+    words: [
+      "CHENE",
+      "SAPIN",
+      "ERABLE",
+      "PIN",
+      "BOULEAU",
+      "POMMIER",
+      "OLIVIER",
+      "PALMIER",
+      "SAULE",
+      "FRENE",
+      "HETRE",
+      "CEDRE",
+      "IF",
+    ],
   },
 };
 
@@ -201,7 +344,7 @@ function generateGrid() {
 
   // 2. Placer les mots
   const placedWords = [];
-  
+
   // Trier les mots du plus long au plus court pour faciliter le placement
   const wordsToPlace = [...wordsToFind].sort((a, b) => b.length - a.length);
 
@@ -221,10 +364,10 @@ function generateGrid() {
         placed = placedWords.push(word);
       }
     }
-    
+
     if (!placed) {
-        console.warn(`Impossible de placer le mot : ${word}. Régénération...`);
-        return generateGrid(); // Récursivement réessayer si échec (rare)
+      console.warn(`Impossible de placer le mot : ${word}. Régénération...`);
+      return generateGrid(); // Récursivement réessayer si échec (rare)
     }
   }
 
@@ -244,7 +387,7 @@ function generateGrid() {
 // Vérifier si un mot peut être placé
 function canPlaceWord(grid, word, r, c, dir) {
   let [dr, dc] = dir;
-  
+
   // Vérifier les limites
   if (
     r + dr * (word.length - 1) < 0 ||
@@ -277,7 +420,7 @@ function placeWord(grid, word, r, c, dir) {
 function initGameInterface() {
   const gridElement = document.getElementById("motsMelesGrid");
   const wordsListElement = document.getElementById("wordsList");
-  
+
   gridElement.innerHTML = "";
   wordsListElement.innerHTML = "";
   foundWords = [];
@@ -293,15 +436,15 @@ function initGameInterface() {
       cell.dataset.row = r;
       cell.dataset.col = c;
       cell.textContent = gridData[r][c];
-      
+
       // Events Mouse
       cell.addEventListener("mousedown", handleStart);
       cell.addEventListener("mouseenter", handleMove);
       cell.addEventListener("mouseup", handleEnd);
-      
+
       // Events Touch
-      cell.addEventListener("touchstart", handleStart, {passive: false});
-      cell.addEventListener("touchmove", handleTouchMove, {passive: false});
+      cell.addEventListener("touchstart", handleStart, { passive: false });
+      cell.addEventListener("touchmove", handleTouchMove, { passive: false });
       cell.addEventListener("touchend", handleEnd);
 
       gridElement.appendChild(cell);
@@ -309,7 +452,7 @@ function initGameInterface() {
   }
 
   // Création de la liste des mots
-  wordsToFind.forEach(word => {
+  wordsToFind.forEach((word) => {
     const badge = document.createElement("div");
     badge.className = "word-item";
     badge.textContent = word;
@@ -319,173 +462,187 @@ function initGameInterface() {
 
   // Events globaux pour arrêter le drag si on sort de la grille
   document.addEventListener("mouseup", () => {
-      if(isDragging) handleEnd();
+    if (isDragging) handleEnd();
   });
-  
+
   updateStats();
 }
 
 // --- GESTION DES INTERACTIONS (DRAG) ---
 
 function handleStart(e) {
-    if (e.type === 'touchstart') e.preventDefault(); // Empêcher le scroll
-    isDragging = true;
-    const target = e.target.closest('.grid-cell');
-    if (!target) return;
+  if (e.type === "touchstart") e.preventDefault(); // Empêcher le scroll
+  isDragging = true;
+  const target = e.target.closest(".grid-cell");
+  if (!target) return;
 
-    startCell = {
-        row: parseInt(target.dataset.row),
-        col: parseInt(target.dataset.col)
-    };
-    selectCell(target);
-    currentSelection = [startCell];
+  startCell = {
+    row: parseInt(target.dataset.row),
+    col: parseInt(target.dataset.col),
+  };
+  selectCell(target);
+  currentSelection = [startCell];
 }
 
 function handleMove(e) {
-    if (!isDragging) return;
-    const target = e.target.closest('.grid-cell');
-    if (!target) return;
-    
-    updateSelection(parseInt(target.dataset.row), parseInt(target.dataset.col));
+  if (!isDragging) return;
+  const target = e.target.closest(".grid-cell");
+  if (!target) return;
+
+  updateSelection(parseInt(target.dataset.row), parseInt(target.dataset.col));
 }
 
 function handleTouchMove(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    
-    const touch = e.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    
-    if (target && target.classList.contains('grid-cell')) {
-        updateSelection(parseInt(target.dataset.row), parseInt(target.dataset.col));
-    }
+  if (!isDragging) return;
+  e.preventDefault();
+
+  const touch = e.touches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+  if (target && target.classList.contains("grid-cell")) {
+    updateSelection(parseInt(target.dataset.row), parseInt(target.dataset.col));
+  }
 }
 
 function updateSelection(endRow, endCol) {
-    // Calculer la direction
-    const dr = endRow - startCell.row;
-    const dc = endCol - startCell.col;
+  // Calculer la direction
+  const dr = endRow - startCell.row;
+  const dc = endCol - startCell.col;
 
-    // Vérifier si c'est une ligne valide (H, V, ou Diagonale parfaite)
-    if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
-        // Nettoyer la sélection précédente visuelle
-        clearVisualSelection();
-        
-        currentSelection = [];
-        const steps = Math.max(Math.abs(dr), Math.abs(dc));
-        const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
-        const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+  // Vérifier si c'est une ligne valide (H, V, ou Diagonale parfaite)
+  if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
+    // Nettoyer la sélection précédente visuelle
+    clearVisualSelection();
 
-        for (let i = 0; i <= steps; i++) {
-            const r = startCell.row + i * stepR;
-            const c = startCell.col + i * stepC;
-            currentSelection.push({row: r, col: c});
-            
-            const cell = document.querySelector(`.grid-cell[data-row="${r}"][data-col="${c}"]`);
-            if (cell) cell.classList.add("selected");
-        }
+    currentSelection = [];
+    const steps = Math.max(Math.abs(dr), Math.abs(dc));
+    const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+    const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+
+    for (let i = 0; i <= steps; i++) {
+      const r = startCell.row + i * stepR;
+      const c = startCell.col + i * stepC;
+      currentSelection.push({ row: r, col: c });
+
+      const cell = document.querySelector(
+        `.grid-cell[data-row="${r}"][data-col="${c}"]`
+      );
+      if (cell) cell.classList.add("selected");
     }
+  }
 }
 
 function handleEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    
-    validateSelection();
-    clearVisualSelection();
+  if (!isDragging) return;
+  isDragging = false;
+
+  validateSelection();
+  clearVisualSelection();
 }
 
 function clearVisualSelection() {
-    document.querySelectorAll(".grid-cell.selected").forEach(el => el.classList.remove("selected"));
+  document
+    .querySelectorAll(".grid-cell.selected")
+    .forEach((el) => el.classList.remove("selected"));
 }
 
 function selectCell(el) {
-    el.classList.add("selected");
+  el.classList.add("selected");
 }
 
 // --- VALIDATION ET LOGIQUE DE JEU ---
 
 function validateSelection() {
-    // Construire le mot à partir de la sélection
-    let word = "";
-    currentSelection.forEach(pos => {
-        word += gridData[pos.row][pos.col];
+  // Construire le mot à partir de la sélection
+  let word = "";
+  currentSelection.forEach((pos) => {
+    word += gridData[pos.row][pos.col];
+  });
+
+  // Vérifier à l'endroit et à l'envers
+  const reversedWord = word.split("").reverse().join("");
+
+  let validWord = null;
+  if (wordsToFind.includes(word) && !foundWords.includes(word)) {
+    validWord = word;
+  } else if (
+    wordsToFind.includes(reversedWord) &&
+    !foundWords.includes(reversedWord)
+  ) {
+    validWord = reversedWord;
+  }
+
+  if (validWord) {
+    // Mot trouvé !
+    foundWords.push(validWord);
+
+    // Marquer les cases comme trouvées
+    currentSelection.forEach((pos) => {
+      const cell = document.querySelector(
+        `.grid-cell[data-row="${pos.row}"][data-col="${pos.col}"]`
+      );
+      cell.classList.add("found");
+      // Animation reset
+      cell.style.animation = "none";
+      cell.offsetHeight; /* trigger reflow */
+      cell.style.animation = null;
     });
 
-    // Vérifier à l'endroit et à l'envers
-    const reversedWord = word.split("").reverse().join("");
-    
-    let validWord = null;
-    if (wordsToFind.includes(word) && !foundWords.includes(word)) {
-        validWord = word;
-    } else if (wordsToFind.includes(reversedWord) && !foundWords.includes(reversedWord)) {
-        validWord = reversedWord;
-    }
+    // Marquer le mot dans la liste
+    const badge = document.querySelector(
+      `.word-item[data-word="${validWord}"]`
+    );
+    if (badge) badge.classList.add("found");
 
-    if (validWord) {
-        // Mot trouvé !
-        foundWords.push(validWord);
-        
-        // Marquer les cases comme trouvées
-        currentSelection.forEach(pos => {
-            const cell = document.querySelector(`.grid-cell[data-row="${pos.row}"][data-col="${pos.col}"]`);
-            cell.classList.add("found");
-            // Animation reset
-            cell.style.animation = 'none';
-            cell.offsetHeight; /* trigger reflow */
-            cell.style.animation = null; 
-        });
-
-        // Marquer le mot dans la liste
-        const badge = document.querySelector(`.word-item[data-word="${validWord}"]`);
-        if (badge) badge.classList.add("found");
-
-        updateStats();
-        checkWin();
-    }
+    updateStats();
+    checkWin();
+  }
 }
 
 function checkWin() {
-    if (foundWords.length === wordsToFind.length) {
-        clearInterval(timerInterval);
-        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        
-        saveProgress(currentLevelId, elapsedTime);
+  if (foundWords.length === wordsToFind.length) {
+    clearInterval(timerInterval);
+    const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
-        setTimeout(() => {
-            const nextLevelId = currentLevelId + 1;
-            if (MOTS_MELES_LEVELS[nextLevelId]) {
-                showSuccessPopupWordSearch(elapsedTime, nextLevelId);
-            } else {
-                showCompletionPopup();
-            }
-        }, 500);
-    }
+    saveProgress(currentLevelId, elapsedTime);
+
+    setTimeout(() => {
+      const nextLevelId = currentLevelId + 1;
+      if (MOTS_MELES_LEVELS[nextLevelId]) {
+        showSuccessPopupWordSearch(elapsedTime, nextLevelId);
+      } else {
+        showCompletionPopup();
+      }
+    }, 500);
+  }
 }
 
 function saveProgress(levelId, time) {
-    // On utilise une clé unique pour ce joueur pour les Mots Mêlés
-    const storageKey = `motsMelesProgress_${CURRENT_USER_ID}`;
-    
-    // On lit la progression de CE joueur
-    const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  // On utilise une clé unique pour ce joueur pour les Mots Mêlés
+  const storageKey = `motsMelesProgress_${CURRENT_USER_ID}`;
 
-    if (!progress[levelId] || time < progress[levelId].bestTime) {
-        progress[levelId] = {
-            completed: true,
-            bestTime: time,
-        };
-    }
+  // On lit la progression de CE joueur
+  const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
 
-    localStorage.setItem(storageKey, JSON.stringify(progress));
+  if (!progress[levelId] || time < progress[levelId].bestTime) {
+    progress[levelId] = {
+      completed: true,
+      bestTime: time,
+    };
+  }
+
+  localStorage.setItem(storageKey, JSON.stringify(progress));
 }
 
 // Mettre à jour les stats affichées
 function updateStats() {
-    document.getElementById("wordsFoundCount").textContent = `${foundWords.length}/${wordsToFind.length}`;
-    if(document.getElementById("remainingWords")) {
-        document.getElementById("remainingWords").textContent = wordsToFind.length - foundWords.length;
-    }
+  document.getElementById(
+    "wordsFoundCount"
+  ).textContent = `${foundWords.length}/${wordsToFind.length}`;
+  if (document.getElementById("remainingWords")) {
+    document.getElementById("remainingWords").textContent =
+      wordsToFind.length - foundWords.length;
+  }
 }
 
 // Timer
@@ -497,10 +654,10 @@ function startTimer() {
       .toString()
       .padStart(2, "0");
     const seconds = (elapsed % 60).toString().padStart(2, "0");
-    
+
     const timerEl = document.getElementById("timer");
-    if(timerEl) timerEl.textContent = `${minutes}:${seconds}`;
-    
+    if (timerEl) timerEl.textContent = `${minutes}:${seconds}`;
+
     const elapsedEl = document.getElementById("elapsedTime");
     if (elapsedEl) elapsedEl.textContent = `${minutes}:${seconds}`;
   }, 1000);
@@ -508,35 +665,35 @@ function startTimer() {
 
 // Bouton indice
 document.getElementById("hintBtn").addEventListener("click", () => {
-    // Trouver un mot pas encore trouvé
-    const remainingWords = wordsToFind.filter(w => !foundWords.includes(w));
-    if (remainingWords.length === 0) return;
+  // Trouver un mot pas encore trouvé
+  const remainingWords = wordsToFind.filter((w) => !foundWords.includes(w));
+  if (remainingWords.length === 0) return;
 
-    const randomWord = remainingWords[0]; // Simplification: prend le premier
-    // Trouver sa position dans la grille (c'est compliqué car gridData ne stocke pas où est le mot)
-    // Astuce : On regénère les coordonnées du mot ou on triche en scannant la grille
-    // Pour cet exemple simple : on révèle la première lettre du premier mot restant
-    
-    // On va chercher la première lettre du mot dans la grille qui permettrait de former le mot
-    // Note: C'est une implémentation simplifiée d'indice
-    showPopup(`Cherchez le mot : ${randomWord}`, "Indice");
+  const randomWord = remainingWords[0]; // Simplification: prend le premier
+  // Trouver sa position dans la grille (c'est compliqué car gridData ne stocke pas où est le mot)
+  // Astuce : On regénère les coordonnées du mot ou on triche en scannant la grille
+  // Pour cet exemple simple : on révèle la première lettre du premier mot restant
+
+  // On va chercher la première lettre du mot dans la grille qui permettrait de former le mot
+  // Note: C'est une implémentation simplifiée d'indice
+  showPopup(`Cherchez le mot : ${randomWord}`, "Indice");
 });
 
 // Bouton recommencer
 document.getElementById("restartBtn").addEventListener("click", () => {
-    const restartAction = () => {
-        startTime = Date.now();
-        generateGrid(); // Régénère une nouvelle grille pour la rejouabilité !
-        initGameInterface();
-        startTimer();
-    };
-  
-    const msg = "Voulez-vous vraiment recommencer ce niveau ?";
-    if (typeof showConfirmPopup === "function") {
-      showConfirmPopup(msg, restartAction);
-    } else if (confirm(msg)) {
-      restartAction();
-    }
+  const restartAction = () => {
+    startTime = Date.now();
+    generateGrid(); // Régénère une nouvelle grille pour la rejouabilité !
+    initGameInterface();
+    startTimer();
+  };
+
+  const msg = "Voulez-vous vraiment recommencer ce niveau ?";
+  if (typeof showConfirmPopup === "function") {
+    showConfirmPopup(msg, restartAction);
+  } else if (confirm(msg)) {
+    restartAction();
+  }
 });
 
 // Charger les infos du niveau
@@ -566,14 +723,14 @@ function loadLevelInfo() {
     if (badge) {
       badge.classList.remove("easy", "medium", "hard");
       badge.classList.add(levelData.difficulty);
-      
+
       // Couleurs identiques au Motus
       const colors = {
-          easy: { bg: "rgba(34, 197, 94, 0.2)", border: "#22c55e" },
-          medium: { bg: "rgba(251, 191, 36, 0.2)", border: "#fbbf24" },
-          hard: { bg: "rgba(239, 68, 68, 0.2)", border: "#ef4444" }
+        easy: { bg: "rgba(34, 197, 94, 0.2)", border: "#22c55e" },
+        medium: { bg: "rgba(251, 191, 36, 0.2)", border: "#fbbf24" },
+        hard: { bg: "rgba(239, 68, 68, 0.2)", border: "#ef4444" },
       };
-      
+
       const style = colors[levelData.difficulty];
       badge.style.background = style.bg;
       badge.style.borderColor = style.border;
@@ -584,25 +741,24 @@ function loadLevelInfo() {
 
 // Initialisation du jeu
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. On attend de savoir qui joue
-    await initSession();
+  // 1. On attend de savoir qui joue
+  await initSession();
 
-    // 2. On charge les infos du niveau (quel mot chercher ?)
-    loadLevel();
+  // 2. On charge les infos du niveau (quel mot chercher ?)
+  loadLevel();
 
-    // 3. On génère la grille de lettres (Logique)
-    // C'était ça qu'il manquait !
-    generateGrid(); 
+  // 3. On génère la grille de lettres (Logique)
+  // C'était ça qu'il manquait !
+  generateGrid();
 
-    // 4. On dessine la grille à l'écran (Visuel)
-    // C'était ça aussi !
-    initGameInterface();
+  // 4. On dessine la grille à l'écran (Visuel)
+  // C'était ça aussi !
+  initGameInterface();
 
-    // 5. On lance le reste
-    startTimer();
-    loadLevelInfo();
+  // 5. On lance le reste
+  startTimer();
+  loadLevelInfo();
 });
-
 
 // --- SYSTÈME DE SCORE ---
 
@@ -618,7 +774,7 @@ function calculateScore(difficulty, timeSeconds) {
 
   // Bonus de temps
   // On enlève des points pour chaque seconde passée, avec un plancher
-  const timePenalty = timeSeconds * 2; 
+  const timePenalty = timeSeconds * 2;
   score = Math.max(100, score - timePenalty);
 
   return Math.round(score);
@@ -626,70 +782,70 @@ function calculateScore(difficulty, timeSeconds) {
 
 // Fonction pour sauvegarder le score (API PHP incluse)
 function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
-    const storageKey = `gameScores_${CURRENT_USER_ID}`;
-    const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  
-    if (!allScores[gameType]) {
-      allScores[gameType] = {
-        totalPoints: 0,
-        gamesPlayed: 0,
-        gamesWon: 0,
-        bestScores: {},
-      };
-    }
-  
-    const gameScores = allScores[gameType];
-  
-    gameScores.totalPoints += score;
-    gameScores.gamesPlayed++;
-    gameScores.gamesWon++;
-  
-    const levelKey = `${difficulty}_${levelId}`;
-    if (
-      !gameScores.bestScores[levelKey] ||
-      score > gameScores.bestScores[levelKey].score
-    ) {
-      gameScores.bestScores[levelKey] = {
-        score: score,
-        time: timeSeconds,
-        date: new Date().toISOString(),
-      };
-    }
-  
-    localStorage.setItem(storageKey, JSON.stringify(allScores));
-  
-    // Envoi BDD
-    if (typeof envoyerScoreBDD === "function") {
-        envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
-    }
-  
-    return {
-      currentScore: score,
-      totalPoints: gameScores.totalPoints,
-      gamesWon: gameScores.gamesWon,
-      isNewRecord:
-        !gameScores.bestScores[levelKey] ||
-        score === gameScores.bestScores[levelKey].score,
+  const storageKey = `gameScores_${CURRENT_USER_ID}`;
+  const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+  if (!allScores[gameType]) {
+    allScores[gameType] = {
+      totalPoints: 0,
+      gamesPlayed: 0,
+      gamesWon: 0,
+      bestScores: {},
     };
+  }
+
+  const gameScores = allScores[gameType];
+
+  gameScores.totalPoints += score;
+  gameScores.gamesPlayed++;
+  gameScores.gamesWon++;
+
+  const levelKey = `${difficulty}_${levelId}`;
+  if (
+    !gameScores.bestScores[levelKey] ||
+    score > gameScores.bestScores[levelKey].score
+  ) {
+    gameScores.bestScores[levelKey] = {
+      score: score,
+      time: timeSeconds,
+      date: new Date().toISOString(),
+    };
+  }
+
+  localStorage.setItem(storageKey, JSON.stringify(allScores));
+
+  // Envoi BDD
+  if (typeof envoyerScoreBDD === "function") {
+    envoyerScoreBDD(gameType, levelId, difficulty, score, timeSeconds);
+  }
+
+  return {
+    currentScore: score,
+    totalPoints: gameScores.totalPoints,
+    gamesWon: gameScores.gamesWon,
+    isNewRecord:
+      !gameScores.bestScores[levelKey] ||
+      score === gameScores.bestScores[levelKey].score,
+  };
 }
 
 // Fonction utilitaire API
 async function envoyerScoreBDD(jeu, niveau, difficulte, score, temps) {
-    try {
-        await fetch('api/save_score.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ jeu, niveau, difficulte, score, temps })
-        });
-        console.log("Score envoyé à la BDD avec succès !");
-    } catch (e) {
-        console.error("Erreur API:", e);
-    }
+  try {
+    await fetch("api/save_score.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jeu, niveau, difficulte, score, temps }),
+    });
+    console.log("Score envoyé à la BDD avec succès !");
+  } catch (e) {
+    console.error("Erreur API:", e);
+  }
 }
 
 // Fonction affichage HTML Score
 function showScoreInPopup(score, totalPoints, isNewRecord) {
-    return `
+  return `
           <div class="score-display">
               <div class="score-title">Score de la partie</div>
               <div class="score-main">${score} points</div>
@@ -705,23 +861,23 @@ function showScoreInPopup(score, totalPoints, isNewRecord) {
 
 // Popup Succès Spécifique Mots Mêlés
 function showSuccessPopupWordSearch(elapsedTime, nextLevelId) {
-    const minutes = Math.floor(elapsedTime / 60);
-    const seconds = elapsedTime % 60;
-  
-    const levelData = MOTS_MELES_LEVELS[currentLevelId];
-    const score = calculateScore(levelData.difficulty, elapsedTime);
-  
-    const scoreData = saveScore(
-      "mots-meles", // Clé spécifique
-      currentLevelId,
-      levelData.difficulty,
-      score,
-      elapsedTime
-    );
-  
-    const popup = document.createElement("div");
-    popup.className = "popup-overlay";
-    popup.innerHTML = `
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  const levelData = MOTS_MELES_LEVELS[currentLevelId];
+  const score = calculateScore(levelData.difficulty, elapsedTime);
+
+  const scoreData = saveScore(
+    "mots-meles", // Clé spécifique
+    currentLevelId,
+    levelData.difficulty,
+    score,
+    elapsedTime
+  );
+
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
           <div class="popup-content success">
               <div class="popup-icon">🎉</div>
               <h2>Félicitations !</h2>
@@ -755,16 +911,16 @@ function showSuccessPopupWordSearch(elapsedTime, nextLevelId) {
               </div>
           </div>
       `;
-  
-    document.body.appendChild(popup);
-    setTimeout(() => popup.classList.add("show"), 10);
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
 }
 
 // Popup Completion Totale
 function showCompletionPopup() {
-    const popup = document.createElement("div");
-    popup.className = "popup-overlay";
-    popup.innerHTML = `
+  const popup = document.createElement("div");
+  popup.className = "popup-overlay";
+  popup.innerHTML = `
           <div class="popup-content completion">
               <div class="popup-icon">🏆</div>
               <h2>Incroyable !</h2>
@@ -777,26 +933,26 @@ function showCompletionPopup() {
               </div>
           </div>
       `;
-  
-    document.body.appendChild(popup);
-    setTimeout(() => popup.classList.add("show"), 10);
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
 }
 
 function closePopup() {
-    const popup = document.querySelector(".popup-overlay");
-    if (popup) {
-      popup.classList.remove("show");
-      setTimeout(() => {
-        popup.remove();
-        window.location.href = "mots-meles.html";
-      }, 300);
-    }
+  const popup = document.querySelector(".popup-overlay");
+  if (popup) {
+    popup.classList.remove("show");
+    setTimeout(() => {
+      popup.remove();
+      window.location.href = "mots-meles.html";
+    }, 300);
+  }
 }
-  
+
 function goToNextLevel(nextLevelId) {
-    localStorage.setItem(
-      "currentMotsMelesLevel",
-      JSON.stringify({ levelId: nextLevelId })
-    );
-    location.reload();
+  localStorage.setItem(
+    "currentMotsMelesLevel",
+    JSON.stringify({ levelId: nextLevelId })
+  );
+  location.reload();
 }

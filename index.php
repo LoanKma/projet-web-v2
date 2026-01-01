@@ -81,7 +81,7 @@ try {
         </ul>
        <button class="play-button" onclick="playMotus()">
           <span>T</span>
-          <span>Jouer à Motus</a></span>
+          <span>Jouer à Motus</span>
         </button>
       </div>
       <div class="game-card">

@@ -45,7 +45,7 @@ $isAdmin = isAdmin();
     transform: scale(1.2);
   }
   .logo-span {
-    color: black;
+    color: white;
     font-weight: 700;
     font-size: 30px;
   }
