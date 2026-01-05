@@ -52,7 +52,10 @@ Jeux prévus :
 L'arborescence est la suivante :
 
 
-<img width="638" height="1352" alt="image" src="https://github.com/user-attachments/assets/4cea20d8-d91a-479c-adec-c422bee96d1b" />
+<img width="532" height="817" alt="image" src="https://github.com/user-attachments/assets/bd7d3514-7306-4280-90fe-a732c4056a2b" />
+
+<img width="532" height="705" alt="image" src="https://github.com/user-attachments/assets/d02ec9d8-65d3-4a15-9b1d-b6c99fc4da25" />
+
 
 
 ---
@@ -86,7 +89,7 @@ git clone https://github.com/LoanKma/projet-web-v2.git
 
 - Placer le projet dans :
 
-C:/wamp64/www/letterix
+C:/wamp64/www/projet-web-v2
 
 
 - Créer la base de données via phpMyAdmin
@@ -105,15 +108,15 @@ http://localhost/projet-web-v2
 
 ## 📊 Organisation du projet
 
-Versionnement via GitHub
+- Versionnement via GitHub
 
-Suivi des tâches via Trello
+- Suivi des tâches via Trello
 
-Travail en équipe de 4 personnes
+- Travail en équipe de 4 personnes
 
-Mise à jour régulière des tâches et commits
+- Mise à jour régulière des tâches et commits
 
-une réunion journalière pour parler de l'avancement des tâches 
+- une réunion journalière pour parler de l'avancement des tâches 
 
 ---
 
