@@ -7,7 +7,6 @@ async function initSession() {
     const response = await fetch("api/get_user.php");
     const data = await response.json();
     CURRENT_USER_ID = data.userId;
-    console.log("Jeu Mots-Mêlés lancé pour :", CURRENT_USER_ID);
   } catch (e) {
     CURRENT_USER_ID = "guest";
   }
@@ -311,7 +310,6 @@ function loadLevel() {
         currentLevelId = levelId;
         gridSize = levelData.gridSize;
         wordsToFind = [...levelData.words]; // Copie
-        console.log("Niveau Mots Mêlés chargé:", levelId);
         return;
       }
     } catch (e) {
@@ -366,7 +364,6 @@ function generateGrid() {
     }
 
     if (!placed) {
-      console.warn(`Impossible de placer le mot : ${word}. Régénération...`);
       return generateGrid(); // Récursivement réessayer si échec (rare)
     }
   }
@@ -837,7 +834,6 @@ async function envoyerScoreBDD(jeu, niveau, difficulte, score, temps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ jeu, niveau, difficulte, score, temps }),
     });
-    console.log("Score envoyé à la BDD avec succès !");
   } catch (e) {
     console.error("Erreur API:", e);
   }

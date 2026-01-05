@@ -150,7 +150,6 @@ try {
             return;
           }
           const data = await res.json();
-          console.log('Données reçues:', data); // Debug
           
           // data.activity_dates : array of 'YYYY-MM-DD'
           completedDays = data.activity_dates || [];

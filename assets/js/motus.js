@@ -3,14 +3,13 @@ let CURRENT_USER_ID = "guest";
 
 // Fonction pour récupérer l'identité
 async function initSession() {
-    try {
-        const response = await fetch('api/get_user.php');
-        const data = await response.json();
-        CURRENT_USER_ID = data.userId;
-        console.log("Menu Motus chargé pour :", CURRENT_USER_ID);
-    } catch (e) {
-        CURRENT_USER_ID = "guest";
-    }
+  try {
+    const response = await fetch("api/get_user.php");
+    const data = await response.json();
+    CURRENT_USER_ID = data.userId;
+  } catch (e) {
+    CURRENT_USER_ID = "guest";
+  }
 }
 // header load
 fetch("header.php")
@@ -136,8 +135,8 @@ let currentFilter = "easy";
 // Charger tous les niveaux au démarrage
 document.addEventListener("DOMContentLoaded", async () => {
   // 1. On attend la session
-  await initSession(); 
-  
+  await initSession();
+
   // 2. On génère les niveaux et la progression
   generateAllLevels();
   updateProgressStats();
@@ -145,22 +144,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 3. AJOUTS : On met à jour les scores et les étoiles MAINTENANT
   updateAllLevelScores("motus");
   displayGlobalStats("motus");
-  
+
   // On lance manuellement la mise à jour des étoiles
   document.querySelectorAll(".level-card").forEach((card) => {
-      const levelId = parseInt(card.getAttribute("data-level-id"));
-      const difficulty = card.getAttribute("data-difficulty");
-      if (levelId && difficulty) {
-        updateLevelStars(card, "motus", difficulty, levelId);
-      }
+    const levelId = parseInt(card.getAttribute("data-level-id"));
+    const difficulty = card.getAttribute("data-difficulty");
+    if (levelId && difficulty) {
+      updateLevelStars(card, "motus", difficulty, levelId);
+    }
   });
 });
-
 
 // Générer tous les niveaux
 function generateAllLevels() {
   const grid = document.getElementById("levelsGrid");
-  
+
   //ajoute l'ID à la clé
   const storageKey = `motusProgress_${CURRENT_USER_ID}`;
   const progress = JSON.parse(localStorage.getItem(storageKey) || "{}");
@@ -376,7 +374,7 @@ function displayGlobalStats(gameType) {
   // MODIFICATION ICI : On utilise l'ID de l'utilisateur
   const storageKey = `gameScores_${CURRENT_USER_ID}`;
   const allScores = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  
+
   const gameStats = allScores[gameType] || {
     totalPoints: 0,
     gamesPlayed: 0,

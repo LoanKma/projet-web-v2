@@ -3,14 +3,13 @@ let CURRENT_USER_ID = "guest";
 
 // Fonction pour récupérer l'identité
 async function initSession() {
-    try {
-        const response = await fetch('api/get_user.php');
-        const data = await response.json();
-        CURRENT_USER_ID = data.userId;
-        console.log("Menu Motus chargé pour :", CURRENT_USER_ID);
-    } catch (e) {
-        CURRENT_USER_ID = "guest";
-    }
+  try {
+    const response = await fetch("api/get_user.php");
+    const data = await response.json();
+    CURRENT_USER_ID = data.userId;
+  } catch (e) {
+    CURRENT_USER_ID = "guest";
+  }
 }
 
 if (typeof showPopup !== "function") {
@@ -161,7 +160,6 @@ function loadLevel() {
         TARGET_WORD = levelData.word;
         WORD_LENGTH = TARGET_WORD.length;
         currentLevelId = levelId;
-        console.log("Niveau Motus chargé:", levelId, TARGET_WORD);
         return;
       }
     } catch (e) {
@@ -175,7 +173,6 @@ function loadLevel() {
   WORD_LENGTH = TARGET_WORD.length;
   currentLevelId = 1;
   localStorage.setItem("currentMotusLevel", JSON.stringify({ levelId: 1 }));
-  console.log("Niveau par défaut Motus chargé:", TARGET_WORD);
 }
 
 // Initialisation de la grille
@@ -274,21 +271,21 @@ function validateWord() {
   // 1. Vérifier si le mot est complet (déjà présent dans ton code)
   if (currentCol !== WORD_LENGTH) {
     // Optionnel : ajouter une petite alerte visuelle si mot incomplet
-    showPopup("Mot incomplet !", "Erreur", 1000); 
+    showPopup("Mot incomplet !", "Erreur", 1000);
     return;
   }
 
   const guess = attempts[currentRow].join("");
 
   // --- NOUVEAU CODE A AJOUTER ICI ---
-  
+
   // 2. Vérifier si le mot existe dans le dictionnaire
   // On vérifie si la variable DICTIONNAIRE existe (pour éviter les bugs si le fichier n'est pas chargé)
-  if (typeof DICTIONNAIRE !== 'undefined' && !isWordInDictionary(guess)) {
-      // Le mot n'existe pas : on secoue la ligne
-      shakeRow(currentRow);
-      showPopup(`Le mot "${guess}" n'est pas dans le dictionnaire.`, "Inconnu");
-      return; // On arrête la fonction ici, on ne valide pas la ligne
+  if (typeof DICTIONNAIRE !== "undefined" && !isWordInDictionary(guess)) {
+    // Le mot n'existe pas : on secoue la ligne
+    shakeRow(currentRow);
+    showPopup(`Le mot "${guess}" n'est pas dans le dictionnaire.`, "Inconnu");
+    return; // On arrête la fonction ici, on ne valide pas la ligne
   }
 
   // Colorer les cellules
@@ -655,21 +652,16 @@ function restartLevel() {
 
 // Initialisation
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("Début initialisation Motus...");
-
   // 1. On attend de savoir QUI est connecté avant de lancer le jeu
-  await initSession(); 
+  await initSession();
 
   // 2. Ensuite on lance le reste normalement
   loadLevel();
-  console.log("Mot cible:", TARGET_WORD, "Longueur:", WORD_LENGTH);
 
   initGrid();
   startTimer();
   loadLevelInfo();
   updateAttempts();
-
-  console.log("Initialisation Motus terminée");
 });
 
 // Système de score
@@ -752,16 +744,15 @@ function saveScore(gameType, levelId, difficulty, score, timeSeconds) {
 
 // Fonction utilitaire pour parler à l'API PHP (À laisser ici)
 async function envoyerScoreBDD(jeu, niveau, difficulte, score, temps) {
-    try {
-        await fetch('api/save_score.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ jeu, niveau, difficulte, score, temps })
-        });
-        console.log("Score envoyé à la BDD avec succès !");
-    } catch (e) {
-        console.error("Erreur lors de l'envoi du score à la BDD :", e);
-    }
+  try {
+    await fetch("api/save_score.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jeu, niveau, difficulte, score, temps }),
+    });
+  } catch (e) {
+    console.error("Erreur lors de l'envoi du score à la BDD :", e);
+  }
 }
 
 // Fonction pour afficher le score dans le popup
@@ -915,13 +906,13 @@ function getGameStats(gameType) {
 
 // Fonction pour faire trembler la ligne (Feedback visuel d'erreur)
 function shakeRow(row) {
-    const rowDiv = document.querySelector(`.grid-row:nth-child(${row + 1})`);
-    
-    // Ajouter la classe shake
-    rowDiv.classList.add('shake');
-    
-    // Retirer la classe après l'animation (500ms) pour pouvoir le refaire
-    setTimeout(() => {
-        rowDiv.classList.remove('shake');
-    }, 500);
+  const rowDiv = document.querySelector(`.grid-row:nth-child(${row + 1})`);
+
+  // Ajouter la classe shake
+  rowDiv.classList.add("shake");
+
+  // Retirer la classe après l'animation (500ms) pour pouvoir le refaire
+  setTimeout(() => {
+    rowDiv.classList.remove("shake");
+  }, 500);
 }
