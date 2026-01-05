@@ -32,24 +32,29 @@
     $email = $user['email'] ?? '';
     $memberSince = isset($user['date_creation']) ? date('F Y', strtotime($user['date_creation'])) : '';
 
-    // Récupérer les statistiques globales (CORRIGÉ)
+    // Récupérer le score total de l'utilisateur
+    $stmtScore = $pdo->prepare("SELECT score_total FROM utilisateurs WHERE id_user = ?");
+    $stmtScore->execute([$userId]);
+    $scoreTotal = (int)($stmtScore->fetch(PDO::FETCH_ASSOC)['score_total'] ?? 0);
+
+    // Récupérer les autres statistiques depuis la table parties
     $statsQuery = "
         SELECT 
-            COUNT(DISTINCT CONCAT(p.id_niveau, '-', COALESCE(p.numero_niveau, 0))) as niveaux_completes,
-            COALESCE(SUM(p.score_obtenu), 0) as score_total,
-            COALESCE(SUM(p.temps_passe), 0) as temps_total,
-            COALESCE(MIN(CASE WHEN p.temps_passe > 0 THEN p.temps_passe END), 0) as meilleur_temps
-        FROM parties p
-        WHERE p.id_user = ? AND p.score_obtenu > 0
+            COUNT(DISTINCT CONCAT(id_jeu, '_', numero_niveau)) as niveaux_completes,
+            COALESCE(SUM(temps_passe), 0) as temps_total,
+            COALESCE(MIN(CASE WHEN temps_passe > 0 THEN temps_passe END), 0) as meilleur_temps,
+            COUNT(*) as total_parties
+        FROM parties
+        WHERE id_user = ? AND score_obtenu > 0
     ";
     $stmt = $pdo->prepare($statsQuery);
     $stmt->execute([$userId]);
     $stats = $stmt->fetch();
 
     $niveauxCompletes = (int)($stats['niveaux_completes'] ?? 0);
-    $scoreTotal = (int)($stats['score_total'] ?? 0);
     $tempsTotal = (int)($stats['temps_total'] ?? 0);
     $meilleurTemps = (int)($stats['meilleur_temps'] ?? 0);
+    $totalParties = (int)($stats['total_parties'] ?? 0);
 
     // Formater le temps total (en heures et minutes)
     $heures = floor($tempsTotal / 3600);
