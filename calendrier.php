@@ -97,7 +97,7 @@ try {
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fa-solid fa-medal"></i></div>
-          <div class="stat-value" id="achievements"><?php $totalParties ?></div>
+          <div class="stat-value" id="achievements"><?php echo $totalParties ?></div>
           <div class="stat-label">Parties jouées</div>
         </div>
       </div>
