@@ -42,7 +42,7 @@ Projet réalisé dans le cadre du **Projet Web** de notre formation.
 ### Front-end
 - **HTML5** 
 - **CSS3** 
-- **JavaScript (Vanilla ES6+)** 
+- **JavaScript** 
 
 ### Back-end
 - **PHP 7.4+** 
@@ -65,9 +65,6 @@ Projet réalisé dans le cadre du **Projet Web** de notre formation.
 - **Inscription/Connexion sécurisée**
   - Hachage des mots de passe (password_hash/verify)
   - Protection CSRF avec tokens
-  - Validation côté client et serveur
-  - Sessions sécurisées avec cookies HttpOnly
-  - Nettoyage des entrées utilisateur
 
 ### 👤 Profil Utilisateur
 - **Page profil personnalisée**
@@ -293,7 +290,7 @@ Le fichier `php/db.php` contient la configuration par défaut :
 DB_HOST = 'localhost'
 DB_NAME = 'bdd_projet_web'
 DB_USER = 'root'
-DB_PASS = ''  // Vide par défaut sur WAMP
+DB_PASS = '' 
 ```
 
 Si votre configuration est différente, modifiez ces valeurs.
