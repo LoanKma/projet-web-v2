@@ -13,7 +13,7 @@ body {
   min-height: 100vh;
   padding: 20px;
   /* Empêche la sélection de texte accidentelle pendant le jeu */
-  user-select: none; 
+  user-select: none;
 }
 
 /* HEADER (Identique au Motus) */
@@ -186,8 +186,14 @@ body {
 
 /* Animation pour la validation */
 @keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* LISTE DES MOTS (Remplace le clavier) */
@@ -256,7 +262,8 @@ body {
   border-bottom: 2px solid rgba(37, 99, 235, 0.2);
 }
 
-.help-header i, .help-header h2 {
+.help-header i,
+.help-header h2 {
   font-size: 24px;
   color: #60a5fa;
 }
@@ -393,16 +400,16 @@ body {
 
 .popup-content {
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-  border-radius: 30px;
-  padding: 50px;
-  max-width: 500px;
+  border-radius: 16px;
+  padding: 25px 20px;
+  max-width: 350px;
   width: 90%;
   text-align: center;
   border: 2px solid;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   transform: scale(0.9);
   transition: transform 0.3s ease;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
 }
@@ -417,32 +424,37 @@ body {
 }
 
 .popup-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
+  font-size: 50px;
+  margin-bottom: 12px;
   animation: bounce 0.6s ease;
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .popup-content h2 {
-  font-size: 36px;
-  margin-bottom: 15px;
+  font-size: 24px;
+  margin-bottom: 10px;
   color: #e2e8f0;
 }
 
 .popup-content p {
-  font-size: 18px;
+  font-size: 16px;
   color: #94a3b8;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .popup-content p strong {
   color: #60a5fa;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .popup-stats {
@@ -522,7 +534,11 @@ body {
 
 /* AFFICHAGE SCORE */
 .score-display {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(29, 78, 216, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.2),
+    rgba(29, 78, 216, 0.2)
+  );
   border: 2px solid #2563eb;
   border-radius: 15px;
   padding: 25px;
@@ -548,8 +564,15 @@ body {
 }
 
 @keyframes scoreGlow {
-  0%, 100% { text-shadow: 0 0 20px rgba(96, 165, 250, 0.5); transform: scale(1); }
-  50% { text-shadow: 0 0 30px rgba(96, 165, 250, 0.8); transform: scale(1.05); }
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(96, 165, 250, 0.8);
+    transform: scale(1.05);
+  }
 }
 
 .new-record {
@@ -565,8 +588,15 @@ body {
 }
 
 @keyframes recordPulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
-  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+  }
 }
 
 .score-total {
@@ -603,40 +633,101 @@ body {
   .game-title {
     font-size: 28px;
   }
-  
+
+  /* Popup responsive */
+  .popup-content {
+    padding: 20px 15px;
+    max-width: 320px;
+  }
+
+  .popup-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+
+  .popup-content h2 {
+    font-size: 20px;
+  }
+
+  .popup-content p {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .popup-content p strong {
+    font-size: 18px;
+  }
+
+  .popup-stats {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
   /* Ajustement cellules sur mobile */
   .grid-cell {
     width: 32px; /* Plus petit sur mobile */
     height: 32px;
     font-size: 14px;
   }
-  
-  .mots-meles-grid {
-    padding: 10px;
-    gap: 2px;
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    padding: 18px 12px;
+    max-width: 280px;
+    width: 95%;
   }
 
-  .help-section {
-    padding: 20px;
-  }
-  
-  .popup-content {
-    padding: 30px 20px;
-  }
   .popup-icon {
-    font-size: 60px;
+    font-size: 35px;
   }
+
   .popup-content h2 {
-    font-size: 28px;
+    font-size: 18px;
   }
+
+  .popup-content p {
+    font-size: 13px;
+  }
+
   .popup-stats {
-    flex-direction: column;
-    gap: 20px;
+    gap: 12px;
+    padding: 12px;
   }
-  .popup-buttons {
-    flex-direction: column;
-  }
+
   .popup-btn {
-    width: 100%;
+    font-size: 14px;
+    padding: 10px 16px;
   }
+}
+
+.mots-meles-grid {
+  padding: 10px;
+  gap: 2px;
+}
+
+.help-section {
+  padding: 20px;
+}
+
+.popup-content {
+  padding: 30px 20px;
+}
+.popup-icon {
+  font-size: 60px;
+}
+.popup-content h2 {
+  font-size: 28px;
+}
+.popup-stats {
+  flex-direction: column;
+  gap: 20px;
+}
+.popup-buttons {
+  flex-direction: column;
+}
+.popup-btn {
+  width: 100%;
 }

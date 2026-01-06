@@ -584,6 +584,23 @@ function showFailurePopup() {
 
 // Créer le popup de completion totale
 function showCompletionPopup() {
+  const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  // Calculer le score pour le dernier niveau
+  const difficulty = MOTUS_LEVELS[currentLevelId].difficulty;
+  const score = calculateScore(difficulty, elapsedTime, currentRow + 1, true);
+
+  // Sauvegarder le score
+  const scoreData = saveScore(
+    "motus",
+    currentLevelId,
+    difficulty,
+    score,
+    elapsedTime
+  );
+
   const popup = document.createElement("div");
   popup.className = "popup-overlay";
   popup.innerHTML = `
@@ -591,6 +608,24 @@ function showCompletionPopup() {
             <div class="popup-icon">🏆</div>
             <h2>Incroyable !</h2>
             <p>Vous avez terminé tous les niveaux Motus !</p>
+            <p>Vous avez trouvé le mot <strong>${TARGET_WORD}</strong></p>
+            
+            ${showScoreInPopup(
+              scoreData.currentScore,
+              scoreData.totalPoints,
+              scoreData.isNewRecord
+            )}
+            
+            <div class="popup-stats">
+                <div class="stat">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>${minutes}m ${seconds}s</span>
+                </div>
+                <div class="stat">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>${currentRow + 1}/6 tentatives</span>
+                </div>
+            </div>
             <div class="popup-buttons">
                 <button class="popup-btn primary" onclick="closePopup()">
                     <i class="fa-solid fa-home"></i>

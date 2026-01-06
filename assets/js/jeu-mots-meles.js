@@ -914,6 +914,21 @@ function showSuccessPopupWordSearch(elapsedTime, nextLevelId) {
 
 // Popup Completion Totale
 function showCompletionPopup() {
+  const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+  const minutes = Math.floor(elapsedTime / 60);
+  const seconds = elapsedTime % 60;
+
+  const levelData = MOTS_MELES_LEVELS[currentLevelId];
+  const score = calculateScore(levelData.difficulty, elapsedTime);
+
+  const scoreData = saveScore(
+    "mots-meles",
+    currentLevelId,
+    levelData.difficulty,
+    score,
+    elapsedTime
+  );
+
   const popup = document.createElement("div");
   popup.className = "popup-overlay";
   popup.innerHTML = `
@@ -921,6 +936,23 @@ function showCompletionPopup() {
               <div class="popup-icon">🏆</div>
               <h2>Incroyable !</h2>
               <p>Vous avez terminé tous les niveaux Mots Mêlés !</p>
+              
+              ${showScoreInPopup(
+                scoreData.currentScore,
+                scoreData.totalPoints,
+                scoreData.isNewRecord
+              )}
+              
+              <div class="popup-stats">
+                  <div class="stat">
+                      <i class="fa-solid fa-clock"></i>
+                      <span>${minutes}m ${seconds}s</span>
+                  </div>
+                  <div class="stat">
+                      <i class="fa-solid fa-font"></i>
+                      <span>${wordsToFind.length} mots</span>
+                  </div>
+              </div>
               <div class="popup-buttons">
                   <button class="popup-btn primary" onclick="closePopup()">
                       <i class="fa-solid fa-home"></i>
