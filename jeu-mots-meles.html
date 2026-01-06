@@ -1,109 +1,116 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jeu Mots Mêlés - Letterix</title>
-    <link rel="stylesheet" href="assets/css/jeu-mots-meles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="assets/css/jeu-mots-meles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="game-header">
-        <button class="back-button" onclick="window.location.href='mots-meles.html'">
-            <i class="fa-solid fa-arrow-left"></i>
-            Retour aux niveaux
+      <button
+        class="back-button"
+        onclick="window.location.href='mots-meles.html'"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
+        Retour aux niveaux
+      </button>
+
+      <div class="level-badge">
+        <span id="levelTitle">Niveau 1 - Facile</span>
+      </div>
+
+      <div class="game-stats">
+        <div class="stat-item">
+          <i class="fa-solid fa-clock"></i>
+          <span id="timer">00:00</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span id="wordsFoundCount">0/0</span>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <button class="action-btn" id="hintBtn" title="Indice">
+          <i class="fa-solid fa-lightbulb"></i>
+          Indice
         </button>
-        
-        <div class="level-badge">
-            <span id="levelTitle">Niveau 1 - Facile</span>
-        </div>
-
-        <div class="game-stats">
-            <div class="stat-item">
-                <i class="fa-solid fa-clock"></i>
-                <span id="timer">00:00</span>
-            </div>
-            <div class="stat-item">
-                <i class="fa-solid fa-list-check"></i>
-                <span id="wordsFoundCount">0/0</span>
-            </div>
-        </div>
-
-        <div class="game-actions">
-            <button class="action-btn" id="hintBtn" title="Indice">
-                <i class="fa-solid fa-lightbulb"></i>
-                Indice
-            </button>
-            <button class="action-btn" id="restartBtn" title="Recommencer">
-                <i class="fa-solid fa-rotate-right"></i>
-                Recommencer
-            </button>
-        </div>
+        <button class="action-btn" id="restartBtn" title="Recommencer">
+          <i class="fa-solid fa-rotate-right"></i>
+          Recommencer
+        </button>
+      </div>
     </div>
 
     <div class="game-content">
-        <div class="grid-section">
-            <h1 class="game-title">Retrouvez les mots cachés</h1>
+      <div class="grid-section">
+        <h1 class="game-title">Retrouvez les mots cachés</h1>
 
-            <div class="grid-container">
-                <div class="mots-meles-grid" id="motsMelesGrid">
-                    </div>
-            </div>
-
-            <div class="words-list-container">
-                <h3>Mots à trouver :</h3>
-                <div class="words-list" id="wordsList">
-                    </div>
-            </div>
+        <div class="grid-container">
+          <div class="mots-meles-grid" id="motsMelesGrid"></div>
         </div>
 
-        <div class="help-section">
-            <div class="help-header">
-                <i class="fa-solid fa-circle-info"></i>
-                <h2>Aide</h2>
-            </div>
-
-            <div class="help-content">
-                <div class="help-item">
-                    <div class="help-icon selection-demo">
-                        <i class="fa-solid fa-hand-pointer"></i>
-                    </div>
-                    <div class="help-text">
-                        <strong>Sélection</strong>
-                        <p>Glissez sur les lettres pour sélectionner un mot.</p>
-                    </div>
-                </div>
-
-                <div class="help-item">
-                    <div class="help-icon directions-demo">
-                        <i class="fa-solid fa-arrows-up-down-left-right"></i>
-                    </div>
-                    <div class="help-text">
-                        <strong>Directions</strong>
-                        <p>Horizontal, vertical et diagonal (endroit ou envers).</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <i class="fa-solid fa-info-circle"></i>
-                <p>Trouvez tous les mots de la liste le plus rapidement possible pour obtenir 3 étoiles !</p>
-            </div>
-
-            <div class="stats-box">
-                <h3>Statistiques</h3>
-                <div class="stat-row">
-                    <span>Mots restants</span>
-                    <strong id="remainingWords">0</strong>
-                </div>
-                <div class="stat-row">
-                    <span>Temps écoulé</span>
-                    <strong id="elapsedTime">0:00</strong>
-                </div>
-            </div>
+        <div class="words-list-container">
+          <h3>Mots à trouver :</h3>
+          <div class="words-list" id="wordsList"></div>
         </div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-header">
+          <i class="fa-solid fa-circle-info"></i>
+          <h2>Aide</h2>
+        </div>
+
+        <div class="help-content">
+          <div class="help-item">
+            <div class="help-icon selection-demo">
+              <i class="fa-solid fa-hand-pointer"></i>
+            </div>
+            <div class="help-text">
+              <strong>Sélection</strong>
+              <p>Glissez sur les lettres pour sélectionner un mot.</p>
+            </div>
+          </div>
+
+          <div class="help-item">
+            <div class="help-icon directions-demo">
+              <i class="fa-solid fa-arrows-up-down-left-right"></i>
+            </div>
+            <div class="help-text">
+              <strong>Directions</strong>
+              <p>Horizontal, vertical et diagonal (endroit ou envers).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <i class="fa-solid fa-info-circle"></i>
+          <p>
+            Trouvez tous les mots de la liste le plus rapidement possible pour
+            obtenir 3 étoiles !
+          </p>
+        </div>
+
+        <div class="stats-box">
+          <h3>Statistiques</h3>
+          <div class="stat-row">
+            <span>Mots restants</span>
+            <strong id="remainingWords">0</strong>
+          </div>
+          <div class="stat-row">
+            <span>Temps écoulé</span>
+            <strong id="elapsedTime">0:00</strong>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="assets/js/jeu-mots-meles.js"></script>
-</body>
+  </body>
 </html>

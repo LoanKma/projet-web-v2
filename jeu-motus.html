@@ -1,154 +1,161 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Motus - Letterix</title>
-    <link rel="stylesheet" href="assets/css/jeu-motus.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="assets/css/jeu-motus.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- HEADER -->
     <div class="game-header">
-        <button class="back-button" onclick="window.location.href='motus.html'">
-            <i class="fa-solid fa-arrow-left"></i>
-            Retour aux niveaux
+      <button class="back-button" onclick="window.location.href='motus.html'">
+        <i class="fa-solid fa-arrow-left"></i>
+        Retour aux niveaux
+      </button>
+
+      <div class="level-badge">
+        <span id="levelTitle">Niveau 1 - Facile</span>
+      </div>
+
+      <div class="game-stats">
+        <div class="stat-item">
+          <i class="fa-solid fa-clock"></i>
+          <span id="timer">00:00</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa-solid fa-bars"></i>
+          <span id="attempts">0/6</span>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <button class="action-btn" id="hintBtn" title="Indice">
+          <i class="fa-solid fa-lightbulb"></i>
+          Indice
         </button>
-        
-        <div class="level-badge">
-            <span id="levelTitle">Niveau 1 - Facile</span>
-        </div>
-
-        <div class="game-stats">
-            <div class="stat-item">
-                <i class="fa-solid fa-clock"></i>
-                <span id="timer">00:00</span>
-            </div>
-            <div class="stat-item">
-                <i class="fa-solid fa-bars"></i>
-                <span id="attempts">0/6</span>
-            </div>
-        </div>
-
-        <div class="game-actions">
-            <button class="action-btn" id="hintBtn" title="Indice">
-                <i class="fa-solid fa-lightbulb"></i>
-                Indice
-            </button>
-            <button class="action-btn" id="restartBtn" title="Recommencer">
-                <i class="fa-solid fa-rotate-right"></i>
-                Recommencer
-            </button>
-        </div>
+        <button class="action-btn" id="restartBtn" title="Recommencer">
+          <i class="fa-solid fa-rotate-right"></i>
+          Recommencer
+        </button>
+      </div>
     </div>
 
     <!-- MAIN GAME CONTAINER -->
     <div class="game-content">
-        <!-- GRILLE SECTION -->
-        <div class="grid-section">
-            <h1 class="game-title">Devinez le mot</h1>
+      <!-- GRILLE SECTION -->
+      <div class="grid-section">
+        <h1 class="game-title">Devinez le mot</h1>
 
-            <div class="grid-container">
-                <div class="motus-grid" id="motusGrid">
-                    <!-- Les lignes seront générées dynamiquement -->
-                </div>
-            </div>
-
-            <!-- CLAVIER VIRTUEL -->
-            <div class="keyboard-container">
-                <div class="keyboard-row">
-                    <button class="key" data-key="A">A</button>
-                    <button class="key" data-key="Z">Z</button>
-                    <button class="key" data-key="E">E</button>
-                    <button class="key" data-key="R">R</button>
-                    <button class="key" data-key="T">T</button>
-                    <button class="key" data-key="Y">Y</button>
-                    <button class="key" data-key="U">U</button>
-                    <button class="key" data-key="I">I</button>
-                    <button class="key" data-key="O">O</button>
-                    <button class="key" data-key="P">P</button>
-                </div>
-                <div class="keyboard-row">
-                    <button class="key" data-key="Q">Q</button>
-                    <button class="key" data-key="S">S</button>
-                    <button class="key" data-key="D">D</button>
-                    <button class="key" data-key="F">F</button>
-                    <button class="key" data-key="G">G</button>
-                    <button class="key" data-key="H">H</button>
-                    <button class="key" data-key="J">J</button>
-                    <button class="key" data-key="K">K</button>
-                    <button class="key" data-key="L">L</button>
-                    <button class="key" data-key="M">M</button>
-                </div>
-                <div class="keyboard-row">
-                    <button class="key key-large" id="validateBtn">
-                        <i class="fa-solid fa-check"></i> VALIDER
-                    </button>
-                    <button class="key" data-key="W">W</button>
-                    <button class="key" data-key="X">X</button>
-                    <button class="key" data-key="C">C</button>
-                    <button class="key" data-key="V">V</button>
-                    <button class="key" data-key="B">B</button>
-                    <button class="key" data-key="N">N</button>
-                    <button class="key key-large" id="deleteBtn">
-                        <i class="fa-solid fa-delete-left"></i>
-                    </button>
-                </div>
-            </div>
+        <div class="grid-container">
+          <div class="motus-grid" id="motusGrid">
+            <!-- Les lignes seront générées dynamiquement -->
+          </div>
         </div>
 
-        <!-- AIDE SECTION -->
-        <div class="help-section">
-            <div class="help-header">
-                <i class="fa-solid fa-circle-info"></i>
-                <h2>Aide</h2>
-            </div>
-
-            <div class="help-content">
-                <div class="help-item">
-                    <div class="help-icon correct-demo">A</div>
-                    <div class="help-text">
-                        <strong>Rouge</strong>
-                        <p>La lettre est bien placée</p>
-                    </div>
-                </div>
-
-                <div class="help-item">
-                    <div class="help-icon present-demo">B</div>
-                    <div class="help-text">
-                        <strong>Jaune</strong>
-                        <p>La lettre est dans le mot mais mal placée</p>
-                    </div>
-                </div>
-
-                <div class="help-item">
-                    <div class="help-icon absent-demo">C</div>
-                    <div class="help-text">
-                        <strong>Gris</strong>
-                        <p>La lettre n'est pas dans le mot</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-box">
-                <i class="fa-solid fa-info-circle"></i>
-                <p>La première lettre du mot est toujours révélée. Vous avez 6 tentatives pour trouver le mot !</p>
-            </div>
-
-            <div class="stats-box">
-                <h3>Statistiques</h3>
-                <div class="stat-row">
-                    <span>Tentatives utilisées</span>
-                    <strong id="usedAttempts">0/6</strong>
-                </div>
-                <div class="stat-row">
-                    <span>Temps écoulé</span>
-                    <strong id="elapsedTime">0:00</strong>
-                </div>
-            </div>
+        <!-- CLAVIER VIRTUEL -->
+        <div class="keyboard-container">
+          <div class="keyboard-row">
+            <button class="key" data-key="A">A</button>
+            <button class="key" data-key="Z">Z</button>
+            <button class="key" data-key="E">E</button>
+            <button class="key" data-key="R">R</button>
+            <button class="key" data-key="T">T</button>
+            <button class="key" data-key="Y">Y</button>
+            <button class="key" data-key="U">U</button>
+            <button class="key" data-key="I">I</button>
+            <button class="key" data-key="O">O</button>
+            <button class="key" data-key="P">P</button>
+          </div>
+          <div class="keyboard-row">
+            <button class="key" data-key="Q">Q</button>
+            <button class="key" data-key="S">S</button>
+            <button class="key" data-key="D">D</button>
+            <button class="key" data-key="F">F</button>
+            <button class="key" data-key="G">G</button>
+            <button class="key" data-key="H">H</button>
+            <button class="key" data-key="J">J</button>
+            <button class="key" data-key="K">K</button>
+            <button class="key" data-key="L">L</button>
+            <button class="key" data-key="M">M</button>
+          </div>
+          <div class="keyboard-row">
+            <button class="key key-large" id="validateBtn">
+              <i class="fa-solid fa-check"></i> VALIDER
+            </button>
+            <button class="key" data-key="W">W</button>
+            <button class="key" data-key="X">X</button>
+            <button class="key" data-key="C">C</button>
+            <button class="key" data-key="V">V</button>
+            <button class="key" data-key="B">B</button>
+            <button class="key" data-key="N">N</button>
+            <button class="key key-large" id="deleteBtn">
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- AIDE SECTION -->
+      <div class="help-section">
+        <div class="help-header">
+          <i class="fa-solid fa-circle-info"></i>
+          <h2>Aide</h2>
+        </div>
+
+        <div class="help-content">
+          <div class="help-item">
+            <div class="help-icon correct-demo">A</div>
+            <div class="help-text">
+              <strong>Rouge</strong>
+              <p>La lettre est bien placée</p>
+            </div>
+          </div>
+
+          <div class="help-item">
+            <div class="help-icon present-demo">B</div>
+            <div class="help-text">
+              <strong>Jaune</strong>
+              <p>La lettre est dans le mot mais mal placée</p>
+            </div>
+          </div>
+
+          <div class="help-item">
+            <div class="help-icon absent-demo">C</div>
+            <div class="help-text">
+              <strong>Gris</strong>
+              <p>La lettre n'est pas dans le mot</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <i class="fa-solid fa-info-circle"></i>
+          <p>
+            La première lettre du mot est toujours révélée. Vous avez 6
+            tentatives pour trouver le mot !
+          </p>
+        </div>
+
+        <div class="stats-box">
+          <h3>Statistiques</h3>
+          <div class="stat-row">
+            <span>Tentatives utilisées</span>
+            <strong id="usedAttempts">0/6</strong>
+          </div>
+          <div class="stat-row">
+            <span>Temps écoulé</span>
+            <strong id="elapsedTime">0:00</strong>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script src="assets/js/dictionnaire.js"></script> <script src="assets/js/jeu-motus.js"></script>
-</body>
+    <script src="assets/js/dictionnaire.js"></script>
+    <script src="assets/js/jeu-motus.js"></script>
+  </body>
 </html>
