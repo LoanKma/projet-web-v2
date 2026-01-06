@@ -393,19 +393,11 @@ Projet réalisé par une équipe de 4 développeurs :
 - [ ] Système de badges et réalisations
 - [ ] Thème clair/sombre sélectionnable
 - [ ] Nouveaux jeux de lettres
-- [ ] Application mobile (PWA)
 - [ ] Système de défis quotidiens
 - [ ] Partage de scores sur réseaux sociaux
-- [ ] Mode entraînement sans limite de temps
+
 
 ---
 
 
-## 🙏 Remerciements
 
-- Nos formateurs pour leur accompagnement
-- La communauté open-source pour les ressources
-- Font Awesome pour les icônes
-- Tous les testeurs qui ont contribué à améliorer le projet
-
----
