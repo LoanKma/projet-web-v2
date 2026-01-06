@@ -25,7 +25,9 @@ Jeux prévus :
 
 ### Back-end
 - PHP  
-- MySQL  
+- MySQL
+ 
+<img width="323" height="120" alt="image" src="https://github.com/user-attachments/assets/08ef40ad-9927-43db-ab24-4ef7818fd21c" />
 
 ### Outils
 - WAMP (serveur local)
