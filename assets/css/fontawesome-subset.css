@@ -1,0 +1,172 @@
+/* Font Awesome Subset - Uniquement les icônes utilisées
+ * Icônes : gamepad, sun, chart-simple, envelope, phone, location-dot, 
+ *          paper-plane, ranking-star, calendar-days, user-shield, 
+ *          circle-user, trophy, bullseye, star, stopwatch, medal, 
+ *          user, circle-exclamation, circle-check, arrow-right-to-bracket,
+ *          user-plus, chart-line, cog, clock, bolt, save, lock, key,
+ *          sign-out-alt, exclamation-triangle, trash-alt, question-circle,
+ *          times, check, arrow-left, bars, lightbulb, rotate-right,
+ *          delete-left, circle-info, info-circle, list-check, hand-pointer,
+ *          arrows-up-down-left-right
+ */
+
+/* Font Face - Font Awesome 6 Free Solid */
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/webfonts/fa-solid-900.woff2")
+    format("woff2");
+  unicode-range:
+    U+f015, U+f013, U+f002, U+f0c9, U+f11b, U+f023, U+f084, U+f108, U+f101,
+    U+f071, U+f1f8, U+f2f5, U+f304, U+f4ad, U+f53f, U+f66f, U+f681, U+f6e2,
+    U+e008, U+e059, U+e4cd;
+}
+
+/* Classes de base */
+.fa,
+.fas,
+.fa-solid {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-style: normal;
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Icônes utilisées - Code minimaliste */
+.fa-gamepad:before {
+  content: "\f11b";
+}
+.fa-sun:before {
+  content: "\f185";
+}
+.fa-chart-simple:before {
+  content: "\e473";
+}
+.fa-envelope:before {
+  content: "\f0e0";
+}
+.fa-phone:before {
+  content: "\f095";
+}
+.fa-location-dot:before {
+  content: "\f3c5";
+}
+.fa-paper-plane:before {
+  content: "\f1d8";
+}
+.fa-ranking-star:before {
+  content: "\e561";
+}
+.fa-calendar-days:before {
+  content: "\f073";
+}
+.fa-user-shield:before {
+  content: "\f505";
+}
+.fa-circle-user:before {
+  content: "\f2bd";
+}
+.fa-trophy:before {
+  content: "\f091";
+}
+.fa-bullseye:before {
+  content: "\f140";
+}
+.fa-star:before {
+  content: "\f005";
+}
+.fa-stopwatch:before {
+  content: "\f2f2";
+}
+.fa-medal:before {
+  content: "\f5a2";
+}
+.fa-user:before {
+  content: "\f007";
+}
+.fa-circle-exclamation:before {
+  content: "\f06a";
+}
+.fa-circle-check:before {
+  content: "\f058";
+}
+.fa-arrow-right-to-bracket:before {
+  content: "\f090";
+}
+.fa-user-plus:before {
+  content: "\f234";
+}
+.fa-chart-line:before {
+  content: "\f201";
+}
+.fa-cog:before {
+  content: "\f013";
+}
+.fa-clock:before {
+  content: "\f017";
+}
+.fa-bolt:before {
+  content: "\f0e7";
+}
+.fa-save:before {
+  content: "\f0c7";
+}
+.fa-lock:before {
+  content: "\f023";
+}
+.fa-key:before {
+  content: "\f084";
+}
+.fa-sign-out-alt:before {
+  content: "\f2f5";
+}
+.fa-exclamation-triangle:before {
+  content: "\f071";
+}
+.fa-trash-alt:before {
+  content: "\f2ed";
+}
+.fa-question-circle:before {
+  content: "\f059";
+}
+.fa-times:before {
+  content: "\f00d";
+}
+.fa-check:before {
+  content: "\f00c";
+}
+.fa-arrow-left:before {
+  content: "\f060";
+}
+.fa-bars:before {
+  content: "\f0c9";
+}
+.fa-lightbulb:before {
+  content: "\f0eb";
+}
+.fa-rotate-right:before {
+  content: "\f01e";
+}
+.fa-delete-left:before {
+  content: "\f55a";
+}
+.fa-circle-info:before {
+  content: "\f05a";
+}
+.fa-info-circle:before {
+  content: "\f05a";
+}
+.fa-list-check:before {
+  content: "\f0ae";
+}
+.fa-hand-pointer:before {
+  content: "\f25a";
+}
+.fa-arrows-up-down-left-right:before {
+  content: "\f047";
+}
