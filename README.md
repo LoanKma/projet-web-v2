@@ -42,7 +42,7 @@ Projet réalisé dans le cadre du **Projet Web** de notre formation.
 ### Front-end
 - **HTML5** 
 - **CSS3** 
-- **JavaScript (Vanilla ES6+)** 
+- **JavaScript** 
 
 ### Back-end
 - **PHP 7.4+** 
@@ -65,9 +65,6 @@ Projet réalisé dans le cadre du **Projet Web** de notre formation.
 - **Inscription/Connexion sécurisée**
   - Hachage des mots de passe (password_hash/verify)
   - Protection CSRF avec tokens
-  - Validation côté client et serveur
-  - Sessions sécurisées avec cookies HttpOnly
-  - Nettoyage des entrées utilisateur
 
 ### 👤 Profil Utilisateur
 - **Page profil personnalisée**
@@ -103,15 +100,6 @@ Projet réalisé dans le cadre du **Projet Web** de notre formation.
   - Mise à jour en temps réel
   - Affichage du rang personnel
   - Nombre de parties jouées
-
-### 🔥 Suivi de Progression
-- **Système de Streaks (Calendrier)**
-  - Compteur de jours consécutifs de jeu
-  - Calendrier visuel avec jours marqués
-  - Meilleure série enregistrée
-  - Statistiques mensuelles
-  - Animation des flammes
-  - Calcul intelligent des jours civils
 
 ### ⚙️ Administration
 - **Panel administrateur** (rôle admin requis)
@@ -260,48 +248,9 @@ Niveaux de difficulté
 ### Étapes d'installation
 
 #### 1. Cloner le projet
-```bash
-git clone https://github.com/LoanKma/projet-web-v2.git
-```
 
-#### 2. Configuration WAMP
-- Installer et démarrer **WAMP Server**
-- Placer le projet dans le dossier web :
-```
-C:/wamp64/www/projet-web-v2
-```
-- Vérifier que les services Apache et MySQL sont démarrés (icône WAMP verte)
-
-#### 3. Configuration de la base de données
-
-**Via phpMyAdmin :**
-1. Ouvrir phpMyAdmin : `http://localhost/phpmyadmin`
-2. Créer une nouvelle base de données : `bdd_projet_web`
-3. Sélectionner la base créée
-4. Onglet "Importer"
-5. Choisir le fichier : `sql/bdd_projet_web.sql`
-6. Cliquer sur "Exécuter"
-
-**Via ligne de commande (alternative) :**
-```bash
-mysql -u root -p < sql/bdd_projet_web.sql
-```
-
-#### 4. Configuration de la connexion
-Le fichier `php/db.php` contient la configuration par défaut :
-```php
-DB_HOST = 'localhost'
-DB_NAME = 'bdd_projet_web'
-DB_USER = 'root'
-DB_PASS = ''  // Vide par défaut sur WAMP
-```
-
-Si votre configuration est différente, modifiez ces valeurs.
-
-#### 5. Lancer l'application
-1. S'assurer que WAMP est démarré
-2. Ouvrir le navigateur
-3. Accéder à : **`http://localhost/projet-web-v2`**
+- copier le lien ci-dessuos puis aller sur votre navigateur
+  [letterix](https://letterix.rf.gd/projet-web-v2/)
 
 #### 6. Créer un compte
 - Cliquer sur "S'inscrire"
@@ -395,6 +344,7 @@ Projet réalisé par une équipe de 4 développeurs :
 - [ ] Nouveaux jeux de lettres
 - [ ] Système de défis quotidiens
 - [ ] Partage de scores sur réseaux sociaux
+- [ ] système de streak comme sur duolingo 
 
 
 ---
