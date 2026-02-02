@@ -653,7 +653,7 @@ document.addEventListener('keydown', function(event) {
   }
 });
 </script>
-    <script src="assets/js/profil.js"></script>
+    <script src="assets/js/profil.min.js"></script>
    <div id="footer-placeholder"></div>
   </body>
   
