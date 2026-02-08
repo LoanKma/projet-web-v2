@@ -16,12 +16,7 @@
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/webfonts/fa-solid-900.woff2")
-    format("woff2");
-  unicode-range:
-    U+f015, U+f013, U+f002, U+f0c9, U+f11b, U+f023, U+f084, U+f108, U+f101,
-    U+f071, U+f1f8, U+f2f5, U+f304, U+f4ad, U+f53f, U+f66f, U+f681, U+f6e2,
-    U+e008, U+e059, U+e4cd;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/webfonts/fa-solid-900.woff2") format("woff2");
 }
 
 /* Classes de base */

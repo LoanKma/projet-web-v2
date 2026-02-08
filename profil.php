@@ -650,7 +650,7 @@ document.addEventListener('keydown', function(event) {
   }
 });
 </script>
-    <script src="assets/js/profil.min.js" defer></script>
+    <script src="assets/js/profil.min.js" ></script>
    <div id="footer-placeholder"></div>
   </body>
   

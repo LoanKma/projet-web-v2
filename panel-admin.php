@@ -143,7 +143,7 @@ requireAdmin();
     </div>
 <!--footer pl=aceholder-->
 <div id="footer-placeholder"></div>
-    <script src="assets/js/panel-admin.min.js" defer></script>
+    <script src="assets/js/panel-admin.min.js"></script>
     <script>
            // header load
       fetch("header.php")
