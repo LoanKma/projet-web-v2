@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Niveaux de Mots Mêlés - Letterix</title>
     <link rel="stylesheet" href="assets/css/mots-meles.min.css" />
-    <link rel="stylesheet" href="assets/css/fontawesome-subset.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body>
     <div id="header-placeholder"></div>
@@ -15,54 +18,22 @@
       <p>Retrouvez tous les mots cachés dans la grille</p>
     </section>
 
-    <section class="stats-section">
-      <div class="global-stats" id="globalStats">
-        <div class="stat-item">
-          <div class="stat-icon">🏆</div>
-          <div class="stat-value">0</div>
-          <div class="stat-label">Points</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon">⭐</div>
-          <div class="stat-value">0</div>
-          <div class="stat-label">Victoires</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon">📊</div>
-          <div class="stat-value">0%</div>
-          <div class="stat-label">Réussite</div>
-        </div>
-      </div>
-    </section>
-
     <div class="difficulty-section">
-      <div
-        class="difficulty-badge easy active"
-        data-difficulty="easy"
-        onclick="filterLevels('easy')"
-      >
+      <div class="difficulty-badge easy active" data-difficulty="easy">
         <div class="difficulty-icon">
           <i class="fa-solid fa-star"></i>
         </div>
         <div class="difficulty-title">Facile</div>
         <div class="difficulty-subtitle">Grilles 8x8</div>
       </div>
-      <div
-        class="difficulty-badge medium"
-        data-difficulty="medium"
-        onclick="filterLevels('medium')"
-      >
+      <div class="difficulty-badge medium" data-difficulty="medium">
         <div class="difficulty-icon">
           <i class="fa-solid fa-bolt"></i>
         </div>
         <div class="difficulty-title">Moyen</div>
         <div class="difficulty-subtitle">Grilles 10x10</div>
       </div>
-      <div
-        class="difficulty-badge hard"
-        data-difficulty="hard"
-        onclick="filterLevels('hard')"
-      >
+      <div class="difficulty-badge hard" data-difficulty="hard">
         <div class="difficulty-icon">
           <i class="fa-solid fa-trophy"></i>
         </div>
